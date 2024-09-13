@@ -1,0 +1,7 @@
+<svg width="200px" height="200px" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <!-- Background circle -->
+    <circle cx="100" cy="100" r="95" fill="#E8F5E9" stroke="#4CAF50" stroke-width="5"/>
+
+    <!-- Underlined and Bold Text -->
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#2E7D32" font-size="36px" font-family="Arial, sans-serif" font-weight="bold" text-decoration="underline">MealPrep</text>
+</svg>

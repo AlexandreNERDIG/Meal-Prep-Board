@@ -1,0 +1,110 @@
+.globalHomeSection {
+    margin: 1rem auto;
+    width: 1200px;
+}
+
+.generateButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.generateButton p {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border: 2px solid #206024;
+    border-radius: 6px;
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #78dc7d, #A5D6A7, #78dc7d);
+    width: 30%;
+    transition: 0.3s all ease;
+}
+
+.generateButton p:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); 
+}
+
+.RecipeDisplay {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.recipe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3.5rem;
+    height: 400px;
+    width: 100%;
+}
+
+.recipe img {
+    max-height: 400px;
+    max-width: 450px;
+    width: 35%;
+    border-radius: 1rem;
+}
+
+.recipeDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 2px solid #3a3a3e;
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    padding: 1rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.recipeDetails h2 {
+    color: #78dc7d;
+}
+
+.recipeDetails h3 {
+    color: #A5D6A7;
+}
+
+.recipeDetails ul {
+    overflow: auto;
+}
+
+.recipeDetails li {
+    padding: 0rem;
+    margin-top: -0.3rem 0.5rem;
+    color: #A5D6A7;
+}
+
+.recipeDetails h5 {
+    color: #206024;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.replaceButton {
+    display: flex;
+    justify-content: center;
+}
+
+.replaceButton p {
+    cursor: pointer;
+    color: #ffffff; 
+    padding: 0.5rem 2.5rem;
+    border: none; 
+    border-radius: 6px; 
+    background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0,3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.replaceButton p:hover {
+    transform: scale(1.035); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #328b37, #5dbb61, #328b37);
+}

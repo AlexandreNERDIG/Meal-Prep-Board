@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="tiny" height="200px" version="1.2" width="200px" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink"><defs />
+<circle cx="100px" cy="100px" fill="#E8F5E9" r="95px" stroke="#4CAF50" stroke-width="5" />
+
+<rect fill="#1B5E20" height="70px" width="10px" x="70px" y="60px" /><rect fill="#1B5E20" height="70px" width="1px" x="90px" y="60px" />
+
+<rect fill="#1B5E20" height="70px" width="10px" x="110px" y="60px" /><rect fill="#1B5E20" height="10px" width="30px" x="85px" y="130px" />
+
+<text fill="#2E7D32" font-family="Lato" font-size="24px" x="50px" y="180px">MealPrep</text></svg>
