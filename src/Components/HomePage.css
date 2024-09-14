@@ -108,3 +108,37 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
     background: linear-gradient(135deg, #328b37, #5dbb61, #328b37);
 }
+
+.NutritionSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.WeeklyInfos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 70%;
+    gap: 2rem;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    border: 2px solid #3a3a3e;
+    padding: 1rem 2rem;
+    border-radius: 16px;
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.WeeklyGroceries {
+    padding: 1rem;
+    width: 60%;
+}
+
+.WeeklyMacro {
+    padding: 1rem;
+    width: 35%;
+}
+
+
+
+
