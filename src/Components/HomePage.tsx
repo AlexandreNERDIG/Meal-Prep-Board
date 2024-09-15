@@ -389,7 +389,22 @@ const HomePage = () => {
                 </div>
             </div>
 
-
+            <div className="NutritionSection">
+                <div className="sectionHeader"><p>Weekly Intakes</p></div>
+                <div className="WeeklyInfos">
+                    <div className="WeeklyGroceries">
+                        <h2>Grocery List :</h2>
+                        <p>Element 1 sdfsf</p>
+                        <p>Element 1</p>
+                    </div>
+                    <div className="WeeklyMacro">
+                        <h2>Weekly Macro :</h2>
+                        <p>Fat : 200g</p>
+                        <p>Fat : 200g</p>
+                        <p>Fat : 200g</p>
+                    </div>
+                </div>
+            </div>
 
         </div>
         </>
