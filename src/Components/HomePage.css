@@ -131,12 +131,21 @@
 
 .WeeklyGroceries {
     padding: 1rem;
-    width: 60%;
+    width: 45%;
+}
+
+.WeeklyGroceries p {
+    color: #A5D6A7;
 }
 
 .WeeklyMacro {
     padding: 1rem;
-    width: 34%;
+    width: 45%;
+}
+
+.WeeklyMacro, .WeeklyGroceries h2 {
+    color: #78dc7d; 
+    text-align: center;
 }
 
 
