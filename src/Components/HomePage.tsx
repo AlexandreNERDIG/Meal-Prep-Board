@@ -4,88 +4,88 @@ import NavBar from './NavBar';
 
 export const RecipeInfo = [
     {
-        RecipeName : "Gochujang Glazed Beef & Vegetables",
+        RecipeName : "Korean Beef and Veggies with Gochujang Glaze",
         Ingredient: [
-            "For the Base",
+            "Pour la Base",
             "",
-            "2 lbs (908 g) ground beef (90/10)",
-            "1 medium (150 g) green pepper",
-            "1 small (125 g) yellow onion",
-            "8 oz (227 g) cabbage (a whole head or pre-shredded in a bag)",
-            "2 medium (150 g) carrots",
-            "1 tbsp oil",
-            "3 stalks green onion (optional)",
-            "",
-    
-            "For the Sauce",
-            "",
-            "2 tbsp (30 g) soy sauce (gluten free if needed)",
-            "3 tbsp (45 g) gochujang",
-            "2 tbsp (42 g) honey",
-            "2 tbsp (30 g) water",
-            "1 tbsp (15 g) minced garlic",
-            "1 tbsp (15 g) minced ginger",
+            "900 g de bœuf haché (10% de matière grasse)",
+            "1 poivron vert moyen (150 g)",
+            "1 petit oignon jaune (125 g)",
+            "227 g de chou (un chou entier ou en sachet pré-rapé)",
+            "2 carottes moyennes (150 g)",
+            "1 c. à soupe d'huile",
+            "3 tiges d'oignons verts (facultatif)",
             "",
     
-            "For the Rice",
-            "3¾ cups (563 g) cooked rice"
+            "Pour la Sauce",
+            "",
+            "30 g de sauce soja (sans gluten si nécessaire)",
+            "45 g de gochujang",
+            "42 g de miel",
+            "30 g d'eau",
+            "15 g d'ail haché",
+            "15 g de gingembre haché",
+            "",
+    
+            "Pour le Riz",
+            "563 g de riz cuit"
         ],
-        Macro : "572 Calories | | 52g C | 42g P | 22g F",
+        Macro : "572 Calories | 52g C | 42g P | 22g F",
         image : "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
     },
     {
         RecipeName : "Chicken Fajita Fried Rice",
         Ingredient: [
-            "For the Chicken",
+            "Pour le Poulet",
             "",
-            "2 lbs (908 g) boneless skinless chicken thighs",
-            "2 tbsp (30 g) oil",
-            "1 tbsp (15 g) lime juice",
-            "2 tsp (6 g) garlic powder",
-            "1 tsp (1 g) oregano",
-            "1 tsp (3 g) coriander",
-            "1 tsp (3 g) cumin",
-            "1 tsp (3 g) paprika",
-            "2 tsp (6 g) chili powder",
-            "1 tsp (6 g) salt",
-            "1 tsp (2 g) pepper",
+            "900 g de cuisses de poulet désossées et sans peau",
+            "30 g d'huile",
+            "15 g de jus de citron vert",
+            "6 g de poudre d'ail",
+            "1 g d'origan",
+            "3 g de coriandre",
+            "3 g de cumin",
+            "3 g de paprika",
+            "6 g de poudre de chili",
+            "6 g de sel",
+            "2 g de poivre",
             "",
 
-            "For the Vegetables and Rice",
+            "Pour les Légumes et le Riz",
             "",
-            "3 cups (450 g) cooked rice",
-            "1 medium (200 g) onion",
-            "1 medium (150 g) red pepper",
-            "1 medium (150 g) green pepper or poblano",
-            "1 tbsp (15 g) minced garlic",
-            "2 tbsp (30 g) lime juice",
-            "Salt and pepper to taste",
-            "1 tbsp (15 g) oil",
-            "¼ cup cilantro (optional for garnish)",
-            "1 lime (optional for garnish)"
+            "450 g de riz cuit",
+            "1 oignon moyen (200 g)",
+            "1 poivron rouge moyen (150 g)",
+            "1 poivron vert moyen ou poblano (150 g)",
+            "15 g d'ail haché",
+            "30 g de jus de citron vert",
+            "Sel et poivre à votre goût",
+            "15 g d'huile",
+            "¼ tasse de coriandre (facultatif pour garnir)",
+            "1 citron vert (facultatif pour garnir)"
         ],
         Macro : "481 Calories | 41g C | 40g P | 18g F",
         image : "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg"
     },
     {
-        RecipeName : "Chicken Red Curry",
+        RecipeName : "Red Chicken Curry",
         Ingredient: [
-            "For the Pot",
+            "Pour la Casserole",
             "",
-            "1kg Chicken",
-            "1kg Brocolie",
-            "Red Curry Packet",
-            "Seasonings",
-            "400mL Coco Milk",
-            "400g White Onions",
-            "50g Echalote",
+            "1 kg de poulet",
+            "1 kg de brocoli",
+            "1 sachet de curry rouge",
+            "Assaisonnements",
+            "400 mL de lait de coco",
+            "400 g d'oignons blancs",
+            "50 g d'échalote",
             "",
 
-            "For the Rice",
+            "Pour le Riz",
             "",
-            "2 cups (300 g) uncooked rice",
-            "Salt",
-            "1 tbsp (15 g) fish Sauce",
+            "300 g de riz non cuit",
+            "Sel",
+            "15 g de sauce de poisson"
         ],
         Macro : "750 Calories | 51g C | 55g P | 27g F",
         image : "../img/thai-red-curry-34c1e6d.jpg"
@@ -93,61 +93,61 @@ export const RecipeInfo = [
     {
         RecipeName: "Lemon Garlic Turkey Bowls",
         Ingredient: [
-            "For the Potatoes",
+            "Pour les Pommes de Terre",
             "",
-            "3 medium (700 g) russet potatoes",
-            "½ tbsp (8 g) oil",
-            "Salt and pepper to taste",
-            "",
-            
-            "For the Broccoli",
-            "",
-            "1 lb (454 g) frozen broccoli or fresh",
-            "1 tsp (5 g) oil",
-            "Salt and pepper to taste",
+            "700 g de pommes de terre russet (environ 3 moyennes)",
+            "8 g d'huile",
+            "Sel et poivre à votre goût",
             "",
             
-            "For the Bowls",
+            "Pour le Brocoli",
             "",
-            "2 lbs (908 g) ground turkey (93/7) or chicken",
-            "1 tbsp (15 g) oil",
-            "2 cups (300 g) cooked rice (day old or frozen is best)",
-            "6 cloves (20 g) garlic",
-            "¼ cup (60 g) lemon juice",
-            "1 tbsp (5 g) lemon zest",
-            "2 tsp (2 g) dried oregano",
-            "1 tsp (3 g) dried coriander",
-            "2 tsp (6 g) onion powder",
-            "10 tbsp (150 g) tzatziki sauce (store-bought)",
-            "1 tsp red pepper flakes (optional)"
+            "454 g de brocoli surgelé ou frais",
+            "5 g d'huile",
+            "Sel et poivre à votre goût",
+            "",
+            
+            "Pour les Bols",
+            "",
+            "900 g de dinde hachée (ou poulet)",
+            "15 g d'huile",
+            "300 g de riz cuit (meilleur avec du riz d'un jour ou congelé)",
+            "20 g d'ail (6 gousses)",
+            "60 g de jus de citron",
+            "5 g de zeste de citron",
+            "2 g d'origan séché",
+            "3 g de coriandre séchée",
+            "6 g de poudre d'oignon",
+            "150 g de tzatziki (acheté en magasin)",
+            "1 c. à café de flocons de piment rouge (facultatif)"
         ],
         Macro: "613 Calories | 54g C | 43g P | 25g F",
         image: "../img/Lemon-Garlic-Turkey-Bowls-806x1024.jpg"
     },
     {
-        RecipeName: "Honey Sriracha Rice Bowls",
+        RecipeName: "Honey Sriracha Chicken Rice Bowls",
         Ingredient: [
-            "For the Rice Bowls",
+            "Pour les Bols de Riz",
             "",
-            "2 lbs (908 g) boneless skinless chicken thighs",
-            "4 cups (600 g) cooked rice",
-            "12 oz (340 g) broccoli",
-            "3 medium (150 g) carrots",
-            "1 small (125 g) onion",
-            "4 stalks (50 g) green onions",
-            "½ tbsp (7.5 g) minced garlic",
-            "1 tbsp (15 g) oil",
-            "Oil spray",
+            "900 g de cuisses de poulet désossées et sans peau",
+            "600 g de riz cuit",
+            "340 g de brocoli",
+            "3 carottes moyennes (150 g)",
+            "1 petit oignon (125 g)",
+            "50 g d'oignons verts (4 tiges)",
+            "7.5 g d'ail haché",
+            "15 g d'huile",
+            "Spray d'huile",
             "",
             
-            "For the Sauce",
+            "Pour la Sauce",
             "",
-            "3 tbsp (45 g) soy sauce (GF if needed)",
-            "1½ tbsp (23 g) lime juice",
-            "2½ tbsp (40 g) sriracha",
-            "2 tsp (10 g) sesame oil",
-            "¼ cup (84 g) honey",
-            "½ tbsp (7.5 g) garlic"
+            "45 g de sauce soja (sans gluten si nécessaire)",
+            "23 g de jus de citron vert",
+            "40 g de sriracha",
+            "10 g d'huile de sésame",
+            "84 g de miel",
+            "7.5 g d'ail"
         ],
         Macro: "575 Calories | 62g C | 39g P | 19g F",
         image: "../img/Honey-Sriracha-Rice-Bowls-807x1024.jpg"
@@ -155,17 +155,17 @@ export const RecipeInfo = [
     {
         RecipeName: "Teriyaki Ground Beef Bowls",
         Ingredient: [
-            "For the Bowls",
+            "Pour les Bols",
             "",
-            "5 cups (750 g) cooked rice",
-            "2 lbs (908 g) ground beef (90/10)",
-            "1 medium (250 g) zucchini",
-            "½ lb (227 g) carrots",
-            "½ lb (227 g) celery",
-            "1 small (125 g) onion",
-            "1 tbsp (15 g) minced garlic",
-            "2 tbsp (30 g) oil",
-            "½ cup (120 g) teriyaki sauce (pick a bottled one from the store)"
+            "750 g de riz cuit",
+            "900 g de bœuf haché (10% de matière grasse)",
+            "1 courgette moyenne (250 g)",
+            "227 g de carottes",
+            "227 g de céleri",
+            "1 petit oignon (125 g)",
+            "15 g d'ail haché",
+            "30 g d'huile",
+            "120 g de sauce teriyaki (en bouteille)"
         ],
         Macro: "652 Calories | 66g C | 44g P | 24g F",
         image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
@@ -173,31 +173,31 @@ export const RecipeInfo = [
     {
         RecipeName: "Honey BBQ Chicken with Potato Wedges",
         Ingredient: [
-            "For the Broccoli",
+            "Pour le Brocoli",
             "",
-            "1½ lbs (680 g) broccoli",
-            "2 tbsp (30 g) oil",
-            "Salt and pepper",
+            "680 g de brocoli",
+            "30 g d'huile",
+            "Sel et poivre",
             
             "",
             
-            "For the Potatoes",
+            "Pour les Pommes de Terre",
             "",
-            "5 small (750 g) russet potatoes",
-            "1 tbsp (15 g) oil",
-            "2 tsp (6 g) garlic powder",
-            "2 tsp (6 g) paprika",
-            "1 tsp (8 g) chili powder",
-            "Salt and pepper to taste",
+            "750 g de pommes de terre russet (environ 5 petites)",
+            "15 g d'huile",
+            "6 g de poudre d'ail",
+            "6 g de paprika",
+            "8 g de poudre de chili",
+            "Sel et poivre à votre goût",
             
             "",
             
-            "For the Chicken",
+            "Pour le Poulet",
             "",
-            "2½ lbs (1135 g) boneless skinless chicken thighs",
-            "½ cup (120 g) BBQ sauce (vinegar based is preferred)",
-            "2 tbsp (42 g) honey",
-            "Salt and pepper to taste"
+            "1135 g de cuisses de poulet désossées et sans peau",
+            "120 g de sauce BBQ (de préférence à base de vinaigre)",
+            "42 g de miel",
+            "Sel et poivre à votre goût"
         ],
         Macro: "542 Calories | 38g C | 44g P | 24g F",
         PrepTime: "15 minutes",
@@ -207,28 +207,28 @@ export const RecipeInfo = [
     {
         RecipeName: "Spicy Adobo Chicken and Peppers",
         Ingredient: [
-            "For the Chicken and Vegetables",
+            "Pour le Poulet et les Légumes",
             "",
-            "2 lbs (908 g) boneless skinless chicken thighs",
-            "1½ tbsp (23 g) olive oil",
-            "1 medium (150 g) red bell pepper",
-            "1 medium (150 g) green bell pepper",
-            "1 medium (200 g) onion",
+            "900 g de cuisses de poulet désossées et sans peau",
+            "23 g d'huile d'olive",
+            "1 poivron rouge moyen (150 g)",
+            "1 poivron vert moyen (150 g)",
+            "1 oignon moyen (200 g)",
             
             "",
             
-            "For the Rice",
+            "Pour le Riz",
             "",
-            "3½ cups (525 g) cooked rice",
-            "1 tbsp (15 g) lime juice",
+            "525 g de riz cuit",
+            "15 g de jus de citron vert",
             
             "",
             
-            "For the Sauce",
+            "Pour la Sauce",
             "",
-            "4 tbsp (60 g) chipotle peppers in adobo sauce",
-            "1 tsp (3 g) garlic powder",
-            "Salt and pepper to taste"
+            "60 g de piments chipotle en sauce adobo",
+            "3 g de poudre d'ail",
+            "Sel et poivre à votre goût"
         ],
         Macro: "506 Calories | 39g C | 47g P | 18g F",
         PrepTime: "10 minutes",
@@ -238,31 +238,31 @@ export const RecipeInfo = [
     {
         RecipeName: "Teriyaki Rotisserie Chicken Bowls",
         Ingredient: [
-            "For the Chicken",
+            "Pour le Poulet",
             "",
-            "1.5 lbs (681 g) pulled rotisserie chicken",
-            "9 tbsp (135 g) teriyaki sauce",
-            "2 tsp (10 g) sesame seeds",
-            "2 (10 g) green onions",
+            "681 g de poulet rôti effiloché",
+            "135 g de sauce teriyaki",
+            "10 g de graines de sésame",
+            "2 oignons verts (10 g)",
             
             "",
             
-            "For the Rice",
+            "Pour le Riz",
             "",
-            "4 cups (568 g) cooked rice",
-            "1 tbsp (15 g) soy sauce",
-            "1 tbsp (15 g) rice vinegar",
-            "1 tbsp (15 g) crunchy chili garlic oil",
+            "568 g de riz cuit",
+            "15 g de sauce soja",
+            "15 g de vinaigre de riz",
+            "15 g d'huile piquante à l'ail",
             
             "",
             
-            "For the Slaw",
+            "Pour la Salade de Chou",
             "",
-            "12 oz (340 g) shredded cabbage",
-            "1 cup (100 g) matchstick carrots",
-            "2 tbsp (30 g) rice vinegar",
-            "1 tbsp (15 g) crunchy chili garlic oil",
-            "1 tbsp (21 g) honey"
+            "340 g de chou râpé",
+            "100 g de carottes en bâtonnets",
+            "30 g de vinaigre de riz",
+            "15 g d'huile piquante à l'ail",
+            "21 g de miel"
         ],
         Macro: "557 Calories | 63g C | 38g P | 17g F",
         PrepTime: "20 minutes",
@@ -272,28 +272,28 @@ export const RecipeInfo = [
     {
         RecipeName: "Honey Garlic Chicken Noodle Bowls",
         Ingredient: [
-            "For the Meat and Vegetables",
+            "Pour la Viande et les Légumes",
             "",
-            "2 lbs (908 g) ground chicken (93/7)",
-            "8 oz (227 g) sweet potato glass noodles",
-            "1 small (125 g) onion",
-            "1 medium (150 g) red pepper",
-            "8 oz (227 g) mushrooms",
-            "8 oz (227 g) shredded cabbage (pre-shredded)",
-            "4 cloves (15 g) garlic",
-            "5 stalks (25 g) green onions",
-            "2 tbsp (30 g) oil",
-            "Salt and pepper",
+            "900 g de poulet haché (7% de matière grasse)",
+            "227 g de nouilles de patates douces",
+            "1 petit oignon (125 g)",
+            "1 poivron rouge moyen (150 g)",
+            "227 g de champignons",
+            "227 g de chou râpé (pré-rapé)",
+            "15 g d'ail (4 gousses)",
+            "25 g d'oignons verts (5 tiges)",
+            "30 g d'huile",
+            "Sel et poivre",
             
             "",
             
-            "For the Sauce",
+            "Pour la Sauce",
             "",
-            "2 tbsp (30 g) soy sauce",
-            "¼ cup (84 g) honey",
-            "¼ cup (80 g) oyster sauce",
-            "2 tsp (10 g) sesame oil",
-            "1 tbsp (15 g) sriracha"
+            "30 g de sauce soja",
+            "84 g de miel",
+            "80 g de sauce d'huître",
+            "10 g d'huile de sésame",
+            "15 g de sriracha"
         ],
         Macro: "597 Calories | 66g C | 36g P | 21g F",
         PrepTime: "15 minutes",
@@ -303,24 +303,25 @@ export const RecipeInfo = [
     {
         RecipeName: "Korean Beef and Rice Cakes (Tteokbokki)",
         Ingredient: [
-            "1 medium (60 g) carrot",
-            "5 medium (40 g) green onions",
-            "1 tbsp (15 g) garlic",
-            "1 cup (200 g) kimchi",
-            "1 lb (454 g) rice cakes",
-            "1 lb (454 g) 90/10 beef",
-            "1 tbsp (15 g) gochujang",
-            "2 tbsp (30 g) soy sauce",
-            "2 tsp (8 g) sugar",
-            "2 tbsp (30 g) rice cake water",
-            "Salt to taste"
+            "1 carotte moyenne (60 g)",
+            "5 oignons verts (40 g)",
+            "15 g d'ail",
+            "200 g de kimchi",
+            "454 g de gâteaux de riz",
+            "454 g de bœuf haché (10% de matière grasse)",
+            "15 g de gochujang",
+            "30 g de sauce soja",
+            "8 g de sucre",
+            "30 g d'eau de cuisson des gâteaux de riz",
+            "Sel à votre goût"
         ],
         Macro: "531 Calories | 69g C | 31g P | 14.5g F",
         PrepTime: "5 minutes",
         CookTime: "20 minutes",
         image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg"
     }    
-]
+];
+
 
 const HomePage = () => {
 
@@ -351,6 +352,17 @@ const HomePage = () => {
         if (weeklyRecipe2 !== randomNumber) {
             setWeeklyRecipe2(randomNumber);
         }
+    }
+
+    const WeeklyGroceries = () => {
+        let finalGroceryList = [];
+        for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
+            finalGroceryList.push(element);
+        }
+        for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
+            finalGroceryList.push(element1);
+        }
+        return (finalGroceryList);
     }
 
     return(
@@ -393,15 +405,14 @@ const HomePage = () => {
                 <div className="sectionHeader"><p>Weekly Intakes</p></div>
                 <div className="WeeklyInfos">
                     <div className="WeeklyGroceries">
-                        <h2>Grocery List :</h2>
-                        <p>Element 1 sdfsf</p>
-                        <p>Element 1</p>
+                        <h2>Grocery List</h2>
+                        {WeeklyGroceries().map((element, index) => (
+                            <p key={index}>{element}</p>
+                        ))}
                     </div>
                     <div className="WeeklyMacro">
-                        <h2>Weekly Macro :</h2>
-                        <p>Fat : 200g</p>
-                        <p>Fat : 200g</p>
-                        <p>Fat : 200g</p>
+                        <h2>Weekly Macro</h2>
+                        
                     </div>
                 </div>
             </div>
