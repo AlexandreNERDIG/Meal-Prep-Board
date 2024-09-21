@@ -1,326 +1,221 @@
 import { useState } from 'react';
 import './HomePage.css';
 import NavBar from './NavBar';
-
+ 
 export const RecipeInfo = [
     {
-        RecipeName : "Korean Beef and Veggies with Gochujang Glaze",
+        RecipeName: "Bœuf Bourguignon",
         Ingredient: [
-            "Pour la Base",
-            "",
-            "900 g de bœuf haché (10% de matière grasse)",
-            "1 poivron vert moyen (150 g)",
-            "1 petit oignon jaune (125 g)",
-            "227 g de chou (un chou entier ou en sachet pré-rapé)",
-            "2 carottes moyennes (150 g)",
-            "1 c. à soupe d'huile",
-            "3 tiges d'oignons verts (facultatif)",
-            "",
-    
-            "Pour la Sauce",
-            "",
-            "30 g de sauce soja (sans gluten si nécessaire)",
-            "45 g de gochujang",
-            "42 g de miel",
-            "30 g d'eau",
-            "15 g d'ail haché",
-            "15 g de gingembre haché",
-            "",
-    
-            "Pour le Riz",
-            "563 g de riz cuit"
+            "1 kg de bœuf à braiser",
+            "3 carottes",
+            "2 oignons",
+            "250 ml de vin rouge",
+            "250 ml de bouillon de bœuf",
+            "2 gousses d'ail",
+            "1 bouquet garni",
+            "1 cuillère à soupe de farine",
+            "Sel et poivre au goût"
         ],
-        Macro : "572 Calories | 52g C | 42g P | 22g F",
-        image : "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
+        Macro: "450 Calories | 15 g C | 38 g P | 22 g F",
+        PrepTime: "20 min",
+        CookTime: "3h",
+        Instructions: "Faites revenir le bœuf dans l'huile, ajoutez les oignons, carottes, et l'ail. Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
+        image: "../img/"
     },
     {
-        RecipeName : "Chicken Fajita Fried Rice",
+        RecipeName: "Poulet Basquaise",
         Ingredient: [
-            "Pour le Poulet",
-            "",
-            "900 g de cuisses de poulet désossées et sans peau",
-            "30 g d'huile",
-            "15 g de jus de citron vert",
-            "6 g de poudre d'ail",
-            "1 g d'origan",
-            "3 g de coriandre",
-            "3 g de cumin",
-            "3 g de paprika",
-            "6 g de poudre de chili",
-            "6 g de sel",
-            "2 g de poivre",
-            "",
-
-            "Pour les Légumes et le Riz",
-            "",
-            "450 g de riz cuit",
-            "1 oignon moyen (200 g)",
-            "1 poivron rouge moyen (150 g)",
-            "1 poivron vert moyen ou poblano (150 g)",
-            "15 g d'ail haché",
-            "30 g de jus de citron vert",
-            "Sel et poivre à votre goût",
-            "15 g d'huile",
-            "¼ tasse de coriandre (facultatif pour garnir)",
-            "1 citron vert (facultatif pour garnir)"
+            "750 g de cuisses de poulet",
+            "2 poivrons",
+            "2 tomates",
+            "2 oignons",
+            "2 gousses d'ail",
+            "200 ml de bouillon de volaille",
+            "1 cuillère à café de paprika",
+            "1 cuillère à soupe d'huile d'olive",
+            "Sel et poivre au goût"
         ],
-        Macro : "481 Calories | 41g C | 40g P | 18g F",
-        image : "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg"
+        Macro: "400 Calories | 12 g C | 35 g P | 22 g F",
+        PrepTime: "15 min",
+        CookTime: "1h30",
+        Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
+        image: "../img/"
     },
     {
-        RecipeName : "Red Chicken Curry",
+        RecipeName: "Bœuf Stroganoff",
         Ingredient: [
-            "Pour la Casserole",
-            "",
-            "1 kg de poulet",
-            "1 kg de brocoli",
-            "1 sachet de curry rouge",
-            "Assaisonnements",
-            "400 mL de lait de coco",
-            "400 g d'oignons blancs",
-            "50 g d'échalote",
-            "",
-
-            "Pour le Riz",
-            "",
-            "300 g de riz non cuit",
-            "Sel",
-            "15 g de sauce de poisson"
+            "1 kg de bœuf à mijoter",
+            "250 g de champignons",
+            "2 oignons",
+            "2 gousses d'ail",
+            "150 ml de crème fraîche",
+            "1 cuillère à soupe de moutarde",
+            "1 cuillère à soupe de farine",
+            "1 cuillère à soupe d'huile d'olive",
+            "Sel et poivre au goût"
         ],
-        Macro : "750 Calories | 51g C | 55g P | 27g F",
-        image : "../img/thai-red-curry-34c1e6d.jpg"
+        Macro: "460 Calories | 18 g C | 35 g P | 25 g F",
+        PrepTime: "20 min",
+        CookTime: "1h30",
+        Instructions: "Faites revenir le bœuf, les oignons et l'ail dans l'huile. Ajoutez les champignons. Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
+        image: "../img/"
     },
     {
-        RecipeName: "Lemon Garlic Turkey Bowls",
+        RecipeName: "Tajine d'Agneau",
         Ingredient: [
-            "Pour les Pommes de Terre",
-            "",
-            "700 g de pommes de terre russet (environ 3 moyennes)",
-            "8 g d'huile",
-            "Sel et poivre à votre goût",
-            "",
-            
-            "Pour le Brocoli",
-            "",
-            "454 g de brocoli surgelé ou frais",
-            "5 g d'huile",
-            "Sel et poivre à votre goût",
-            "",
-            
-            "Pour les Bols",
-            "",
-            "900 g de dinde hachée (ou poulet)",
-            "15 g d'huile",
-            "300 g de riz cuit (meilleur avec du riz d'un jour ou congelé)",
-            "20 g d'ail (6 gousses)",
-            "60 g de jus de citron",
-            "5 g de zeste de citron",
-            "2 g d'origan séché",
-            "3 g de coriandre séchée",
-            "6 g de poudre d'oignon",
-            "150 g de tzatziki (acheté en magasin)",
-            "1 c. à café de flocons de piment rouge (facultatif)"
+            "1 kg d'épaule d'agneau",
+            "2 carottes",
+            "2 oignons",
+            "2 navets",
+            "250 g de pommes de terre",
+            "200 g de petits pois",
+            "500 ml de bouillon de légumes",
+            "2 gousses d'ail",
+            "1 cuillère à café de cumin",
+            "Sel et poivre au goût"
         ],
-        Macro: "613 Calories | 54g C | 43g P | 25g F",
-        image: "../img/Lemon-Garlic-Turkey-Bowls-806x1024.jpg"
+        Macro: "520 Calories | 25 g C | 42 g P | 28 g F",
+        PrepTime: "15 min",
+        CookTime: "2h",
+        Instructions: "Faites revenir la viande d'agneau, puis ajoutez les oignons, l'ail, les carottes et les navets. Versez le bouillon et laissez mijoter 1h30. Ajoutez les pommes de terre et les petits pois 30 minutes avant la fin.",
+        image: "../img/"
     },
     {
-        RecipeName: "Honey Sriracha Chicken Rice Bowls",
+        RecipeName: "Daube Provençale",
         Ingredient: [
-            "Pour les Bols de Riz",
-            "",
-            "900 g de cuisses de poulet désossées et sans peau",
-            "600 g de riz cuit",
-            "340 g de brocoli",
-            "3 carottes moyennes (150 g)",
-            "1 petit oignon (125 g)",
-            "50 g d'oignons verts (4 tiges)",
-            "7.5 g d'ail haché",
-            "15 g d'huile",
-            "Spray d'huile",
-            "",
-            
-            "Pour la Sauce",
-            "",
-            "45 g de sauce soja (sans gluten si nécessaire)",
-            "23 g de jus de citron vert",
-            "40 g de sriracha",
-            "10 g d'huile de sésame",
-            "84 g de miel",
-            "7.5 g d'ail"
+            "1 kg de bœuf à mijoter",
+            "250 ml de vin rouge",
+            "2 carottes",
+            "2 oignons",
+            "2 gousses d'ail",
+            "2 tomates",
+            "1 bouquet garni",
+            "1 cuillère à soupe de farine",
+            "Sel et poivre au goût",
+            "Huile d'olive pour la cuisson"
         ],
-        Macro: "575 Calories | 62g C | 39g P | 19g F",
-        image: "../img/Honey-Sriracha-Rice-Bowls-807x1024.jpg"
+        Macro: "450 Calories | 15 g C | 38 g P | 20 g F",
+        PrepTime: "15 min",
+        CookTime: "2h30",
+        Instructions: "Faites dorer la viande, ajoutez les oignons, l'ail et les carottes. Versez le vin et les tomates, et laissez mijoter pendant 2h30.",
+        image: "../img/"
     },
     {
-        RecipeName: "Teriyaki Ground Beef Bowls",
+        RecipeName: "Rôti de Porc à la Moutarde",
         Ingredient: [
-            "Pour les Bols",
-            "",
-            "750 g de riz cuit",
-            "900 g de bœuf haché (10% de matière grasse)",
-            "1 courgette moyenne (250 g)",
-            "227 g de carottes",
-            "227 g de céleri",
-            "1 petit oignon (125 g)",
-            "15 g d'ail haché",
-            "30 g d'huile",
-            "120 g de sauce teriyaki (en bouteille)"
+            "1 kg de rôti de porc",
+            "3 cuillères à soupe de moutarde de Dijon",
+            "2 oignons",
+            "2 gousses d'ail",
+            "250 ml de bouillon de volaille",
+            "1 cuillère à soupe d'huile d'olive",
+            "1 cuillère à café de thym",
+            "Sel et poivre au goût"
         ],
-        Macro: "652 Calories | 66g C | 44g P | 24g F",
-        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
+        Macro: "420 Calories | 10 g C | 35 g P | 25 g F",
+        PrepTime: "15 min",
+        CookTime: "2h",
+        Instructions: "Badigeonnez le rôti de moutarde. Faites-le revenir avec les oignons et l'ail. Ajoutez le bouillon et laissez mijoter pendant 2h.",
+        image: "../img/"
     },
     {
-        RecipeName: "Honey BBQ Chicken with Potato Wedges",
+        RecipeName: "Blanquette de Veau",
         Ingredient: [
-            "Pour le Brocoli",
-            "",
-            "680 g de brocoli",
-            "30 g d'huile",
-            "Sel et poivre",
-            
-            "",
-            
-            "Pour les Pommes de Terre",
-            "",
-            "750 g de pommes de terre russet (environ 5 petites)",
-            "15 g d'huile",
-            "6 g de poudre d'ail",
-            "6 g de paprika",
-            "8 g de poudre de chili",
-            "Sel et poivre à votre goût",
-            
-            "",
-            
-            "Pour le Poulet",
-            "",
-            "1135 g de cuisses de poulet désossées et sans peau",
-            "120 g de sauce BBQ (de préférence à base de vinaigre)",
-            "42 g de miel",
-            "Sel et poivre à votre goût"
+            "1 kg de veau à mijoter",
+            "3 carottes",
+            "2 poireaux",
+            "2 oignons",
+            "250 g de champignons",
+            "150 ml de crème fraîche",
+            "1 citron (jus)",
+            "1 bouquet garni",
+            "75 g de beurre",
+            "1 cuillère à soupe de farine",
+            "Sel et poivre au goût"
         ],
-        Macro: "542 Calories | 38g C | 44g P | 24g F",
-        PrepTime: "15 minutes",
-        CookTime: "35 minutes",
-        image: "../img/Honey-BBQ-Chicken-WP-813x1024.png"
+        Macro: "480 Calories | 18 g C | 42 g P | 22 g F",
+        PrepTime: "20 min",
+        CookTime: "2h",
+        Instructions: "Faites revenir la viande avec les oignons et le beurre. Ajoutez les carottes, les poireaux et le bouquet garni. Couvrez d’eau et laissez mijoter 2 heures. À la fin, incorporez la crème, le jus de citron et la farine pour épaissir la sauce.",
+        image: "../img/"
     },
     {
-        RecipeName: "Spicy Adobo Chicken and Peppers",
+        RecipeName: "Bœuf aux Carottes",
         Ingredient: [
-            "Pour le Poulet et les Légumes",
-            "",
-            "900 g de cuisses de poulet désossées et sans peau",
-            "23 g d'huile d'olive",
-            "1 poivron rouge moyen (150 g)",
-            "1 poivron vert moyen (150 g)",
-            "1 oignon moyen (200 g)",
-            
-            "",
-            
-            "Pour le Riz",
-            "",
-            "525 g de riz cuit",
-            "15 g de jus de citron vert",
-            
-            "",
-            
-            "Pour la Sauce",
-            "",
-            "60 g de piments chipotle en sauce adobo",
-            "3 g de poudre d'ail",
-            "Sel et poivre à votre goût"
+            "1 kg de bœuf (paleron, macreuse)",
+            "5 carottes",
+            "2 oignons",
+            "2 gousses d’ail",
+            "300 ml de bouillon de bœuf",
+            "1 cuillère à soupe de farine",
+            "1 bouquet garni",
+            "Sel et poivre au goût",
+            "Huile d'olive pour la cuisson"
         ],
-        Macro: "506 Calories | 39g C | 47g P | 18g F",
-        PrepTime: "10 minutes",
-        CookTime: "25 minutes",
-        image: "../img/Spicy-Adobo-Chicken-and-Peppers-WP.jpg"
+        Macro: "350 Calories | 12 g C | 35 g P | 15 g F",
+        PrepTime: "15 min",
+        CookTime: "1h30",
+        Instructions: "Faites revenir le bœuf avec les oignons et l'ail. Ajoutez les carottes en rondelles. Saupoudrez de farine, puis ajoutez le bouillon. Laissez mijoter à feu doux pendant 1h30.",
+        image: "../img/"
     },
     {
-        RecipeName: "Teriyaki Rotisserie Chicken Bowls",
+        RecipeName: "Goulash Hongrois",
         Ingredient: [
-            "Pour le Poulet",
-            "",
-            "681 g de poulet rôti effiloché",
-            "135 g de sauce teriyaki",
-            "10 g de graines de sésame",
-            "2 oignons verts (10 g)",
-            
-            "",
-            
-            "Pour le Riz",
-            "",
-            "568 g de riz cuit",
-            "15 g de sauce soja",
-            "15 g de vinaigre de riz",
-            "15 g d'huile piquante à l'ail",
-            
-            "",
-            
-            "Pour la Salade de Chou",
-            "",
-            "340 g de chou râpé",
-            "100 g de carottes en bâtonnets",
-            "30 g de vinaigre de riz",
-            "15 g d'huile piquante à l'ail",
-            "21 g de miel"
+            "1 kg de bœuf à mijoter",
+            "3 pommes de terre",
+            "2 oignons",
+            "2 poivrons",
+            "2 gousses d'ail",
+            "2 cuillères à soupe de paprika doux",
+            "400 g de tomates concassées",
+            "1 cuillère à café de cumin",
+            "Sel et poivre au goût"
         ],
-        Macro: "557 Calories | 63g C | 38g P | 17g F",
-        PrepTime: "20 minutes",
-        CookTime: "5 minutes",
-        image: "../img/Teriyaki-Rotisserie-Chicken-Bowls-WP-807x1024.jpg"
+        Macro: "480 Calories | 30 g C | 40 g P | 20 g F",
+        PrepTime: "20 min",
+        CookTime: "2h",
+        Instructions: "Faites revenir les oignons, l'ail et le bœuf. Ajoutez les poivrons, le paprika et les tomates. Ajoutez les pommes de terre et laissez mijoter à feu doux pendant 2h.",
+        image: "../img/"
     },
     {
-        RecipeName: "Honey Garlic Chicken Noodle Bowls",
+        RecipeName: "Poulet au Paprika et Pommes de Terre",
         Ingredient: [
-            "Pour la Viande et les Légumes",
-            "",
-            "900 g de poulet haché (7% de matière grasse)",
-            "227 g de nouilles de patates douces",
-            "1 petit oignon (125 g)",
-            "1 poivron rouge moyen (150 g)",
-            "227 g de champignons",
-            "227 g de chou râpé (pré-rapé)",
-            "15 g d'ail (4 gousses)",
-            "25 g d'oignons verts (5 tiges)",
-            "30 g d'huile",
-            "Sel et poivre",
-            
-            "",
-            
-            "Pour la Sauce",
-            "",
-            "30 g de sauce soja",
-            "84 g de miel",
-            "80 g de sauce d'huître",
-            "10 g d'huile de sésame",
-            "15 g de sriracha"
+            "750 g de cuisses de poulet",
+            "3 pommes de terre",
+            "2 oignons",
+            "2 gousses d'ail",
+            "250 ml de bouillon de volaille",
+            "2 cuillères à soupe de paprika",
+            "1 cuillère à soupe d'huile d'olive",
+            "Sel et poivre au goût",
+            "1 cuillère à café de thym"
         ],
-        Macro: "597 Calories | 66g C | 36g P | 21g F",
-        PrepTime: "15 minutes",
-        CookTime: "30 minutes",
-        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg"
+        Macro: "400 Calories | 20 g C | 35 g P | 20 g F",
+        PrepTime: "15 min",
+        CookTime: "1h30",
+        Instructions: "Faites revenir les cuisses de poulet avec les oignons, l'ail, et le paprika. Ajoutez les pommes de terre et le bouillon. Laissez mijoter jusqu'à ce que le poulet soit cuit.",
+        image: "../img/"
     },
     {
-        RecipeName: "Korean Beef and Rice Cakes (Tteokbokki)",
+        RecipeName: "Chili Con Carne",
         Ingredient: [
-            "1 carotte moyenne (60 g)",
-            "5 oignons verts (40 g)",
-            "15 g d'ail",
-            "200 g de kimchi",
-            "454 g de gâteaux de riz",
-            "454 g de bœuf haché (10% de matière grasse)",
-            "15 g de gochujang",
-            "30 g de sauce soja",
-            "8 g de sucre",
-            "30 g d'eau de cuisson des gâteaux de riz",
-            "Sel à votre goût"
+            "500 g de viande hachée (bœuf)",
+            "1 boîte de haricots rouges",
+            "1 boîte de tomates concassées",
+            "1 poivron",
+            "1 oignon",
+            "2 gousses d'ail",
+            "1 cuillère à soupe de cumin",
+            "1 cuillère à soupe de chili en poudre",
+            "Sel et poivre au goût"
         ],
-        Macro: "531 Calories | 69g C | 31g P | 14.5g F",
-        PrepTime: "5 minutes",
-        CookTime: "20 minutes",
-        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg"
-    }    
-];
+        Macro: "550 Calories | 45 g C | 40 g P | 20 g F",
+        PrepTime: "15 min",
+        CookTime: "1h",
+        Instructions: "Faites revenir l'oignon, l'ail et la viande hachée. Ajoutez le poivron, les tomates, les haricots et les épices. Laissez mijoter pendant 30 minutes.",
+        image: "../img/"
+    }
+];   
 
 
 const HomePage = () => {
