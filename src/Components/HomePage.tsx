@@ -250,13 +250,13 @@ const HomePage = () => {
     }
 
     const WeeklyGroceries = () => {
-        let finalGroceryList = [];
-        for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
-            finalGroceryList.push(element);
-        }
-        for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
-            finalGroceryList.push(element1);
-        }
+        let finalGroceryList = [""];
+        // for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
+        //     finalGroceryList.push(element);
+        // }
+        // for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
+        //     finalGroceryList.push(element1);
+        // }
         return (finalGroceryList);
     }
 
