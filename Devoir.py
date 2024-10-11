@@ -16,7 +16,6 @@ Analyse : 1 aprem
         2.7
 
 Elec Analogique : 2h
-    Recap du cours
 
 Algo : 1h
     Refaire le TD
@@ -32,7 +31,8 @@ Automatique Continue : 2 heures MAX
     
 A faire :
 
-    Refaire le TD et les Bodes
+    Refaire tous les TDs et les Bodes
+    Recap du cours
 
     Mettre A jour feuille Intégrale (Fourier Laplace) 5 minutes
     Exo 1.12 et 1.14 à refaire 1h environ
@@ -48,6 +48,7 @@ A faire :
         1.27
 
     Faire le TD 2 Unix avec le chat
+    Tp Python à finir
 
     Analyse
     Elec
