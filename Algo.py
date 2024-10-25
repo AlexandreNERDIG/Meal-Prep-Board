@@ -13,3 +13,24 @@ def TriDico(STR):
 
 a = "J'adore manger des pommes de terres"
 print(TriDico(a))
+
+
+def calculer_imc(poids, taille):
+    if taille == 0:
+        return "La taille ne peut pas être nulle."
+    imc = poids / (taille ** 2)
+    
+    if imc < 18.5:
+        return f"IMC = {imc:.2f}: Sous-poids"
+    elif 18.5 <= imc <= 24.9:
+        return f"IMC = {imc:.2f}: Poids normal"
+    elif 25 <= imc <= 29.9:
+        return f"IMC = {imc:.2f}: Surpoids"
+    else:
+        return f"IMC = {imc:.2f}: Obèse"
+
+# Exemple d'utilisation
+poids = 70  # en kg
+taille = 1.75  # en mètres
+resultat_imc = calculer_imc(poids, taille)
+print(resultat_imc)
