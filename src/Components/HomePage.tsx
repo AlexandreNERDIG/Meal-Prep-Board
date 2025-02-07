@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './HomePage.css';
 import NavBar from './NavBar';
+import { FaNimblr } from 'react-icons/fa';
  
 export const RecipeInfo = [
     {
@@ -20,7 +21,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "3h",
         Instructions: "Faites revenir le bœuf dans l'huile, ajoutez les oignons, carottes, et l'ail. Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-        image: "../img/"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
     },
     {
         RecipeName: "Poulet Basquaise",
@@ -39,7 +40,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
-        image: "../img/"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
     },
     {
         RecipeName: "Bœuf Stroganoff",
@@ -58,7 +59,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le bœuf, les oignons et l'ail dans l'huile. Ajoutez les champignons. Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
-        image: "../img/"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
     },
     {
         RecipeName: "Tajine d'Agneau",
@@ -78,7 +79,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h",
         Instructions: "Faites revenir la viande d'agneau, puis ajoutez les oignons, l'ail, les carottes et les navets. Versez le bouillon et laissez mijoter 1h30. Ajoutez les pommes de terre et les petits pois 30 minutes avant la fin.",
-        image: "../img/"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
     },
     {
         RecipeName: "Daube Provençale",
@@ -217,6 +218,7 @@ export const RecipeInfo = [
     }
 ];   
 
+export const recetteHistory = []
 
 const HomePage = () => {
 
@@ -251,23 +253,61 @@ const HomePage = () => {
 
     const WeeklyGroceries = () => {
         let finalGroceryList = [""];
-        // for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
-        //     finalGroceryList.push(element);
-        // }
-        // for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
-        //     finalGroceryList.push(element1);
-        // }
+        for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
+            finalGroceryList.push(element);
+        }
+        for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
+            finalGroceryList.push(element1);
+        }
         return (finalGroceryList);
     }
+
+    const DailyMacros = () => {
+        let NumTab1 = RecipeInfo[weeklyRecipe1].Macro.match(/\d+/g)
+        let NumTab2 = RecipeInfo[weeklyRecipe2].Macro.match(/\d+/g)
+        let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
+        let FinalArr = [""]
+        if (NumTab1 == null || NumTab2 == null) {
+            return null
+        }
+        for (let i =0; i < NumTab1.length; i++) {
+            let ValeurFinale = +NumTab1[i] + +NumTab2[i]
+            FinalArr.push(ValeurFinale + " " + ConstArr[i])
+        }
+        return FinalArr;
+    }
+
+    const WeeklyMacros = () => {
+        let NumTab1 = RecipeInfo[weeklyRecipe1].Macro.match(/\d+/g)
+        let NumTab2 = RecipeInfo[weeklyRecipe2].Macro.match(/\d+/g)
+        let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
+        let FinalArr = [""]
+        if (NumTab1 == null || NumTab2 == null) {
+            return null
+        }
+        for (let i =0; i < NumTab1.length; i++) {
+            let ValeurFinale = (+NumTab1[i] * 5) + (+NumTab2[i] * 5)
+            FinalArr.push(ValeurFinale + " " + ConstArr[i])
+        }
+        return FinalArr;
+    }
+
+    const confirmedChoices = () => {
+        null
+
+    }
+
+    const dailyMacros = DailyMacros();
+    const weeklyMacros = WeeklyMacros();
 
     return(
         <>
         <div className="globalHomeSection">
 
             <div className='sectionHeader'><p>Home Page</p></div>
-            <div className="generateButton" onClick={ChosenRecipe}><p>Generate Weekly Recipe</p></div>
+            <div className="generateButton"><p onClick={ChosenRecipe}>Generate Weekly Recipe</p></div>
 
-            <div className="RecipeDisplay" style={{}}>
+            <div className="RecipeDisplay">
                 <div className="recipe">
                     <img src={RecipeInfo[weeklyRecipe1].image}/>
                     <div className="recipeDetails">
@@ -301,16 +341,31 @@ const HomePage = () => {
                 <div className="WeeklyInfos">
                     <div className="WeeklyGroceries">
                         <h2>Grocery List</h2>
-                        {WeeklyGroceries().map((element, index) => (
-                            <p key={index}>{element}</p>
-                        ))}
+                        <div className="StickyTry">
+                            {WeeklyGroceries().map((element, index) => (
+                                <p key={index}>{element}</p>
+                            ))}
+                        </div>
                     </div>
                     <div className="WeeklyMacro">
-                        <h2>Weekly Macro</h2>
-                        
+                        <h2>Weekly Macros</h2>
+                        <div className="StickyTry">
+                            <h3 className='MacrosSubPart'>Daily Macros : </h3>
+                            {dailyMacros ? dailyMacros.map((element, index) => (
+                                <p key={index}>{element}</p>
+                            ))
+                            : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
+                            <h3 className='MacrosSubPart'>Weekly Macros : </h3>
+                            {weeklyMacros ? weeklyMacros.map((element, index) => (
+                            <p key={index}>{element}</p> 
+                            ))
+                            : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div className="confirmationButtonSection" onClick={confirmedChoices()}>Confirm Meal Choices</div>
 
         </div>
         </>
