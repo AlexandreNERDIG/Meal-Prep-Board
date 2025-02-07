@@ -2,7 +2,7 @@ import NavBar from './NavBar';
 import './MealHistory.css';
 
 const MealHistory = () => {
-
+    
     return(
         <>
         <div className="globalMealHistorySection">

@@ -7,12 +7,12 @@
     display: flex;
     justify-content: center;
     margin-top: 1rem;
-    cursor: pointer;
 }
 
 .generateButton p {
     display: flex;
     justify-content: center;
+    cursor: pointer;
     padding: 1rem 2rem;
     border: 2px solid #206024;
     border-radius: 6px;
@@ -132,13 +132,36 @@
 .WeeklyGroceries {
     padding: 1rem;
     width: 45%;
+    max-height: 18rem;
 }
 
-.WeeklyGroceries p {
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4CAF50, #388E3C); 
+    border-radius: 10px;
+    border: 2px solid #1e1e1e;
+    height: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #45a049, #2e7d32);
+}
+
+.WeeklyGroceries, .WeeklyMacro p {
     color: #A5D6A7;
+    padding: 1px;
+    text-align: left;
 }
 
-.WeeklyMacro {
+.WeeklyMacro, .WeeklyGroceries {
     padding: 1rem;
     width: 45%;
 }
@@ -148,8 +171,33 @@
     text-align: center;
 }
 
+.StickyTry {
+    overflow: auto;
+    max-height: 14.5rem;
+}
 
+.MacrosSubPart {
+    text-align: left;
+}
 
+.confirmationButtonSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 1.5rem;
+    margin-bottom: 4rem;
+    height: 4rem;
+    width: 25%;
+    background: linear-gradient(135deg, #78dc7d, #A5D6A7, #78dc7d);
+    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid #206024;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s all ease;
+}
 
-
-
+.confirmationButtonSection:hover {
+    transform: scale(1.055); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
