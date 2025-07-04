@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './HomePage.css';
 import NavBar from './NavBar';
 import { FaNimblr } from 'react-icons/fa';
@@ -146,7 +146,7 @@ export const RecipeInfo = [
             "1 kg de bœuf (paleron, macreuse)",
             "5 carottes",
             "2 oignons",
-            "2 gousses d’ail",
+            "2 gousses d'ail",
             "300 ml de bouillon de bœuf",
             "1 cuillère à soupe de farine",
             "1 bouquet garni",
@@ -218,12 +218,40 @@ export const RecipeInfo = [
     }
 ];   
 
-export const recetteHistory = []
+export let recetteHistory = []
 
 const HomePage = () => {
 
+    type Recipe = {
+        RecipeName: string;
+        Ingredient: string[];
+        Macro: string;
+        PrepTime: string;
+        CookTime: string;
+        Instructions: string;
+        image: string;
+    }
+
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(0);
+    
+    const [mealHistory, setmealHistory] = useState<Recipe[]>(() => {
+        const saved = localStorage.getItem("mealHistoryList");
+        return ((saved) ? JSON.parse(saved) : [{RecipeName: "Poulet Basquaise",
+        Ingredient: [
+            "750 g de cuisses de poulet",
+            "2 poivrons",
+            "2 tomates",
+            "2 oignons",
+            "2 gousses d'ail",
+            "200 ml de bouillon de volaille",
+        ],
+        Macro: "400 Calories | 12 g C | 35 g P | 22 g F",
+        PrepTime: "15 min",
+        CookTime: "1h30",
+        Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"}])
+    });
 
     const ChosenRecipe = () => {
         let finalWeeklyRecipe : number[] = [];
@@ -293,9 +321,20 @@ const HomePage = () => {
     }
 
     const confirmedChoices = () => {
-        null
+        
+        const confirmed = window.confirm(`Ajouter "${RecipeInfo[weeklyRecipe1].RecipeName}" et "${RecipeInfo[weeklyRecipe2].RecipeName}" à l'historique ?`);
+        if (confirmed) {
+            const newRecipes = [
+                RecipeInfo[weeklyRecipe1],
+                RecipeInfo[weeklyRecipe2]
+            ];
 
-    }
+            const updatedHistory = [...mealHistory, ...newRecipes];
+            setmealHistory(updatedHistory);
+            localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
+            alert(`Recettes ajoutées avec succès à l'historique.`);
+        }
+    };
 
     const dailyMacros = DailyMacros();
     const weeklyMacros = WeeklyMacros();
@@ -339,33 +378,24 @@ const HomePage = () => {
             <div className="NutritionSection">
                 <div className="sectionHeader"><p>Weekly Intakes</p></div>
                 <div className="WeeklyInfos">
-                    <div className="WeeklyGroceries">
-                        <h2>Grocery List</h2>
-                        <div className="StickyTry">
-                            {WeeklyGroceries().map((element, index) => (
-                                <p key={index}>{element}</p>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="WeeklyMacro">
-                        <h2>Weekly Macros</h2>
-                        <div className="StickyTry">
+                    <div className="subMacro">
                             <h3 className='MacrosSubPart'>Daily Macros : </h3>
                             {dailyMacros ? dailyMacros.map((element, index) => (
                                 <p key={index}>{element}</p>
                             ))
                             : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
+                    </div>
+                    <div className="subMacro">
                             <h3 className='MacrosSubPart'>Weekly Macros : </h3>
                             {weeklyMacros ? weeklyMacros.map((element, index) => (
                             <p key={index}>{element}</p> 
                             ))
                             : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="confirmationButtonSection" onClick={confirmedChoices()}>Confirm Meal Choices</div>
+            <div className="confirmationButtonSection" onClick={confirmedChoices}>Confirm Meal Choices</div>
 
         </div>
         </>

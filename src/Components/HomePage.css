@@ -118,7 +118,6 @@
 
 .WeeklyInfos {
     display: flex;
-    flex-direction: row;
     justify-content: space-around;
     width: 70%;
     gap: 2rem;
@@ -127,12 +126,6 @@
     padding: 1rem 2rem;
     border-radius: 16px;
     box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.5);
-}
-
-.WeeklyGroceries {
-    padding: 1rem;
-    width: 45%;
-    max-height: 18rem;
 }
 
 ::-webkit-scrollbar {
@@ -155,28 +148,20 @@
     background: linear-gradient(180deg, #45a049, #2e7d32);
 }
 
-.WeeklyGroceries, .WeeklyMacro p {
-    color: #A5D6A7;
-    padding: 1px;
-    text-align: left;
-}
-
-.WeeklyMacro, .WeeklyGroceries {
-    padding: 1rem;
+.subMacro {
+    padding: 0.35rem;
     width: 45%;
-}
-
-.WeeklyMacro, .WeeklyGroceries h2 {
     color: #78dc7d; 
     text-align: center;
 }
 
-.StickyTry {
-    overflow: auto;
-    max-height: 14.5rem;
+.subMacro h3{
+    text-decoration: underline;
 }
 
-.MacrosSubPart {
+.subMacro p {
+    color: #A5D6A7;
+    padding: 1px;
     text-align: left;
 }
 
