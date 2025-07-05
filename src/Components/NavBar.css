@@ -3,7 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align items to the top */
+    justify-content: flex-start;
     align-items: center;
     background: linear-gradient(135deg, #78dc7d, #A5D6A7, #78dc7d);
     

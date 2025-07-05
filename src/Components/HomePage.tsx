@@ -40,7 +40,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
-        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
+        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg"
     },
     {
         RecipeName: "Bœuf Stroganoff",
@@ -59,7 +59,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le bœuf, les oignons et l'ail dans l'huile. Ajoutez les champignons. Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
-        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
+        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg"
     },
     {
         RecipeName: "Tajine d'Agneau",
@@ -99,7 +99,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h30",
         Instructions: "Faites dorer la viande, ajoutez les oignons, l'ail et les carottes. Versez le vin et les tomates, et laissez mijoter pendant 2h30.",
-        image: "../img/"
+        image: "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg"
     },
     {
         RecipeName: "Rôti de Porc à la Moutarde",
@@ -117,7 +117,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h",
         Instructions: "Badigeonnez le rôti de moutarde. Faites-le revenir avec les oignons et l'ail. Ajoutez le bouillon et laissez mijoter pendant 2h.",
-        image: "../img/"
+        image: "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg"
     },
     {
         RecipeName: "Blanquette de Veau",
@@ -138,7 +138,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "2h",
         Instructions: "Faites revenir la viande avec les oignons et le beurre. Ajoutez les carottes, les poireaux et le bouquet garni. Couvrez d’eau et laissez mijoter 2 heures. À la fin, incorporez la crème, le jus de citron et la farine pour épaissir la sauce.",
-        image: "../img/"
+        image: "../img/Tikka-Masala-Meatballs-807x1024.png"
     },
     {
         RecipeName: "Bœuf aux Carottes",
@@ -157,7 +157,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le bœuf avec les oignons et l'ail. Ajoutez les carottes en rondelles. Saupoudrez de farine, puis ajoutez le bouillon. Laissez mijoter à feu doux pendant 1h30.",
-        image: "../img/"
+        image: "../img/thai-red-curry-34c1e6d.jpg"
     },
     {
         RecipeName: "Goulash Hongrois",
@@ -176,7 +176,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "2h",
         Instructions: "Faites revenir les oignons, l'ail et le bœuf. Ajoutez les poivrons, le paprika et les tomates. Ajoutez les pommes de terre et laissez mijoter à feu doux pendant 2h.",
-        image: "../img/"
+        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
     },
     {
         RecipeName: "Poulet au Paprika et Pommes de Terre",
@@ -195,7 +195,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir les cuisses de poulet avec les oignons, l'ail, et le paprika. Ajoutez les pommes de terre et le bouillon. Laissez mijoter jusqu'à ce que le poulet soit cuit.",
-        image: "../img/"
+        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
     },
     {
         RecipeName: "Chili Con Carne",
@@ -214,11 +214,10 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h",
         Instructions: "Faites revenir l'oignon, l'ail et la viande hachée. Ajoutez le poivron, les tomates, les haricots et les épices. Laissez mijoter pendant 30 minutes.",
-        image: "../img/"
+        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg"
     }
 ];   
 
-export let recetteHistory = []
 
 const HomePage = () => {
 
@@ -321,7 +320,7 @@ const HomePage = () => {
     }
 
     const confirmedChoices = () => {
-        
+
         const confirmed = window.confirm(`Ajouter "${RecipeInfo[weeklyRecipe1].RecipeName}" et "${RecipeInfo[weeklyRecipe2].RecipeName}" à l'historique ?`);
         if (confirmed) {
             const newRecipes = [

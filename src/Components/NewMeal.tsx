@@ -1,7 +1,10 @@
+import { useState } from 'react';
+import HomePage from './HomePage';
 import NavBar from './NavBar';
 import './NewMeal.css';
 
 const NewMeal = () => {
+
 
     return(
         <>
