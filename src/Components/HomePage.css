@@ -1,5 +1,5 @@
 .globalHomeSection {
-    margin: 1rem auto;
+    margin: 0.5rem auto;
     width: 1200px;
 }
 
@@ -65,6 +65,7 @@
 
 .recipeDetails h2 {
     color: #78dc7d;
+    text-decoration: underline;
 }
 
 .recipeDetails h3 {
@@ -78,7 +79,7 @@
 .recipeDetails li {
     padding: 0rem;
     margin-top: -0.3rem 0.5rem;
-    color: #A5D6A7;
+    color: #fff;
 }
 
 .recipeDetails h5 {
