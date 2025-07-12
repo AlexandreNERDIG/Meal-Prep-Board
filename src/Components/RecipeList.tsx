@@ -24,6 +24,17 @@ const RecipeList = () => {
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
     });
 
+    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+
+    const handleOpenModal = (recipe: Recipe) => {
+        setSelectedRecipe(recipe);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedRecipe(null);
+    };
+
+
     return(
         <>
         <div className="globalRecipeListSection">
@@ -39,11 +50,29 @@ const RecipeList = () => {
                             <h2>{element.RecipeName}</h2>
                             <p>{element.Instructions}</p>
                             <p className="macro">{element.Macro}</p>
+                            <div className="centeredButton">
+                                <button className="descBtn" onClick={() => handleOpenModal(element)}>Description</button>
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
         </div>
+        {selectedRecipe && (
+            <div className="modalOverlay" onClick={handleCloseModal}>
+                <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                    <h2>{selectedRecipe.RecipeName}</h2>
+                    <p><strong>Préparation :</strong> {selectedRecipe.PrepTime}</p>
+                    <p><strong>Cuisson :</strong> {selectedRecipe.CookTime}</p>
+                    <p><strong>Ingrédients :</strong> <br /><br />{selectedRecipe.Ingredient.map((element, index) => (
+                                <li key={index}>{element}</li>
+                            ))}</p>
+                    <p><strong>Instructions :</strong> <br /><br />{selectedRecipe.Instructions}</p>
+                    <p><strong>Macros :</strong> <br /><br />{selectedRecipe.Macro}</p>
+                    <button onClick={handleCloseModal}>Fermer</button>
+                </div>
+            </div>
+        )}
         </>
     )
 }

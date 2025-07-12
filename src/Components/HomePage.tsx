@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './HomePage.css';
 import NavBar from './NavBar';
 import { FaNimblr } from 'react-icons/fa';
+import toast from 'react-hot-toast';
  
 export const RecipeInfo = [
     {
@@ -160,25 +161,6 @@ export const RecipeInfo = [
         image: "../img/thai-red-curry-34c1e6d.jpg"
     },
     {
-        RecipeName: "Goulash Hongrois",
-        Ingredient: [
-            "1 kg de bœuf à mijoter",
-            "3 pommes de terre",
-            "2 oignons",
-            "2 poivrons",
-            "2 gousses d'ail",
-            "2 cuillères à soupe de paprika doux",
-            "400 g de tomates concassées",
-            "1 cuillère à café de cumin",
-            "Sel et poivre au goût"
-        ],
-        Macro: "480 Calories | 30 g C | 40 g P | 20 g F",
-        PrepTime: "20 min",
-        CookTime: "2h",
-        Instructions: "Faites revenir les oignons, l'ail et le bœuf. Ajoutez les poivrons, le paprika et les tomates. Ajoutez les pommes de terre et laissez mijoter à feu doux pendant 2h.",
-        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
-    },
-    {
         RecipeName: "Poulet au Paprika et Pommes de Terre",
         Ingredient: [
             "750 g de cuisses de poulet",
@@ -196,30 +178,13 @@ export const RecipeInfo = [
         CookTime: "1h30",
         Instructions: "Faites revenir les cuisses de poulet avec les oignons, l'ail, et le paprika. Ajoutez les pommes de terre et le bouillon. Laissez mijoter jusqu'à ce que le poulet soit cuit.",
         image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
-    },
-    {
-        RecipeName: "Chili Con Carne",
-        Ingredient: [
-            "500 g de viande hachée (bœuf)",
-            "1 boîte de haricots rouges",
-            "1 boîte de tomates concassées",
-            "1 poivron",
-            "1 oignon",
-            "2 gousses d'ail",
-            "1 cuillère à soupe de cumin",
-            "1 cuillère à soupe de chili en poudre",
-            "Sel et poivre au goût"
-        ],
-        Macro: "550 Calories | 45 g C | 40 g P | 20 g F",
-        PrepTime: "15 min",
-        CookTime: "1h",
-        Instructions: "Faites revenir l'oignon, l'ail et la viande hachée. Ajoutez le poivron, les tomates, les haricots et les épices. Laissez mijoter pendant 30 minutes.",
-        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg"
     }
 ];   
 
 
 const HomePage = () => {
+
+    const RECIPES_KEY = "globalRecipeList";
 
     type Recipe = {
         RecipeName: string;
@@ -252,10 +217,15 @@ const HomePage = () => {
         image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"}])
     });
 
+    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
+        const saved = localStorage.getItem(RECIPES_KEY);
+        return ((saved) ? JSON.parse(saved) : RecipeInfo)
+    });
+
     const ChosenRecipe = () => {
         let finalWeeklyRecipe : number[] = [];
         while (finalWeeklyRecipe.length < 2) {
-            let randomNumber = Math.floor(Math.random() * (RecipeInfo.length))
+            let randomNumber = Math.floor(Math.random() * (recipeList.length))
             if (!finalWeeklyRecipe.includes(randomNumber)) {
                 finalWeeklyRecipe.push(randomNumber);
             }
@@ -265,14 +235,14 @@ const HomePage = () => {
     }
 
     const ReplaceRecipe1 = () => {
-        let randomNumber = Math.floor(Math.random() * (RecipeInfo.length));
+        let randomNumber = Math.floor(Math.random() * (recipeList.length));
         if (weeklyRecipe1 !== randomNumber) {
             setWeeklyRecipe1(randomNumber);
         }
     }
 
     const ReplaceRecipe2 = () => {
-        let randomNumber = Math.floor(Math.random() * (RecipeInfo.length));
+        let randomNumber = Math.floor(Math.random() * (recipeList.length));
         if (weeklyRecipe2 !== randomNumber) {
             setWeeklyRecipe2(randomNumber);
         }
@@ -280,18 +250,18 @@ const HomePage = () => {
 
     const WeeklyGroceries = () => {
         let finalGroceryList = [""];
-        for (const element of RecipeInfo[weeklyRecipe1].Ingredient) {
+        for (const element of recipeList[weeklyRecipe1].Ingredient) {
             finalGroceryList.push(element);
         }
-        for (const element1 of RecipeInfo[weeklyRecipe2].Ingredient) {
+        for (const element1 of recipeList[weeklyRecipe2].Ingredient) {
             finalGroceryList.push(element1);
         }
         return (finalGroceryList);
     }
 
     const DailyMacros = () => {
-        let NumTab1 = RecipeInfo[weeklyRecipe1].Macro.match(/\d+/g)
-        let NumTab2 = RecipeInfo[weeklyRecipe2].Macro.match(/\d+/g)
+        let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
+        let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
         let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
         let FinalArr = [""]
         if (NumTab1 == null || NumTab2 == null) {
@@ -305,8 +275,8 @@ const HomePage = () => {
     }
 
     const WeeklyMacros = () => {
-        let NumTab1 = RecipeInfo[weeklyRecipe1].Macro.match(/\d+/g)
-        let NumTab2 = RecipeInfo[weeklyRecipe2].Macro.match(/\d+/g)
+        let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
+        let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
         let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
         let FinalArr = [""]
         if (NumTab1 == null || NumTab2 == null) {
@@ -321,17 +291,17 @@ const HomePage = () => {
 
     const confirmedChoices = () => {
 
-        const confirmed = window.confirm(`Ajouter "${RecipeInfo[weeklyRecipe1].RecipeName}" et "${RecipeInfo[weeklyRecipe2].RecipeName}" à l'historique ?`);
+        const confirmed = window.confirm(`Ajouter "${recipeList[weeklyRecipe1].RecipeName}" et "${recipeList[weeklyRecipe2].RecipeName}" à l'historique ?`);
         if (confirmed) {
             const newRecipes = [
-                RecipeInfo[weeklyRecipe1],
-                RecipeInfo[weeklyRecipe2]
+                recipeList[weeklyRecipe1],
+                recipeList[weeklyRecipe2]
             ];
 
             const updatedHistory = [...mealHistory, ...newRecipes];
             setmealHistory(updatedHistory);
             localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
-            alert(`Recettes ajoutées avec succès à l'historique.`);
+            toast.success("Recettes ajoutées à l'historique !");
         }
     };
 
@@ -347,30 +317,30 @@ const HomePage = () => {
 
             <div className="RecipeDisplay">
                 <div className="recipe">
-                    <img src={RecipeInfo[weeklyRecipe1].image}/>
+                    <img src={recipeList[weeklyRecipe1].image}/>
                     <div className="recipeDetails">
-                        <h2>{RecipeInfo[weeklyRecipe1].RecipeName}</h2>
+                        <h2>{recipeList[weeklyRecipe1].RecipeName}</h2>
                         <ul>
-                            {RecipeInfo[weeklyRecipe1].Ingredient.map((element, index) => (
+                            {recipeList[weeklyRecipe1].Ingredient.map((element, index) => (
                                 <li key={index}>{element}</li>
                             ))}
                         </ul>
-                        <h5>{RecipeInfo[weeklyRecipe1].Macro}</h5>
+                        <h5>{recipeList[weeklyRecipe1].Macro}</h5>
                         <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
                     </div>
                 </div>
                 <div className="recipe">
                     <div className="recipeDetails">
-                        <h2>{RecipeInfo[weeklyRecipe2].RecipeName}</h2>
+                        <h2>{recipeList[weeklyRecipe2].RecipeName}</h2>
                         <ul>
-                            {RecipeInfo[weeklyRecipe2].Ingredient.map((element, index) => (
+                            {recipeList[weeklyRecipe2].Ingredient.map((element, index) => (
                                 <li key={index}>{element}</li>
                             ))}
                         </ul>
-                        <h5>{RecipeInfo[weeklyRecipe2].Macro}</h5>
+                        <h5>{recipeList[weeklyRecipe2].Macro}</h5>
                         <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
                     </div>
-                    <img src={RecipeInfo[weeklyRecipe2].image}/>
+                    <img src={recipeList[weeklyRecipe2].image}/>
                 </div>
             </div>
 

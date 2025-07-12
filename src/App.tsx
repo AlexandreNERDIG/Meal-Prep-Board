@@ -5,11 +5,13 @@ import NavBar from './Components/NavBar';
 import NewMeal from './Components/NewMeal';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
+import { Toaster } from 'react-hot-toast';
 import './App.css';
 
 function App() {
   return (
     <Router>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <div className='ContentDisplay'>
         <NavBar />
         <Routes>
