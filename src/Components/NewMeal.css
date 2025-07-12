@@ -1,0 +1,139 @@
+.globalNewMealSection {
+    margin: 0rem auto;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.Inputs {
+    display: flex;
+    color: white;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    border-radius: 0.85rem;
+    border: 1px solid #3a3a3e;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    box-shadow: 0 6px 12px rgba(0, 1, 2, 0.4);
+    transition: 0.3s all ease;
+    flex-wrap: wrap;
+}
+
+.textInput {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 50%;
+}
+
+.textInput label {
+    color: #78dc7d;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+}
+
+.textInput textarea,
+.textInput input {
+    border: 2px solid #fff;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    background: #3a3a3e;
+    resize: vertical;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.textInput input {
+    width: 40%;
+}
+
+.textInput textarea:focus,
+.textInput input:focus {
+    outline: none;
+    border: 2px solid #78dc7d;
+}
+
+.textInput textarea::placeholder,
+.textInput input::placeholder {
+    color: #ffffffcb;
+    font-weight: bold;
+}
+
+.centerButton {
+    display: flex;
+    justify-content: center;
+}
+
+.Btn,
+.Btn2 {
+    position: relative;
+    text-align: center;
+    background: transparent;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: 2px solid white;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.Btn {
+    font-size: 0.8rem;
+    padding: 0.2rem 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.centerButton2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.Btn2 {
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+    margin-top: 1rem;
+}
+
+.Btn::after,
+.Btn2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    background-color: #7ac07e;
+    transition: 0.4s all ease;
+}
+
+.Btn:hover,
+.Btn2:hover {
+    background-color: transparent;
+}
+
+.Btn:hover::after,
+.Btn2:hover::after {
+    width: 85%;
+}
+
+.imageInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.imageInput img {
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    width: 70%;
+}
