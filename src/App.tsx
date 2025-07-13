@@ -11,7 +11,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <div className='ContentDisplay'>
         <NavBar />
         <Routes>

@@ -91,6 +91,13 @@ const NewMeal = () => {
 
     const ajouterRecette = () => {
         const confirmed = window.confirm("Etes-vous sûre de vouloir ajouter la Recette saisie ?")
+        const alreadyExist = recipeList.some(element => element.RecipeName === formData.RecipeName)
+        
+        if (alreadyExist) {
+            toast.error(`${formData.RecipeName} n'a pas pu être ajouté (Existe déjà)`)
+            return;
+        }
+
         if (!formData.RecipeName.trim() || formData.Ingredient.filter(i => i.trim() !== '').length === 0) {
             alert("Merci de remplir au moins le nom de la recette et un ingrédient.");
             return;
@@ -108,9 +115,71 @@ const NewMeal = () => {
                 image: ""
             });
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-            toast.success("Recette ajoutée !");
+            toast.success(`${formData.RecipeName} ajoutée !`);
             nameRef.current?.focus();
         }
+    }
+
+    const handleJsonImport = (e : React.ChangeEvent<HTMLInputElement>) => { 
+        const confirm = window.confirm("Y a-t-il plusieurs fichiers ?")
+
+        if (!confirm) { //Seulement 1 fichier
+
+            const file = e.target.files?.[0]
+            if (!file) return;
+
+            const reader = new FileReader()
+
+            reader.onload = () => {
+                const content = reader.result as string;
+                const parsedData = JSON.parse(content);
+
+                setFormData(parsedData)
+            }
+
+            reader.readAsText(file);
+        }
+        else { //Plusieurs Fichiers
+            const files = e.target.files;
+            if (!files) return;
+
+            let seen = new Set();
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file) continue;
+
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    const fileContent = reader.result as string;
+                    const parsedFileContent = JSON.parse(fileContent);
+                    const currentRecipeName = parsedFileContent.RecipeName?.trim()
+
+                    setRecipeList(prev => {
+
+                        const alreadyExist = prev.some(element => element.RecipeName === currentRecipeName)
+
+                        if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
+                            seen.add(currentRecipeName)
+                            toast.success(`${currentRecipeName} à bien été ajouté`)
+
+
+                            const updatedRecipeList = [...prev, parsedFileContent];
+                            localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+                            return updatedRecipeList
+                        }
+                        else if (alreadyExist) {
+                            toast.error(`${currentRecipeName} n'a pas pu être ajouté (Existe déjà)`)
+                        }
+                        return prev;
+                    })
+                }
+                reader.readAsText(file);
+                
+            }
+        }
+        return;
     }
     
     const placeholder = "https://placehold.co/500x450/2c2c2c/ffffff?text=Pas+d'image&font=montserrat";
@@ -194,6 +263,13 @@ const NewMeal = () => {
             </div>
                 <div className="centerButton2">
                     <button onClick={ajouterRecette} className='Btn2'>Ajouter la Recette à la Liste</button>
+                    <input 
+                      type='file'
+                      accept=".json"
+                      onChange={handleJsonImport}
+                      className='Btn3'
+                      multiple
+                    />
                 </div>
         </div>
         </>
