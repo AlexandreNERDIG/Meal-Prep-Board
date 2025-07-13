@@ -1,0 +1,15 @@
+{
+    "RecipeName": "Pâtes à la Carbonara",
+    "Ingredient": [
+        "Spaghetti",
+        "Lardons",
+        "Œufs",
+        "Parmesan",
+        "Poivre noir"
+    ],
+    "Macro": "Protéines: 20g, Glucides: 40g, Lipides: 18g",
+    "PrepTime": "10 minutes",
+    "CookTime": "15 minutes",
+    "Instructions": "Cuire les pâtes, faire revenir les lardons, mélanger avec les œufs battus et le parmesan hors du feu.",
+    "image": "https://example.com/images/carbonara.jpg"
+}
