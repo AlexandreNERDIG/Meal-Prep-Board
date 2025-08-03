@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import HomePage, { RecipeInfo } from './HomePage';
 import NavBar from './NavBar';
+import { Trash, Trash2, X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
 
@@ -89,20 +90,40 @@ const NewMeal = () => {
         }));
     }
 
+    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
+
+    const handleOpenConfirmationModal = () => {
+        setAskConfirmation(true);
+    }
+
+    const handleCloseConfirmationModal = () => {
+        setAskConfirmation(false);
+    }
+
     const ajouterRecette = () => {
-        const confirmed = window.confirm("Etes-vous sûre de vouloir ajouter la Recette saisie ?")
         const alreadyExist = recipeList.some(element => element.RecipeName === formData.RecipeName)
         
         if (alreadyExist) {
             toast.error(`${formData.RecipeName} n'a pas pu être ajouté (Existe déjà)`)
+            setFormData({
+                RecipeName: "",
+                Ingredient: [""],
+                Macro: "",
+                PrepTime: "",
+                CookTime: "",
+                Instructions: "",
+                image: ""
+            });
+            handleCloseConfirmationModal();
             return;
         }
 
         if (!formData.RecipeName.trim() || formData.Ingredient.filter(i => i.trim() !== '').length === 0) {
             alert("Merci de remplir au moins le nom de la recette et un ingrédient.");
+            handleCloseConfirmationModal();
             return;
         }
-        if (confirmed) {
+        if (askConfirmation) {
             const updatedRecipeList = [...recipeList, formData];
             setRecipeList(updatedRecipeList)
             setFormData({
@@ -117,71 +138,76 @@ const NewMeal = () => {
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
             toast.success(`${formData.RecipeName} ajoutée !`);
             nameRef.current?.focus();
+            handleCloseConfirmationModal();
         }
     }
 
-    const handleJsonImport = (e : React.ChangeEvent<HTMLInputElement>) => { 
-        const confirm = window.confirm("Y a-t-il plusieurs fichiers ?")
+    const [importedFiles, setImportedFiles] = useState<FileList | null>(null);
 
-        if (!confirm) { //Seulement 1 fichier
+    const handleMultiJsonImport = () => {
+        if (!importedFiles) return;
 
-            const file = e.target.files?.[0]
-            if (!file) return;
+        let seen = new Set();
 
-            const reader = new FileReader()
+        for (let i = 0; i < importedFiles.length; i++) {
+
+            const file = importedFiles[i];
+            if (!file) continue;
+
+            const reader = new FileReader();
 
             reader.onload = () => {
-                const content = reader.result as string;
-                const parsedData = JSON.parse(content);
+                const fileContent = reader.result as string;
+                const parsedFileContent = JSON.parse(fileContent);
+                const currentRecipeName = parsedFileContent.RecipeName?.trim()
 
-                setFormData(parsedData)
+                setRecipeList(prev => {
+                    const alreadyExist = prev.some(element => element.RecipeName === currentRecipeName);
+
+                    if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
+                        seen.add(currentRecipeName)
+                        toast.success(`${currentRecipeName} à bien été ajouté`)
+                        const updatedRecipeList = [...prev, parsedFileContent];
+                        localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+                        return updatedRecipeList
+                    }
+                    return prev;
+                })
+                const alreadyExist = recipeList.some(element => element.RecipeName === currentRecipeName);
+
+                if (seen.has(currentRecipeName) || alreadyExist) {
+                        toast.error(`${currentRecipeName} n'a pas pu être ajouté (Existe déjà)`)
+                }
             }
-
             reader.readAsText(file);
         }
-        else { //Plusieurs Fichiers
-            const files = e.target.files;
-            if (!files) return;
-
-            let seen = new Set();
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (!file) continue;
-
-                const reader = new FileReader();
-
-                reader.onload = () => {
-                    const fileContent = reader.result as string;
-                    const parsedFileContent = JSON.parse(fileContent);
-                    const currentRecipeName = parsedFileContent.RecipeName?.trim()
-
-                    setRecipeList(prev => {
-
-                        const alreadyExist = prev.some(element => element.RecipeName === currentRecipeName)
-
-                        if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
-                            seen.add(currentRecipeName)
-                            toast.success(`${currentRecipeName} à bien été ajouté`)
-
-
-                            const updatedRecipeList = [...prev, parsedFileContent];
-                            localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-                            return updatedRecipeList
-                        }
-                        else if (alreadyExist) {
-                            toast.error(`${currentRecipeName} n'a pas pu être ajouté (Existe déjà)`)
-                        }
-                        return prev;
-                    })
-                }
-                reader.readAsText(file);
-                
-            }
-        }
-        return;
+        handleCloseModal1();
     }
+
+    const handleSingleJsonImport = () => {
+        if (!importedFiles || importedFiles.length === 0) return;
     
+        const reader = new FileReader()
+        reader.onload = () => {
+            const content = reader.result as string;
+            const parsedData = JSON.parse(content);
+            setFormData(parsedData)
+        }
+        reader.readAsText(importedFiles[0]);
+        handleCloseModal1();
+    }
+
+
+    const [modalState, setModalState] = useState<boolean>(false);
+
+    const handleOpenModal1 = () => {
+        setModalState(true);
+    }
+
+    const handleCloseModal1 = () => {
+        setModalState(false);
+    }
+
     const placeholder = "https://placehold.co/500x450/2c2c2c/ffffff?text=Pas+d'image&font=montserrat";
 
     return(
@@ -198,7 +224,7 @@ const NewMeal = () => {
                       ref={nameRef}
                       value={formData.RecipeName}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder='Entrer le nom de la recette'
                     />
 
                     <label>Ingredients : </label>
@@ -209,7 +235,7 @@ const NewMeal = () => {
                                 data-index={index}
                                 value={element}
                                 onChange={handleChangeIngredient}
-                                placeholder='Entrer les informations'
+                                placeholder='Entrer les ingrédients'
                             />
                         </div>
                     ))}
@@ -222,7 +248,7 @@ const NewMeal = () => {
                       name="Macro"
                       value={formData.Macro}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder='Entrer les macros'
                     />
 
                     <label>Temps de préparation : </label>
@@ -230,7 +256,7 @@ const NewMeal = () => {
                       name="PrepTime"
                       value={formData.PrepTime}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder='Entrer le temps de préparation'
                     />
 
                     <label>Temps de cuisson : </label>
@@ -238,7 +264,7 @@ const NewMeal = () => {
                       name="CookTime"
                       value={formData.CookTime}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder='Entrer le temps de cuisson'
                     />
 
                     <label>Instructions : </label>
@@ -246,7 +272,7 @@ const NewMeal = () => {
                       name="Instructions"
                       value={formData.Instructions}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder='Entrer les instructions'
                     />
 
                     <label>Image : </label>
@@ -254,7 +280,7 @@ const NewMeal = () => {
                       name="image"
                       value={formData.image}
                       onChange={handleChange}
-                      placeholder='Entrer les informations'
+                      placeholder="Entrer le lien de l'image"
                     />
                 </div>
                 <div className="imageInput">
@@ -262,16 +288,51 @@ const NewMeal = () => {
                 </div>
             </div>
                 <div className="centerButton2">
-                    <button onClick={ajouterRecette} className='Btn2'>Ajouter la Recette à la Liste</button>
+                    <button onClick={handleOpenConfirmationModal} className='Btn2'>Ajouter la Recette à la Liste</button>
                     <input 
                       type='file'
                       accept=".json"
-                      onChange={handleJsonImport}
+                      onChange={(e) => {
+                        if (e.target.files) {
+                            setImportedFiles(e.target.files);
+                            handleOpenModal1();
+                        }
+                      }}
                       className='Btn3'
                       multiple
                     />
                 </div>
         </div>
+        {modalState && (
+                    <div className="modalOverlay" onClick={handleCloseModal1}>
+                        <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                            <div className="head">
+                                <h3>Confirmer le nombre de Fichier</h3>
+                                <div><X className='logo' onClick={handleCloseModal1}></X></div>
+                            </div>
+                          <p>Combien de fichier avez-vous <strong>importer</strong> ?</p>
+                          <div className="deleteModalActions">
+                            <button className="confirmDeleteBtn" onClick={handleMultiJsonImport}>Plusieurs</button>
+                            <button className="cancelDeleteBtn" onClick={handleSingleJsonImport}>1 seul</button>
+                          </div>
+                        </div>
+                    </div>
+        )}
+        {askConfirmation && (
+                    <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
+                        <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                            <div className="head">
+                                <h3>Etes-vous sûre de vouloir ajouté la recette ?</h3>
+                                <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
+                            </div>
+                          <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Recipe List"</strong>.</p>
+                          <div className="deleteModalActions">
+                            <button className="confirmDeleteBtn" onClick={ajouterRecette}>Confirmer</button>
+                            <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>Annuler</button>
+                          </div>
+                        </div>
+                    </div>
+        )}
         </>
     )
 }

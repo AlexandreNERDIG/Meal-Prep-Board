@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './HomePage.css';
 import NavBar from './NavBar';
 import { FaNimblr } from 'react-icons/fa';
+import { Trash, Trash2, X} from 'react-feather';
 import toast from 'react-hot-toast';
  
 export const RecipeInfo = [
@@ -290,23 +291,30 @@ const HomePage = () => {
     }
 
     const confirmedChoices = () => {
-
-        const confirmed = window.confirm(`Ajouter "${recipeList[weeklyRecipe1].RecipeName}" et "${recipeList[weeklyRecipe2].RecipeName}" à l'historique ?`);
-        if (confirmed) {
-            const newRecipes = [
-                recipeList[weeklyRecipe1],
-                recipeList[weeklyRecipe2]
-            ];
-
-            const updatedHistory = [...mealHistory, ...newRecipes];
-            setmealHistory(updatedHistory);
-            localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
-            toast.success("Recettes ajoutées à l'historique !");
-        }
+        const newRecipes = [
+            recipeList[weeklyRecipe1],
+            recipeList[weeklyRecipe2]
+        ];
+        const updatedHistory = [...mealHistory, ...newRecipes];
+        setmealHistory(updatedHistory);
+        localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
+        toast.success("Recettes ajoutées à l'historique !");
+        handleCloseConfirmationModal();
+    
     };
 
     const dailyMacros = DailyMacros();
     const weeklyMacros = WeeklyMacros();
+
+    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
+
+    const handleOpenConfirmationModal = () => {
+        setAskConfirmation(true);
+    }
+
+    const handleCloseConfirmationModal = () => {
+        setAskConfirmation(false);
+    }
 
     return(
         <>
@@ -364,9 +372,25 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="confirmationButtonSection" onClick={confirmedChoices}>Confirm Meal Choices</div>
+            <div className="confirmationButtonSection" onClick={handleOpenConfirmationModal}>Confirm Meal Choices</div>
 
         </div>
+
+        {askConfirmation && (
+            <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
+                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="head">
+                        <h3>Etes-vous sûre de vouloir ajouté la recette ?</h3>
+                        <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
+                    </div>
+                  <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Meal History"</strong>.</p>
+                  <div className="deleteModalActions">
+                    <button className="confirmDeleteBtn" onClick={confirmedChoices}>Confirmer</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>Annuler</button>
+                  </div>
+                </div>
+            </div>
+        )}
         </>
     )
 }
