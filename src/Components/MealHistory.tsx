@@ -1,10 +1,9 @@
 import NavBar from './NavBar';
 import './MealHistory.css';
+import { Bookmark, ShoppingCart } from 'react-feather';
 import { useState } from 'react';
 
 const MealHistory = () => {
-
-    const MealRecipeHistory_Key  = "MealRecipeHistory";
 
     type Recipe = {
         RecipeName: string;
@@ -14,59 +13,90 @@ const MealHistory = () => {
         CookTime: string;
         Instructions: string;
         image: string;
+        Status?: 'favorite' | 'normal';
     };
 
-    const [mealHistoryList, setMealHistoryList] = useState<Recipe[]>(() => {
-        const isSaved = localStorage.getItem("mealHistoryList");
-        
-        return ((isSaved) 
-        ? JSON.parse(isSaved) 
-        : [{
-            RecipeName: "Poulet Basquaise",
-            Ingredient: [
-                "750 g de cuisses de poulet",
-                "2 poivrons",
-                "2 tomates",
-                "2 oignons",
-                "2 gousses d'ail",
-                "200 ml de bouillon de volaille",
-            ],
-            Macro: "400 Calories | 12 g C | 35 g P | 22 g F",
-            PrepTime: "15 min",
-            CookTime: "1h30",
-            Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
-            image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
-        },
-        {
-            RecipeName: "Daube Provençale",
-            Ingredient: [
-                "1 kg de bœuf à mijoter",
-                "250 ml de vin rouge",
-                "2 carottes",
-                "2 oignons",
-                "2 gousses d'ail",
-                "2 tomates",
-                "1 bouquet garni",
-                "1 cuillère à soupe de farine",
-                "Sel et poivre au goût",
-                "Huile d'olive pour la cuisson"
-            ],
-            Macro: "450 Calories | 15 g C | 38 g P | 20 g F",
-            PrepTime: "15 min",
-            CookTime: "2h30",
-            Instructions: "Faites dorer la viande, ajoutez les oignons, l'ail et les carottes. Versez le vin et les tomates, et laissez mijoter pendant 2h30.",
-            image: "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg"
-        }])
+    const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
+        const saved = localStorage.getItem("mealHistoryList");
+        return ((saved) ? JSON.parse(saved) : [[]])
     });
+
+    const [currentModalRecipe, setCurrentModalRecipe] = useState<Recipe | null>(null);
+
+    const handleOpenHistoryModal = (currentRecipe : Recipe) => {
+        setCurrentModalRecipe(currentRecipe);
+    };
+
+    const handleCloseHistoryModal = () => {
+        setCurrentModalRecipe(null);
+    }
+
+    const quotes: string[] = [
+    "« Bien manger, c’est le début du bonheur. » – Julia Child",
+    "« Un repas équilibré, c’est une pizza dans chaque main. »",
+    "« Laisser mijoter, c’est aimer sans précipitation. »",
+    "« Le secret d’une bonne recette, c’est de la faire avec amour. »",
+    "« Manger est un besoin, savoir manger est un art. » – François de La Rochefoucauld",
+    "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
+    ];
+
+    const [currentQuote, setCurrentQuote] = useState<string>("« Un repas équilibré, c’est une pizza dans chaque main. »");
+
+    const handleChangeQuote = () => {
+        setCurrentQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+    }
     
     return(
         <>
         <div className="globalMealHistorySection">
 
             <div className='sectionHeader'><p>Meal History</p></div>
-            
+
+            <div className="quotePlacement">
+                <p className='Quote' onClick={handleChangeQuote}>{currentQuote}</p>
+            </div>
+
+            {mealHistory.map((weeklyMeal, weekIndex) => (
+                
+                <div className="weekDisplay" key={weekIndex}>
+                    <div className="weekId"><p>Week {weekIndex + 1}</p></div>
+                    <div className="recipeContainner">
+                        {weeklyMeal.map((recipe, recipeIndex) => (
+                            <div className="recipeDisplay" key={recipeIndex}>
+                                <img src={recipe.image}/>
+                                <div className="textSubDiv">
+                                    <h2>{recipe.RecipeName}</h2>
+                                    <Bookmark className='bookMarkIcon'></Bookmark>
+                                    <p className='macrosPart'>{recipe.Macro}</p>
+                                    <ShoppingCart className='ShoppingCartIcon'></ShoppingCart>
+                                    <div className="centeredLinks">
+                                        <button className="descBtn" onClick={() => handleOpenHistoryModal(recipe)}>Description</button>
+                                    </div>
+                                </div>
+                            </div> 
+                        ))}
+                    </div>
+                </div>
+            ))}
 
         </div>
+
+        {currentModalRecipe && (
+            <div className="modalOverlay" onClick={handleCloseHistoryModal}>
+                <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                    <h2>{currentModalRecipe.RecipeName}</h2>
+
+                    <p><strong>Préparation :</strong> {currentModalRecipe.PrepTime}</p>
+                    <p><strong>Cuisson :</strong> {currentModalRecipe.CookTime}</p>
+                    <p><strong>Ingrédients :</strong> <br /><br />{currentModalRecipe.Ingredient.map((element, index) => (
+                                <li key={index}>{element}</li>
+                            ))}</p>
+                    <p><strong>Instructions :</strong> <br /><br />{currentModalRecipe.Instructions}</p>
+                    <p><strong>Macros :</strong> <br /><br />{currentModalRecipe.Macro}</p>
+                    <button onClick={handleCloseHistoryModal}>Fermer</button>
+                </div>
+            </div>
+        )}
         </>
     )
 }
