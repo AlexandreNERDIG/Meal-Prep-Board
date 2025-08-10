@@ -11,6 +11,7 @@ const CurrentStock = () => {
         CookTime: string;
         Instructions: string;
         image: string;
+        Status?: 'favorite' | 'normal';
     };
 
     return(
