@@ -5,20 +5,11 @@ import toast from "react-hot-toast"
 import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
 import { data } from '@remix-run/router/dist/utils';
+import { Recipe, Ingredient } from './typeFile';
 
 
 
 const RecipeList = () => {
-
-    type Recipe = {
-        RecipeName: string;
-        Ingredient: string[];
-        Macro: string;
-        PrepTime: string;
-        CookTime: string;
-        Instructions: string;
-        image: string;
-    };
 
     const RECIPES_KEY = "globalRecipeList";
     const [isHovered, setIsHovered] = useState(false);

@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import { FaNimblr } from 'react-icons/fa';
 import { Trash, Trash2, X} from 'react-feather';
 import toast from 'react-hot-toast';
+import { Recipe, Ingredient } from './typeFile';
  
 export const RecipeInfo = [
     {
@@ -23,7 +24,8 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "3h",
         Instructions: "Faites revenir le bœuf dans l'huile, ajoutez les oignons, carottes, et l'ail. Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
+        Status: "normal"
     },
     {
         RecipeName: "Poulet Basquaise",
@@ -42,7 +44,8 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le poulet dans l'huile. Ajoutez les oignons, poivrons et l'ail. Versez le bouillon et laissez mijoter 1h.",
-        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg"
+        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
+        Status: "normal"
     },
     {
         RecipeName: "Bœuf Stroganoff",
@@ -61,7 +64,8 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le bœuf, les oignons et l'ail dans l'huile. Ajoutez les champignons. Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
-        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg"
+        image: "../img/Honey-Garlic-Chicken-Noodle-Bowls-WP-807x1024.jpg",
+        Status: "normal"
     },
     {
         RecipeName: "Tajine d'Agneau",
@@ -81,7 +85,8 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h",
         Instructions: "Faites revenir la viande d'agneau, puis ajoutez les oignons, l'ail, les carottes et les navets. Versez le bouillon et laissez mijoter 1h30. Ajoutez les pommes de terre et les petits pois 30 minutes avant la fin.",
-        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
+        Status: "normal"
     },
     {
         RecipeName: "Daube Provençale",
@@ -101,10 +106,11 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h30",
         Instructions: "Faites dorer la viande, ajoutez les oignons, l'ail et les carottes. Versez le vin et les tomates, et laissez mijoter pendant 2h30.",
-        image: "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg"
+        image: "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg",
+        Status: "normal"
     },
     {
-        RecipeName: "Rôti de Porc à la Moutarde",
+        RecipeName: "Rôti à la Moutarde",
         Ingredient: [
             "1 kg de rôti de porc",
             "3 cuillères à soupe de moutarde de Dijon",
@@ -119,7 +125,8 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "2h",
         Instructions: "Badigeonnez le rôti de moutarde. Faites-le revenir avec les oignons et l'ail. Ajoutez le bouillon et laissez mijoter pendant 2h.",
-        image: "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg"
+        image: "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg",
+        Status: "normal"
     },
     {
         RecipeName: "Blanquette de Veau",
@@ -140,7 +147,8 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "2h",
         Instructions: "Faites revenir la viande avec les oignons et le beurre. Ajoutez les carottes, les poireaux et le bouquet garni. Couvrez d’eau et laissez mijoter 2 heures. À la fin, incorporez la crème, le jus de citron et la farine pour épaissir la sauce.",
-        image: "../img/Tikka-Masala-Meatballs-807x1024.png"
+        image: "../img/Tikka-Masala-Meatballs-807x1024.png",
+        Status: "normal"
     },
     {
         RecipeName: "Bœuf aux Carottes",
@@ -159,10 +167,11 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le bœuf avec les oignons et l'ail. Ajoutez les carottes en rondelles. Saupoudrez de farine, puis ajoutez le bouillon. Laissez mijoter à feu doux pendant 1h30.",
-        image: "../img/thai-red-curry-34c1e6d.jpg"
+        image: "../img/thai-red-curry-34c1e6d.jpg",
+        Status: "normal"
     },
     {
-        RecipeName: "Poulet au Paprika et Pommes de Terre",
+        RecipeName: "Poulet Paprika / Patate",
         Ingredient: [
             "750 g de cuisses de poulet",
             "3 pommes de terre",
@@ -178,24 +187,15 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir les cuisses de poulet avec les oignons, l'ail, et le paprika. Ajoutez les pommes de terre et le bouillon. Laissez mijoter jusqu'à ce que le poulet soit cuit.",
-        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg"
+        image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg",
+        Status: "normal"
     }
-];   
+];
 
 
 const HomePage = () => {
 
     const RECIPES_KEY = "globalRecipeList";
-
-    type Recipe = {
-        RecipeName: string;
-        Ingredient: string[];
-        Macro: string;
-        PrepTime: string;
-        CookTime: string;
-        Instructions: string;
-        image: string;
-    }
 
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(0);
