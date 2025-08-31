@@ -1,25 +1,20 @@
 import NavBar from './NavBar';
 import './MealHistory.css';
 import { Bookmark, ShoppingCart } from 'react-feather';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { Recipe, Ingredient } from './typeFile';
 
 const MealHistory = () => {
-
-    type Recipe = {
-        RecipeName: string;
-        Ingredient: string[];
-        Macro: string;
-        PrepTime: string;
-        CookTime: string;
-        Instructions: string;
-        image: string;
-        Status?: 'favorite' | 'normal';
-    };
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
         return ((saved) ? JSON.parse(saved) : [[]])
     });
+
+    useEffect( () => {
+        localStorage.setItem("mealHistoryList", JSON.stringify(mealHistory))
+    }, [mealHistory])
 
     const [currentModalRecipe, setCurrentModalRecipe] = useState<Recipe | null>(null);
 
@@ -40,11 +35,28 @@ const MealHistory = () => {
     "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
     ];
 
-    const [currentQuote, setCurrentQuote] = useState<string>("« Un repas équilibré, c’est une pizza dans chaque main. »");
+    const [currentQuote, setCurrentQuote] = useState<string>(quotes[Math.floor(Math.random() * quotes.length)]);
 
     const handleChangeQuote = () => {
         setCurrentQuote(quotes[Math.floor(Math.random() * quotes.length)]);
-    }
+    };
+
+    const changeFavoriteState = (targetRecipe: Recipe) => {
+        targetRecipe.Status === "favorite" ? toast.error(`${targetRecipe.RecipeName} a été suprimmé aux favoris`) : toast.success(`${targetRecipe.RecipeName} a été ajouté aux favoris`)
+        setmealHistory(prevHistory => {
+            return prevHistory.map(weeklyMeal => {
+                return weeklyMeal.map(recipe => {
+                    if (recipe.RecipeName === targetRecipe.RecipeName) {
+                        return {
+                        ...recipe,
+                        Status: recipe.Status === "favorite" ? "normal" : "favorite"
+                        };
+                    }
+                    return recipe;
+                });
+            });
+        });
+    };
     
     return(
         <>
@@ -66,7 +78,11 @@ const MealHistory = () => {
                                 <img src={recipe.image}/>
                                 <div className="textSubDiv">
                                     <h2>{recipe.RecipeName}</h2>
-                                    <Bookmark className='bookMarkIcon'></Bookmark>
+                                    <Bookmark 
+                                        className='bookMarkIcon' 
+                                        color={recipe.Status === "favorite" ? "#78dc7d" : "white"} 
+                                        onClick={() => changeFavoriteState(recipe)} 
+                                    />
                                     <p className='macrosPart'>{recipe.Macro}</p>
                                     <ShoppingCart className='ShoppingCartIcon'></ShoppingCart>
                                     <div className="centeredLinks">

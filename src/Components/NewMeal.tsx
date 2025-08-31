@@ -4,46 +4,12 @@ import NavBar from './NavBar';
 import { Trash, Trash2, X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
+import { Recipe, Ingredient } from './typeFile';
 
 const NewMeal = () => {
 
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
-
-    type Recipe = {
-        RecipeName: string;
-        Ingredient: string[];
-        Macro: string;
-        PrepTime: string;
-        CookTime: string;
-        Instructions: string;
-        image: string;
-    };
-
-    /* Teste de l'affichage
-
-    RecipeName: "Bœuf Bourguignon",
-        Ingredient: [
-            "1 kg de bœuf à braiser",
-            "3 carottes",
-            "2 oignons",
-            "250 ml de vin rouge",
-        ],
-        Macro: "450 Calories | 15 g C | 38 g P | 22 g F",
-        PrepTime: "20 min",
-        CookTime: "3h",
-        Instructions: "Faites revenir le bœuf dans l'huile, ajoutez les oignons, carottes, et l'ail. Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg"
-
-        RecipeName: "",
-        Ingredient: [""],
-        Macro: "",
-        PrepTime: "",
-        CookTime: "",
-        Instructions: "",
-        image: ""
-
-    */
 
     const [formData, setFormData] = useState<Recipe>({
         RecipeName: "",
@@ -52,8 +18,10 @@ const NewMeal = () => {
         PrepTime: "",
         CookTime: "",
         Instructions: "",
-        image: ""
+        image: "../img/",
+        Status: "normal"
     });
+    
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
@@ -112,7 +80,8 @@ const NewMeal = () => {
                 PrepTime: "",
                 CookTime: "",
                 Instructions: "",
-                image: ""
+                image: "../img/",
+                Status: "normal"
             });
             handleCloseConfirmationModal();
             return;
@@ -133,7 +102,8 @@ const NewMeal = () => {
                 PrepTime: "",
                 CookTime: "",
                 Instructions: "",
-                image: ""
+                image: "../img/",
+                Status: "normal"
             });
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
             toast.success(`${formData.RecipeName} ajoutée !`);
@@ -284,7 +254,7 @@ const NewMeal = () => {
                     />
                 </div>
                 <div className="imageInput">
-                    <img src={formData.image || placeholder} alt="Recette"/>
+                    <img src={formData.image === `../img/` ? placeholder : formData.image} alt="Recette"/>
                 </div>
             </div>
                 <div className="centerButton2">
