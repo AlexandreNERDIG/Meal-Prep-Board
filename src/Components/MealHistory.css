@@ -115,6 +115,17 @@
 .bookMarkIcon {
     position: absolute;
     top: 10px;
+    right: 40px;
+    z-index: 2;
+    background-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s all ease;
+}
+
+.deleteIcon {
+    position: absolute;
+    top: 10px;
     right: 10px;
     z-index: 2;
     background-color: transparent;
@@ -123,8 +134,9 @@
     transition: 0.3s all ease;
 }
 
-.bookMarkIcon:hover {
-    color: #78dc7d;
+.deleteIcon:hover {
+    transform: scale(1.2);
+    color: #ff5f5f;
 }
 
 .ShoppingCartIcon {
@@ -144,4 +156,8 @@
     color: #78dc7d;
     background-color: #ffffff22;
     transform: scale(1.1);
+}
+
+.deleteModalContent1 p strong {
+    color: #78dc7d;
 }

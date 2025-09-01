@@ -88,6 +88,7 @@
 .stockItem, .addItem {
     display: flex;
     overflow: hidden;
+    position: relative;
     border-radius: 0.85rem;
     color: white;
     font-weight: 700;
@@ -107,6 +108,21 @@
 .stockItem:hover {
     transform: scale(1.035); 
     box-shadow: 0 6px 12px rgba(0, 1, 2, 0.6);
+}
+
+.deleteBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.25rem;
+    margin-right: 0.25rem;
+    cursor: pointer;
+    transition: 0.3s all ease;
+}
+
+.deleteBtn:hover {
+    transform: scale(1.2);
+    color: #ff5f5f;
 }
 
 .subTextDiv {
@@ -218,9 +234,64 @@
     width: 100%;
 }
 
-.deleteModalContent {
+.deleteModalContent2 {
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    color: white;
+    margin-bottom: 50px;
+    margin-left: 250px;
+    padding: 2rem;
+    border-radius: 1rem;
     max-width: 750px;
     width: 90%;
+    box-shadow: 0 12px 20px rgba(0, 1, 2, 0.6);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: 500;
+    
+}
+
+.deleteModalContent1 {
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    color: white;
+    margin-bottom: 50px;
+    margin-left: 250px;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 12px 20px rgba(0, 1, 2, 0.6);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.deleteModalContent1 h3 {
+    color: #78dc7d;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-decoration: underline;
+}
+
+.head1 {
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.75rem;
+    margin-right: 0.75rem;
 }
 
 .textInput1 textarea, 
