@@ -1,6 +1,6 @@
 import NavBar from './NavBar';
 import './MealHistory.css';
-import { Bookmark, ShoppingCart } from 'react-feather';
+import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient } from './typeFile';
@@ -42,7 +42,7 @@ const MealHistory = () => {
     };
 
     const changeFavoriteState = (targetRecipe: Recipe) => {
-        targetRecipe.Status === "favorite" ? toast.error(`${targetRecipe.RecipeName} a été suprimmé aux favoris`) : toast.success(`${targetRecipe.RecipeName} a été ajouté aux favoris`)
+        targetRecipe.Status === "favorite" ? toast.error(`${targetRecipe.RecipeName} a été suprimmé des favoris`) : toast.success(`${targetRecipe.RecipeName} a été ajouté aux favoris`)
         setmealHistory(prevHistory => {
             return prevHistory.map(weeklyMeal => {
                 return weeklyMeal.map(recipe => {
@@ -57,6 +57,31 @@ const MealHistory = () => {
             });
         });
     };
+
+    const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
+
+    const handleOpenModal2 = (ingre : Recipe[]) => {
+        setRecipesToDelete(ingre)
+    }
+
+    const handleCloseModal2 = () => {
+        setRecipesToDelete(null)
+    }
+
+    const handleCancelDelete = () => {
+        setRecipesToDelete(null);
+    }
+
+    const deleteFromHistory = () => {
+        if (!recipesToDelete) return;
+
+        const updatedList = mealHistory.filter(e => e !== recipesToDelete);
+        setmealHistory(updatedList);
+        localStorage.setItem("currentStockList", JSON.stringify(updatedList));
+        toast.success(`${recipesToDelete?.[0].RecipeName} et ${recipesToDelete?.[1].RecipeName} ont bien été supprimés`)
+        setRecipesToDelete(null);
+        handleCloseModal2()
+    }
     
     return(
         <>
@@ -69,7 +94,6 @@ const MealHistory = () => {
             </div>
 
             {mealHistory.map((weeklyMeal, weekIndex) => (
-                
                 <div className="weekDisplay" key={weekIndex}>
                     <div className="weekId"><p>Week {weekIndex + 1}</p></div>
                     <div className="recipeContainner">
@@ -83,6 +107,7 @@ const MealHistory = () => {
                                         color={recipe.Status === "favorite" ? "#78dc7d" : "white"} 
                                         onClick={() => changeFavoriteState(recipe)} 
                                     />
+                                    <X className='deleteIcon' onClick={() => handleOpenModal2(weeklyMeal)}></X>
                                     <p className='macrosPart'>{recipe.Macro}</p>
                                     <ShoppingCart className='ShoppingCartIcon'></ShoppingCart>
                                     <div className="centeredLinks">
@@ -94,7 +119,6 @@ const MealHistory = () => {
                     </div>
                 </div>
             ))}
-
         </div>
 
         {currentModalRecipe && (
@@ -110,6 +134,22 @@ const MealHistory = () => {
                     <p><strong>Instructions :</strong> <br /><br />{currentModalRecipe.Instructions}</p>
                     <p><strong>Macros :</strong> <br /><br />{currentModalRecipe.Macro}</p>
                     <button onClick={handleCloseHistoryModal}>Fermer</button>
+                </div>
+            </div>
+        )}
+
+        {recipesToDelete && (
+            <div className="modalOverlay" onClick={handleCloseModal2}>
+                <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>
+                    <div className="head1">
+                        <h3>Confirmer la suppression</h3>
+                        <div><X className='logo' onClick={handleCancelDelete}></X></div>
+                    </div>
+                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].RecipeName}</strong> et <strong>{recipesToDelete?.[1].RecipeName}</strong> ?<br/> Cette action est irréversible.</p>
+                  <div className="deleteModalActions">
+                    <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+                  </div>
                 </div>
             </div>
         )}

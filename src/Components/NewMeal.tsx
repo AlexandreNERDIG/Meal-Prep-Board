@@ -18,7 +18,7 @@ const NewMeal = () => {
         PrepTime: "",
         CookTime: "",
         Instructions: "",
-        image: "../img/",
+        image: "",
         Status: "normal"
     });
     
@@ -80,7 +80,7 @@ const NewMeal = () => {
                 PrepTime: "",
                 CookTime: "",
                 Instructions: "",
-                image: "../img/",
+                image: "",
                 Status: "normal"
             });
             handleCloseConfirmationModal();
@@ -102,7 +102,7 @@ const NewMeal = () => {
                 PrepTime: "",
                 CookTime: "",
                 Instructions: "",
-                image: "../img/",
+                image: "",
                 Status: "normal"
             });
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
@@ -178,6 +178,22 @@ const NewMeal = () => {
         setModalState(false);
     }
 
+    const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            toast.error("L'image n'a pas pu être chargée")
+            return;
+        }
+
+        const fileName = file.name;
+
+        setFormData((prev) => ({
+            ...prev,
+            image : `../img/${fileName}`
+        }))
+        toast.success("L'image a bien été chargée")
+    }
+
     const placeholder = "https://placehold.co/500x450/2c2c2c/ffffff?text=Pas+d'image&font=montserrat";
 
     return(
@@ -246,15 +262,10 @@ const NewMeal = () => {
                     />
 
                     <label>Image : </label>
-                    <textarea
-                      name="image"
-                      value={formData.image}
-                      onChange={handleChange}
-                      placeholder="Entrer le lien de l'image"
-                    />
+                    <input type="file" onChange={handleImagePath}/>
                 </div>
                 <div className="imageInput">
-                    <img src={formData.image === `../img/` ? placeholder : formData.image} alt="Recette"/>
+                    <img src={formData.image || placeholder} alt="Recette"/>
                 </div>
             </div>
                 <div className="centerButton2">

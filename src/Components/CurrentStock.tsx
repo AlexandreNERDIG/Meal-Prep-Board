@@ -380,6 +380,31 @@ const CurrentStock = () => {
         handleCloseModal1()
     }
 
+    const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
+
+    const handleOpenModal2 = (ingre : Ingredient) => {
+        setIngredientToDelete(ingre)
+    }
+
+    const handleCloseModal2 = () => {
+        setIngredientToDelete(null)
+    }
+
+    const handleCancelDelete = () => {
+        setIngredientToDelete(null);
+    }
+
+    const deleteIngredient = () => {
+        if (!ingredientToDelete) return;
+
+        const updatedList = currentStock.filter(e => e.Name.trim().toLocaleLowerCase() !== ingredientToDelete.Name.trim().toLocaleLowerCase());
+        setCurrentStock(updatedList);
+        localStorage.setItem("currentStockList", JSON.stringify(updatedList));
+        toast.error(`${ingredientToDelete.Name} à bien été supprimer`)
+        setIngredientToDelete(null);
+        handleCloseModal2()
+    }
+
     return(
         <>
         <div className="globalCurrentStockSection">
@@ -409,9 +434,10 @@ const CurrentStock = () => {
                       <div key={item.id} className="stockItem">
                         <img src={item.Image} alt={item.Name} />
                         <div className="subTextDiv">
+                            <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
                             <h2>{item.Name}</h2>
                             <h4>{item.Macro}</h4>
-                            <p>Id : {item.id}</p>
+                            <p><strong>Id : {item.id}</strong></p>
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
                                     <MinusCircle onClick={(e) => handleMinusQuantityChange(item, e)}></MinusCircle>
@@ -430,7 +456,7 @@ const CurrentStock = () => {
 
            {modalState && (
                 <div className="modalOverlay" onClick={handleCloseModal1}>
-                    <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="deleteModalContent2" onClick={(e) => e.stopPropagation()}>
                         <div className="head">
                             <h3>Formulaire d'Ajout d'Ingrédient</h3>
                             <div><X className='logo' onClick={handleCloseModal1}></X></div>
@@ -497,9 +523,21 @@ const CurrentStock = () => {
                     </div>
                 </div>
             )} 
-
-
-
+            {ingredientToDelete && (
+                <div className="modalOverlay" onClick={handleCloseModal2}>
+                    <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>
+                        <div className="head1">
+                            <h3>Confirmer la suppression</h3>
+                            <div><X className='logo' onClick={handleCancelDelete}></X></div>
+                        </div>
+                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.Name}</strong> ?<br/> Cette action est irréversible.</p>
+                      <div className="deleteModalActions">
+                        <button className="confirmDeleteBtn" onClick={deleteIngredient}>Confirmer</button>
+                        <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+                      </div>
+                    </div>
+                </div>
+            )}
         </div>
         </>
     )
