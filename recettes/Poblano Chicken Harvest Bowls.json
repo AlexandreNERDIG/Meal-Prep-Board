@@ -1,0 +1,27 @@
+{
+  "RecipeName": "Poblano Chicken Harvest Bowls",
+  "Ingredient": [
+    "900g Blanc de poulet",
+    "150g Riz",
+    "15g Jus de citron",
+    "200g Poivron",
+    "100g Oignon",
+    "15g Ail",
+    "15mL Huile d'olive",
+    "110g Yaourt grec",
+    "600g Patate douce",
+    "230g Brocoli",
+    "23mL Huile d'olive",
+    "6g Ail en poudre",
+    "6g Origan séché",
+    "50g Graines de courge",
+    "50g Feta",
+    "Sel et Poivre"
+  ],
+  "Macro": "655 Calories | 58 g C | 48 g P | 26 g F",
+  "PrepTime": "30 min",
+  "CookTime": "35 min",
+  "Instructions": "Cuire le riz et préparer la sauce poblano en mixant les poivrons, oignon et ail avec le yaourt. Rôtir les légumes et faire revenir le poulet assaisonné. Assembler le tout avec les graines de courge et la feta avant de servir.",
+  "image": "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg",
+  "Status": "normal"
+}

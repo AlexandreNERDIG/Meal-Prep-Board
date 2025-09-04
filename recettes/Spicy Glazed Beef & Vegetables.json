@@ -1,0 +1,24 @@
+{
+  "RecipeName": "Spicy Glazed Beef & Vegetables",
+  "Ingredient": [
+    "900g Boeuf",
+    "60g Poivron",
+    "160g Oignon",
+    "250g Chou",
+    "200g Carotte",
+    "15mL Huile d'olive",
+    "45mL Sauce soja",
+    "45g Purée de piment",
+    "15g Miel",
+    "10g Ail",
+    "10g Gingembre",
+    "150g Riz",
+    "Sel et Poivre"
+  ],
+  "Macro": "572 Calories | 52 g C | 42 g P | 22 g F",
+  "PrepTime": "20 min",
+  "CookTime": "30 min",
+  "Instructions": "Cuire le riz. Faire revenir le boeuf et les légumes, puis ajouter la sauce épicée et laisser épaissir. Servir le tout chaud avec le riz.",
+  "image": "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
+  "Status": "normal"
+}

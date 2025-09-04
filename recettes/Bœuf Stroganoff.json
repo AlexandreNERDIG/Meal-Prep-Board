@@ -1,0 +1,20 @@
+{
+  "RecipeName": "Bœuf Stroganoff",
+  "Ingredient": [
+    "1000g Boeuf",
+    "250g Champignon",
+    "160g Oignon",
+    "10g Ail",
+    "150mL Crème Fraîche",
+    "15g Moutarde",
+    "10g Farine",
+    "15mL Huile d'Olive",
+    "Sel et Poivre"
+  ],
+  "Macro": "460 Calories | 18 g C | 35 g P | 25 g F",
+  "PrepTime": "20 min",
+  "CookTime": "1h30",
+  "Instructions": "Faites revenir le bœuf, 2 oignons (160g) et 2 gousses d'ail (10g) dans l'huile. Ajoutez les champignons (250g). Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
+  "image": "../img/Boeuf-Stroganoff.png",
+  "Status": "normal"
+}

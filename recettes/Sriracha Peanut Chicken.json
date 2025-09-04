@@ -1,0 +1,25 @@
+{
+  "RecipeName": "Sriracha Peanut Chicken",
+  "Ingredient": [
+    "900g Haut de cuisse de poulet",
+    "15g Huile d'olive",
+    "150g Poivron",
+    "75g Ciboule",
+    "227g Brocoli",
+    "100g Carotte",
+    "450g Riz",
+    "28g Beurre de cacahuète",
+    "60g Sauce soja",
+    "15g Vinaigre de riz",
+    "42g Miel",
+    "15g Sriracha",
+    "10g Huile de sésame",
+    "14g Mayonnaise"
+  ],
+  "Macro": "584 Calories | 54 g C | 45 g P | 21 g F",
+  "PrepTime": "20 min",
+  "CookTime": "30 min",
+  "Instructions": "Faites cuire le riz. Mélangez la sauce avec miel, beurre de cacahuète, vinaigre, sauce soja, sriracha et huile de sésame. Faites mariner et cuire le poulet, puis faites revenir les légumes. Ajoutez le riz et mélangez avec la sauce et le poulet. Servez chaud avec ciboule si désiré.",
+  "image": "../img/Sriracha-Peanut-Chicken-Rice-Bowls-807x1024.jpg",
+  "Status": "normal"
+}

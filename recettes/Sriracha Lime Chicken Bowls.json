@@ -1,0 +1,21 @@
+{
+  "RecipeName": "Sriracha Lime Chicken Bowls",
+  "Ingredient": [
+    "900g Haut de cuisse de poulet",
+    "450g Brocoli",
+    "300g Patate douce",
+    "150g Ciboule",
+    "300g Riz",
+    "30mL Huile d'olive",
+    "45g Sauce Sriracha",
+    "45g Citron vert",
+    "37g Miel",
+    "Sel et Poivre"
+  ],
+  "Macro": "498 Calories | 52 g C | 41 g P | 14 g F",
+  "PrepTime": "20 min",
+  "CookTime": "40 min",
+  "Instructions": "Cuire le riz. Mélanger la sauce avec sriracha, citron et miel, puis mariner le poulet avant cuisson au four. Rôtir la patate douce et faire revenir le brocoli avec la ciboule, puis combiner tous les ingrédients et servir chaud.",
+  "image": "../img/Sriracha-Lime-Chicken-Bowls-807x1024.jpg",
+  "Status": "normal"
+}

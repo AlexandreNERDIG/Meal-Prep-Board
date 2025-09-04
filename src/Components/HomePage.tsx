@@ -26,7 +26,7 @@ export const RecipeInfo = [
         PrepTime: "20 min",
         CookTime: "3h",
         Instructions: "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
+        image: "../img/boeuf-bourgignon.jpg",
         Status: "normal"
     },
     {
@@ -46,7 +46,7 @@ export const RecipeInfo = [
         PrepTime: "15 min",
         CookTime: "1h30",
         Instructions: "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
-        image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
+        image: "../img/poulet-basquaise.jpg",
         Status: "normal"
     },
     {
@@ -188,6 +188,129 @@ export const RecipeInfo = [
         Instructions: "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (300g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
         image: "../img/Teriyaki-Ground-Beef-Bowls-WP-864x1024.jpg",
         Status: "normal"
+    },
+    {
+        RecipeName: "Sriracha Lime Chicken Bowls",
+        Ingredient: [
+            "900g Haut de cuisse de poulet",
+            "450g Brocoli",
+            "300g Patate douce",
+            "150g Ciboule",
+            "300g Riz",
+            "30mL Huile d'olive",
+            "45g Sauce Sriracha",
+            "45g Citron vert",
+            "37g Miel",
+            "Sel et Poivre"
+        ],
+        Macro: "498 Calories | 52 g C | 41 g P | 14 g F",
+        PrepTime: "20 min",
+        CookTime: "40 min",
+        Instructions: "Cuire le riz. Mélanger la sauce avec sriracha, citron et miel, puis mariner le poulet avant cuisson au four. Rôtir la patate douce et faire revenir le brocoli avec la ciboule, puis combiner tous les ingrédients et servir chaud.",
+        image: "../img/Sriracha-Lime-Chicken-Bowls-807x1024.jpg",
+        Status: "normal"
+    },  
+    {   
+        RecipeName: "Peanut Turkey Stir Fry",
+        Ingredient: [
+            "900g Dinde",
+            "680g Poêlé Wok",
+            "150g Riz",
+            "15mL Huile d'olive",
+            "45mL Sauce soja",
+            "84g Miel",
+            "56g Beurre de cacahuète",
+            "30mL Vinaigre de riz",
+            "10mL Huile de sésame",
+            "Sel et Poivre"
+        ],
+        Macro: "632 Calories | 57 g C | 42 g P | 26 g F",
+        PrepTime: "5 min",
+        CookTime: "25 min",
+        Instructions: "Cuire le riz. Faire revenir la dinde et les légumes dans l’huile d’olive. Ajouter la sauce au beurre de cacahuète et mélanger jusqu’à épaississement, puis servir chaud.",
+        image: "../img/Peanut-Turkey-Stir-Fry.jpg",
+        Status: "normal"
+    },  
+    {   
+        RecipeName: "Spicy Glazed Beef & Vegetables",
+        Ingredient: [
+            "900g Boeuf",
+            "60g Poivron",
+            "160g Oignon",
+            "250g Chou",
+            "200g Carotte",
+            "15mL Huile d'olive",
+            "45mL Sauce soja",
+            "45g Purée de piment",
+            "15g Miel",
+            "10g Ail",
+            "10g Gingembre",
+            "150g Riz",
+            "Sel et Poivre"
+        ],
+        Macro: "572 Calories | 52 g C | 42 g P | 22 g F",
+        PrepTime: "20 min",
+        CookTime: "30 min",
+        Instructions: "Cuire le riz. Faire revenir le boeuf et les légumes, puis ajouter la sauce épicée et laisser épaissir. Servir le tout chaud avec le riz.",
+        image: "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
+        Status: "normal"
+    },  
+    {   
+        RecipeName: "Poblano Chicken Harvest Bowls",
+        Ingredient: [
+            "900g Blanc de poulet",
+            "150g Riz",
+            "15g Jus de citron",
+            "200g Poivron",
+            "100g Oignon",
+            "15g Ail",
+            "15mL Huile d'olive",
+            "110g Yaourt grec",
+            "600g Patate douce",
+            "230g Brocoli",
+            "23mL Huile d'olive",
+            "6g Ail en poudre",
+            "6g Origan séché",
+            "50g Graines de courge",
+            "50g Feta",
+            "Sel et Poivre"
+        ],
+        Macro: "655 Calories | 58 g C | 48 g P | 26 g F",
+        PrepTime: "30 min",
+        CookTime: "35 min",
+        Instructions: "Cuire le riz et préparer la sauce poblano en mixant les poivrons, oignon et ail avec le yaourt. Rôtir les légumes et faire revenir le poulet assaisonné. Assembler le tout avec les graines de courge et la feta avant de servir.",
+        image: "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg",
+        Status: "normal"
+    },  
+    {   
+        RecipeName: "Chicken Fajita Fried Rice",
+        Ingredient: [
+            "900g Blanc de poulet",
+            "30mL Huile d'olive",
+            "15g Jus de citron",
+            "6g Ail en poudre",
+            "1g Origan séché",
+            "3g Coriandre",
+            "3g Cumin",
+            "3g Paprika",
+            "6g Piment en poudre",
+            "6g Sel",
+            "2g Poivre",
+            "450g Riz",
+            "200g Oignon",
+            "150g Poivron rouge",
+            "150g Poivron vert",
+            "15g Ail",
+            "30g Jus de citron",
+            "15mL Huile d'olive",
+            "Sel et Poivre"
+        ],
+        Macro: "481 Calories | 41 g C | 40 g P | 18 g F",
+        PrepTime: "20 min",
+        CookTime: "30 min",
+        Instructions: "Préparer le riz. Mariner le poulet avec les épices, puis le cuire par portions. Faire revenir les légumes, ajouter le riz et le poulet, mélanger et assaisonner avant de servir.",
+        image: "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg",
+        Status: "normal"
     }
 ];
 
@@ -198,6 +321,11 @@ const HomePage = () => {
 
     const RECIPES_KEY = "globalRecipeList";
 
+    useEffect(() => {
+        if (!localStorage.getItem(RECIPES_KEY)) {
+            localStorage.setItem(RECIPES_KEY, JSON.stringify(RecipeInfo));
+        }
+    }, []);
 
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(2);
@@ -251,11 +379,10 @@ const HomePage = () => {
     });
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
-        const exist = localStorage.getItem("currentStockList");
-        return ((exist) ? JSON.parse(exist) : defaultList);
-    });
-
-
+            const exist = localStorage.getItem("currentStockList");
+            return ((exist) ? JSON.parse(exist) : defaultList);
+        });
+    
     const getRecipeScore = (recipe : Recipe) => {
         let score = 1;
 
@@ -326,8 +453,8 @@ const HomePage = () => {
 
         const addIngredients = (ingredients: string[]) => {
             for (const ingre of ingredients) {
-                const parts = ingre.split(" ");
-                const numMatch = parts[0].match(/\d+/);
+                const parts = ingre.trim().split(" ");
+                const numMatch = parts[0]?.match(/\d+/);
                 const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
                 const name = parts.slice(1).join(" ").trim().toLowerCase();
 
@@ -336,24 +463,32 @@ const HomePage = () => {
             }
         };
 
-        addIngredients(recipeList[weeklyRecipe1].Ingredient);
-        addIngredients(recipeList[weeklyRecipe2].Ingredient);
+        addIngredients(recipeList[weeklyRecipe1]?.Ingredient || []);
+        addIngredients(recipeList[weeklyRecipe2]?.Ingredient || []);
 
         const availableGroceryList: string[] = [];
         const notAvailableGroceryList: string[] = [];
 
-        mergedGroceryMap.forEach((quantity, name) => {
-            
-            const found = currentStock.find((item) => item.Name.toLowerCase().includes(name) && item.Quantity >= quantity);
-            const unit = found?.Unit || "g";
+        const stockArray: Ingredient[] = Array.isArray(currentStock) ? currentStock : [];
 
-            const formattedIngredient = `${quantity}${unit} ${name}`;
-            if (quantity > 20) {
-                if (found) {
-                    availableGroceryList.push(formattedIngredient);
-                } else {
-                    notAvailableGroceryList.push(formattedIngredient);
-                }
+        mergedGroceryMap.forEach((requiredQty, name) => {
+            const stockItem = stockArray.find(
+                (item) => item?.Name?.toLowerCase().includes(name)
+            );
+
+            const stockQty = stockItem?.Quantity || 0;
+            const unit = stockItem?.Unit || "g";
+
+            if ((stockQty > 0) && (requiredQty < stockQty)) {
+                availableGroceryList.push(`${requiredQty}${unit} ${name} (en stock: ${stockQty}${unit})`);
+            }
+            else if ((stockQty > 0) && (requiredQty >= stockQty)){
+                availableGroceryList.push(`${stockQty}${unit} ${name} (Besoin de: ${requiredQty}${unit})`);
+            }
+
+            const qtyToBuy = Math.max(requiredQty - stockQty, 0);
+            if (qtyToBuy > 0) {
+                notAvailableGroceryList.push(`${qtyToBuy}${unit} ${name}`);
             }
         });
 
@@ -454,34 +589,36 @@ const HomePage = () => {
             <div className='sectionHeader'><p>Home Page</p></div>
             <div className="generateButton"><p onClick={generateRecipe}>Generate Weekly Recipe</p></div>
 
-            <div className="RecipeDisplay">
-                <div className="recipe">
-                    <img src={recipeList[weeklyRecipe1].image}/>
-                    <div className="recipeDetails">
-                        <h2>{recipeList[weeklyRecipe1].RecipeName}</h2>
-                        <ul>
-                            {recipeList[weeklyRecipe1].Ingredient.map((element, index) => (
-                                <li key={index}>{element}</li>
-                            ))}
-                        </ul>
-                        <h5>{recipeList[weeklyRecipe1].Macro}</h5>
-                        <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
+           {recipeList.length > 0 && (
+                <div className="RecipeDisplay">
+                    <div className="recipe">
+                        <img src={recipeList[weeklyRecipe1]?.image} />
+                        <div className="recipeDetails">
+                            <h2>{recipeList[weeklyRecipe1]?.RecipeName}</h2>
+                            <ul>
+                                {recipeList[weeklyRecipe1]?.Ingredient.map((element, index) => (
+                                    <li key={index}>{element}</li>
+                                ))}
+                            </ul>
+                            <h5>{recipeList[weeklyRecipe1]?.Macro}</h5>
+                            <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
+                        </div>
+                    </div>
+                    <div className="recipe">
+                        <div className="recipeDetails">
+                            <h2>{recipeList[weeklyRecipe2]?.RecipeName}</h2>
+                            <ul>
+                                {recipeList[weeklyRecipe2]?.Ingredient.map((element, index) => (
+                                    <li key={index}>{element}</li>
+                                ))}
+                            </ul>
+                            <h5>{recipeList[weeklyRecipe2]?.Macro}</h5>
+                            <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
+                        </div>
+                        <img src={recipeList[weeklyRecipe2]?.image}/>
                     </div>
                 </div>
-                <div className="recipe">
-                    <div className="recipeDetails">
-                        <h2>{recipeList[weeklyRecipe2].RecipeName}</h2>
-                        <ul>
-                            {recipeList[weeklyRecipe2].Ingredient.map((element, index) => (
-                                <li key={index}>{element}</li>
-                            ))}
-                        </ul>
-                        <h5>{recipeList[weeklyRecipe2].Macro}</h5>
-                        <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
-                    </div>
-                    <img src={recipeList[weeklyRecipe2].image}/>
-                </div>
-            </div>
+            )}
 
             <div className="NutritionSection">
                 <div className="sectionHeader"><p>Weekly Intakes</p></div>

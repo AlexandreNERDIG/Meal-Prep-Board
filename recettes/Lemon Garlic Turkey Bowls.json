@@ -1,0 +1,20 @@
+{
+  "RecipeName": "Lemon Garlic Turkey Bowls",
+  "Ingredient": [
+    "900g Dinde",
+    "15g Huile d'olive",
+    "700g Pommes de terre",
+    "450g Brocoli",
+    "300g Riz",
+    "20g Ail",
+    "60g Citron vert",
+    "5g Citron vert",
+    "150g Tzatziki"
+  ],
+  "Macro": "613 Calories | 54 g C | 43 g P | 25 g F",
+  "PrepTime": "10 min",
+  "CookTime": "35 min",
+  "Instructions": "Coupez les pommes de terre et le brocoli, puis faites-les rôtir. Faites revenir la dinde dans l'huile, ajoutez l'ail, le riz, le citron et les épices. Mélangez avec les légumes rôtis et servez avec du tzatziki.",
+  "image": "../img/Lemon-Garlic-Turkey-Bowls-806x1024.jpg",
+  "Status": "normal"
+}
