@@ -19,6 +19,10 @@
     box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.3);
     background: linear-gradient(135deg, #78dc7d, #A5D6A7, #78dc7d);
     width: 30%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
     transition: 0.3s all ease;
 }
 
@@ -106,6 +110,10 @@
     border-radius: 6px; 
     background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0,3);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -171,24 +179,100 @@
     text-align: left;
 }
 
+.centeredButtonDiv {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
 .confirmationButtonSection {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
     margin-top: 1.5rem;
     margin-bottom: 4rem;
-    height: 4rem;
-    width: 25%;
-    background: linear-gradient(135deg, #78dc7d, #A5D6A7, #78dc7d);
-    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.3);
-    border: 2px solid #206024;
-    border-radius: 10px;
+    height: 3rem;
+    border-radius: 0.85rem;
+    width: 20%;
+    color: #78dc7d; 
+    font-weight: 700;
+    border: 1px solid #3a3a3e;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    box-shadow: 0 6px 12px rgba(0, 1, 2, 0.4);
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
     transition: 0.3s all ease;
 }
 
-.confirmationButtonSection:hover {
+.SMSIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 4rem;
+    height: 3rem;
+    border-radius: 0.85rem;
+    color: #78dc7d; 
+    font-weight: 700;
+    border: 2px solid #3a3a3e;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    box-shadow: 0 6px 12px rgba(0, 1, 2, 0.4);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+    transition: 0.3s all ease;
+    width: 100px;
+}
+
+.confirmationButtonSection:hover, .SMSIcon:hover {
     transform: scale(1.055); 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    border: 2px solid #78dc7d;
+}
+
+.deleteModalContent4 {
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    color: white;
+    margin-bottom: 50px;
+    margin-left: 250px;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 750px;
+    width: 90%;
+    box-shadow: 0 12px 20px rgba(0, 1, 2, 0.6);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.head h3 {
+    color: #78dc7d;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-decoration: underline;
+}
+
+.ingreList {
+    gap: 0;
+    margin-bottom: 0.5rem;
+}
+
+.ingreList p {
+}
+
+.titleH3 {
+    color: #78dc7d;
+    font-size: 1.15rem;
+    font-weight: bold;
+    text-decoration: underline;
 }
