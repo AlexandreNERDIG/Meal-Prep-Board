@@ -4,13 +4,57 @@ import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient } from './typeFile';
+import { RecipeInfo } from './HomePage';
 
 const MealHistory = () => {
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [[]])
+        return ((saved) ? JSON.parse(saved) : [{
+            RecipeName: "Bœuf Bourguignon",
+            Ingredient: [
+                "1000g Bœuf à Braiser",
+                "180g Carotte",
+                "160g Oignon",
+                "250mL Vin Rouge",
+                "250mL Bouillon de Bœuf",
+                "10g Ail",
+                "10g Farine",
+                "Sel et Poivre"
+            ],
+            Macro: "450 Calories | 15 g C | 38 g P | 22 g F",
+            PrepTime: "20 min",
+            CookTime: "3h",
+            Instructions: "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
+            image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
+            Status: "normal"
+        },
+        {
+            RecipeName: "Poulet Basquaise",
+            Ingredient: [
+                "750g Cuisse de Poulet",
+                "240g Poivron",
+                "240g Tomate",
+                "160g Oignon",
+                "10g Ail",
+                "200mL Bouillon de Volaille",
+                "5g Paprika",
+                "15mL Huile d'Olive",
+                "Sel et Poivre"
+            ],
+            Macro: "400 Calories | 12 g C | 35 g P | 22 g F",
+            PrepTime: "15 min",
+            CookTime: "1h30",
+            Instructions: "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
+            image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
+            Status: "normal"
+        }])
     });
+
+    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
+            const saved = localStorage.getItem("globalRecipeList");
+            return ((saved) ? JSON.parse(saved) : RecipeInfo)
+        });
 
     useEffect( () => {
         localStorage.setItem("mealHistoryList", JSON.stringify(mealHistory))
@@ -42,20 +86,27 @@ const MealHistory = () => {
     };
 
     const changeFavoriteState = (targetRecipe: Recipe) => {
-        targetRecipe.Status === "favorite" ? toast.error(`${targetRecipe.RecipeName} a été suprimmé des favoris`) : toast.success(`${targetRecipe.RecipeName} a été ajouté aux favoris`)
-        setmealHistory(prevHistory => {
-            return prevHistory.map(weeklyMeal => {
-                return weeklyMeal.map(recipe => {
-                    if (recipe.RecipeName === targetRecipe.RecipeName) {
-                        return {
-                        ...recipe,
-                        Status: recipe.Status === "favorite" ? "normal" : "favorite"
-                        };
-                    }
-                    return recipe;
-                });
-            });
-        });
+        const newStatus = targetRecipe.Status === "favorite" ? "normal" : "favorite";
+
+        toast[newStatus === "favorite" ? "success" : "error"](
+            `${targetRecipe.RecipeName} a été ${newStatus === "favorite" ? "ajouté aux favoris" : "supprimé des favoris"}`
+        );
+    
+        setmealHistory(prevHistory => prevHistory.map(
+            weeklyMeal => weeklyMeal.map(
+                recipe => recipe.RecipeName === targetRecipe.RecipeName
+                    ? { ...recipe, Status: newStatus }
+                    : recipe
+            )
+        ));
+    
+        setRecipeList(prevList => prevList.map(
+            recipe => recipe.RecipeName === targetRecipe.RecipeName
+                ? { ...recipe, Status: newStatus }
+                : recipe
+        ));
+
+        localStorage.setItem("globalRecipeList", JSON.stringify(recipeList));
     };
 
     const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);

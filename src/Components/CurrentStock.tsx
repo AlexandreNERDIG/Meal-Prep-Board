@@ -7,9 +7,7 @@ import { useState, useEffect } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle } from "react-feather"
 import toast from 'react-hot-toast';
 
-const CurrentStock = () => {
-
-    const defaultList: Ingredient[] = [
+export const defaultList: Ingredient[] = [
         // --- Protéines ---
         {
           id: "1",
@@ -63,7 +61,7 @@ const CurrentStock = () => {
         },
         {
           id: "6",
-          Name: "Œuf",
+          Name: "Oeuf",
           Macro: "70 Calories | 0.5 g C | 6 g P | 5 g F",
           Price: 0.25,
           Quantity: 5,
@@ -73,7 +71,7 @@ const CurrentStock = () => {
         },
         {
           id: "7",
-          Name: "Bœuf",
+          Name: "Boeuf",
           Macro: "250 Calories | 0 g C | 26 g P | 17 g F",
           Price: 18,
           Quantity: 0,
@@ -81,6 +79,27 @@ const CurrentStock = () => {
           Category: "Protéine",
           Image: "/img2/boeuf.jpg"
         },
+        {
+          id: "25",
+          Name: "Veau",
+          Macro: "172 Calories | 0 g C | 24 g P | 7 g F",
+          Price: 16,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Protéine",
+          Image: "/img2/veau.jpg"
+        },  
+        {
+          id: "30",
+          Name: "Porc",
+          Macro: "242 Calories | 0 g C | 27 g P | 14 g F",
+          Price: 13,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Protéine",
+          Image: "/img2/lomo-porc.jpeg"
+        },
+
     
         // --- Légumes ---
         {
@@ -132,6 +151,46 @@ const CurrentStock = () => {
           Unit: "g",
           Category: "Légumes",
           Image: "/img2/chou-bruxelles.jpg"
+        },
+        {
+          id: "21",
+          Name: "Carotte",
+          Macro: "41 Calories | 10 g C | 0.9 g P | 0.2 g F",
+          Price: 2,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Légumes",
+          Image: "/img2/carotte.jpg"
+        },
+        {
+          id: "22",
+          Name: "Tomate",
+          Macro: "18 Calories | 3.9 g C | 0.9 g P | 0.2 g F",
+          Price: 2,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Légumes",
+          Image: "/img2/tomate.jpg"
+        },
+        {
+          id: "23",
+          Name: "Champignon",
+          Macro: "22 Calories | 3.3 g C | 3.1 g P | 0.3 g F",
+          Price: 3,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Légumes",
+          Image: "/img2/champignon.jpg"
+        },
+        {
+          id: "24",
+          Name: "Poireau",
+          Macro: "61 Calories | 14 g C | 1.5 g P | 0.3 g F",
+          Price: 2.5,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Légumes",
+          Image: "/img2/poireau.jpg"
         },
     
         // --- Féculents ---
@@ -216,9 +275,50 @@ const CurrentStock = () => {
           Unit: "mL",
           Category: "Boisson",
           Image: "/img2/soda-stream-limonade.jpg"
+        },
+        {
+          id: "26",
+          Name: "Vin rouge",
+          Macro: "85 Calories | 2.6 g C | 0.1 g P | 0 g F",
+          Price: 10,
+          Quantity: 0,
+          Unit: "mL",
+          Category: "Boisson",
+          Image: "/img2/vin-rouge.jpg"
+        },
+        {
+          id: "27",
+          Name: "Huile d'olive",
+          Macro: "884 Calories | 0 g C | 0 g P | 100 g F",
+          Price: 6,
+          Quantity: 0,
+          Unit: "mL",
+          Category: "Autre",
+          Image: "/img2/huile-olive.jpg"
+        },
+        {
+          id: "28",
+          Name: "Crème fraîche",
+          Macro: "292 Calories | 2.9 g C | 2.4 g P | 30 g F",
+          Price: 4,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Autre",
+          Image: "/img2/creme-fraiche.jpg"
+        },
+        {
+          id: "29",
+          Name: "Beurre",
+          Macro: "717 Calories | 0.1 g C | 0.9 g P | 81 g F",
+          Price: 5,
+          Quantity: 0,
+          Unit: "g",
+          Category: "Autre",
+          Image: "/img2/beurre.jpg"
         }
 ];
 
+const CurrentStock = () => {
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
         const exist = localStorage.getItem("currentStockList");
@@ -362,12 +462,27 @@ const CurrentStock = () => {
     }
 
     const ajouterIngredient = () => {
+
+        if (
+            !formData.Name?.trim() ||
+            !formData.Unit?.trim() ||
+            !formData.Category?.trim() ||
+            formData.Price === undefined || formData.Price <= 0
+        ) {
+            toast.error("Veuillez remplir tous les champs obligatoires correctement");
+            return;
+        }
+
         const newIngredient : Ingredient = {
             ...formData,
             id: `${idCounter + 1}`
         }
 
-        if (currentStock.some(ingre => ingre.Name.trim().toLowerCase() === newIngredient.Name.trim().toLowerCase())) return;
+        if (currentStock.some(ingre => ingre.Name.trim().toLowerCase() === newIngredient.Name.trim().toLowerCase())) {
+            toast.error("Cet ingrédient existe déjà dans le stock");
+            return;
+        }
+
 
         setCurrentStock((prev) => {
             let updated = [...prev, newIngredient];
@@ -400,8 +515,9 @@ const CurrentStock = () => {
         const updatedList = currentStock.filter(e => e.Name.trim().toLocaleLowerCase() !== ingredientToDelete.Name.trim().toLocaleLowerCase());
         setCurrentStock(updatedList);
         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
-        toast.error(`${ingredientToDelete.Name} à bien été supprimer`)
+        toast.error(`${ingredientToDelete.Name} a bien été supprimé`)
         setIngredientToDelete(null);
+        idRemove()
         handleCloseModal2()
     }
 
@@ -441,7 +557,7 @@ const CurrentStock = () => {
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
                                     <MinusCircle onClick={(e) => handleMinusQuantityChange(item, e)}></MinusCircle>
-                                    <div className="currentCount">{item.Quantity}</div>
+                                    <div className="currentCount">{item.Quantity} {item.Unit}</div>
                                     <PlusCircle onClick={(e) => handlePlusQuantityChange(item, e)}></PlusCircle>
                                 </div>
                             </div>
@@ -502,7 +618,7 @@ const CurrentStock = () => {
                             <div className="sousElement">
                                 <label>Catégorie : </label>
                                 <select className="category" name="category" value={formData.Category} onChange={handleCategoryChangeBis}>
-                                    <option value="''">""</option>
+                                    <option value="''">-- Choisir --</option>
                                     <option value="Protéine">Protéine</option>
                                     <option value="Légumes">Légumes</option>
                                     <option value="Féculent">Féculent</option>
