@@ -1,9 +1,8 @@
-import NavBar from './NavBar';
 import './CurrentStock.css';
 import './NewMeal.css';
-import { Trash, Trash2, X} from 'react-feather';
-import { Recipe, Ingredient } from './typeFile';
-import { useState, useEffect } from 'react';
+import { X } from 'react-feather';
+import { Ingredient } from './typeFile';
+import { useState } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle } from "react-feather"
 import toast from 'react-hot-toast';
 
@@ -202,16 +201,6 @@ export const defaultList: Ingredient[] = [
         Image: "/img2/brocoli.jpg"
     },
     {
-        id: "32",
-        Name: "Patate douce",
-        Macro: "86 Calories | 20 g C | 1.6 g P | 0.1 g F",
-        Price: 3.5,
-        Quantity: 0,
-        Unit: "g",
-        Category: "Féculent",
-        Image: "/img2/patate-douce.jpg"
-    },
-    {
         id: "33",
         Name: "Ciboule",
         Macro: "32 Calories | 7.3 g C | 1.8 g P | 0.2 g F",
@@ -260,7 +249,7 @@ export const defaultList: Ingredient[] = [
         Quantity: 0,
         Unit: "g",
         Category: "Légumes",
-        Image: "/img2/chou.jpg"
+        Image: "/img2/chou.png"
     },
     {
         id: "43",
@@ -273,16 +262,15 @@ export const defaultList: Ingredient[] = [
         Image: "/img2/gingembre.jpg"
     },
     {
-    id: "48",
-    Name: "Graines de courge",
-    Macro: "446 Calories | 16 g C | 19 g P | 19 g F",
-    Price: 5,
-    Quantity: 0,
-    Unit: "g",
-    Category: "Autre",
-    Image: "/img2/graines-courge.jpg"
+        id: "48",
+        Name: "Graines de courge",
+        Macro: "446 Calories | 16 g C | 19 g P | 19 g F",
+        Price: 5,
+        Quantity: 0,
+        Unit: "g",
+        Category: "Autre",
+        Image: "/img2/graines-courge.jpg"
     },
-
     {
         id: "50",
         Name: "Haricots verts",
@@ -292,6 +280,26 @@ export const defaultList: Ingredient[] = [
         Unit: "g",
         Category: "Légumes",
         Image: "/img2/haricots-verts.jpg"
+    },
+    {
+        id: "50",
+        Name: "Sauce tomate",
+        Macro: "29 Calories | 5 g C | 1 g P | 0.2 g F",
+        Price: 3,
+        Quantity: 0,
+        Unit: "g",
+        Category: "Légumes",
+        Image: "/img2/sauce-tomate.jpg"
+    },
+    {
+        id: "51",
+        Name: "Pois",
+        Macro: "81 Calories | 14 g C | 5 g P | 0.4 g F",
+        Price: 3,
+        Quantity: 0,
+        Unit: "g",
+        Category: "Légumes",
+        Image: "/img2/pois.jpg"
     },
 
     // --- Féculents ---
@@ -496,7 +504,7 @@ export const defaultList: Ingredient[] = [
         Quantity: 0,
         Unit: "g",
         Category: "Autre",
-        Image: "/img2/puree-de-piment.jpg"
+        Image: "/img2/puree-piment.jpg"
     },
     {
         id: "49",
@@ -516,7 +524,7 @@ export const defaultList: Ingredient[] = [
         Quantity: 0,
         Unit: "g",
         Category: "Autre",
-        Image: "/img2/yaourt-grec.jpg"
+        Image: "/img2/yaourt-grec.png"
     },
 ];
 

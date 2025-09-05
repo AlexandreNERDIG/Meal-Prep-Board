@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import NavBar from './NavBar';
-import HomePage, { RecipeInfo } from './HomePage';
+import { RecipeInfo } from './HomePage';
 import toast from "react-hot-toast"
 import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
-import { data } from '@remix-run/router/dist/utils';
-import { Recipe, Ingredient } from './typeFile';
+import { Recipe} from './typeFile';
 
 
 

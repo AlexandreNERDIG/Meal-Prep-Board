@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react';
-import HomePage, { RecipeInfo } from './HomePage';
-import NavBar from './NavBar';
-import { Trash, Trash2, X} from 'react-feather';
+import { RecipeInfo } from './HomePage';
+import { X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
-import { Recipe, Ingredient } from './typeFile';
+import { Recipe } from './typeFile';
 
 const NewMeal = () => {
 
