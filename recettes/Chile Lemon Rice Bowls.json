@@ -1,0 +1,24 @@
+{
+    "RecipeName": "Chile Lemon Rice Bowls",
+    "Ingredient": [
+        "900g Haut de cuisse de poulet",
+        "150g Yaourt grec",
+        "30g Citron vert",
+        "300g Poivron",
+        "125g Oignon",
+        "340g Chou",
+        "20g Piment",
+        "30g Huile d'olive",
+        "15g Ail",
+        "227g Sauce tomate",
+        "50g Tomate",
+        "20g Coriandre",
+        "150g Riz"
+    ],
+    "Macro": "473 Calories | 43 g C | 44 g P | 14 g F",
+    "PrepTime": "20 min",
+    "CookTime": "40 min",
+    "Instructions": "Préparer le poulet avec une marinade au yaourt, citron et épices, puis le rôtir au four avant de le découper. Faire revenir les légumes (poivrons, oignon, chou, ail et piment) avec huile, épices et sauce tomate. Ajouter le riz cuit et le poulet, mélanger avec du jus de citron et assaisonner.",
+    "image": "../img/Chili-Lemon-Rice-Bowls-819x1024.jpg",
+    "Status": "normal"
+}

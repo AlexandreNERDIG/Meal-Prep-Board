@@ -1,0 +1,20 @@
+{
+    "RecipeName": "Salsa Verde Beef Bowls",
+    "Ingredient": [
+        "900g Boeuf",
+        "150g Poivron",
+        "200g Oignon",
+        "227g Chou",
+        "150g Riz",
+        "30g Huile d'olive",
+        "30g Citron vert",
+        "30g Salsa Verde",
+        "11g Coriandre"
+    ],
+    "Macro": "540 Calories | 39 g C | 42 g P | 24 g F",
+    "PrepTime": "10 min",
+    "CookTime": "35 min",
+    "Instructions": "Faites cuire le riz. Faites revenir le boeuf puis les légumes (poivron, oignon, chou) avec huile d'olive. Mélangez le tout avec le riz, citron vert, salsa verde et coriandre. Servez chaud.",
+    "image": "../img/Salsa-Verde-Beef-Bowls-807x1024.jpg",
+    "Status": "normal"
+}

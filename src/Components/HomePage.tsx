@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import './HomePage.css';
-import NavBar from './NavBar';
-import { FaNimblr } from 'react-icons/fa';
-import { Trash, Trash2, X, Smartphone} from 'react-feather';
+import { X, Smartphone} from 'react-feather';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient } from './typeFile';
 import defaultList from './CurrentStock'
@@ -373,12 +371,12 @@ const HomePage = () => {
         }]])
     });
 
-    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
+    const [recipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
     });
 
-    const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
+    const [currentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
         });
@@ -479,15 +477,15 @@ const HomePage = () => {
             const stockQty = stockItem?.Quantity || 0;
             const unit = stockItem?.Unit || "g";
 
-            if ((stockQty > 0) && (requiredQty < stockQty)) {
+            if ((stockQty > 0) && (requiredQty < stockQty) && (requiredQty >= 10)) {
                 availableGroceryList.push(`${requiredQty}${unit} ${name} (en stock: ${stockQty}${unit})`);
             }
-            else if ((stockQty > 0) && (requiredQty >= stockQty)){
+            else if ((stockQty > 0) && (requiredQty >= stockQty) && (requiredQty >= 10)){
                 availableGroceryList.push(`${stockQty}${unit} ${name} (Besoin de: ${requiredQty}${unit})`);
             }
 
             const qtyToBuy = Math.max(requiredQty - stockQty, 0);
-            if (qtyToBuy > 0) {
+            if (qtyToBuy > 0 && (requiredQty >= 10)) {
                 notAvailableGroceryList.push(`${qtyToBuy}${unit} ${name}`);
             }
         });

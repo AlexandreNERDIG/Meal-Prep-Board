@@ -1,9 +1,8 @@
-import NavBar from './NavBar';
 import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient } from './typeFile';
+import { Recipe } from './typeFile';
 import { RecipeInfo } from './HomePage';
 
 const MealHistory = () => {
