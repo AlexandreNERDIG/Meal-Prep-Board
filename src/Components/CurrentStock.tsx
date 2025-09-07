@@ -282,7 +282,7 @@ export const defaultList: Ingredient[] = [
         Image: "/img2/haricots-verts.jpg"
     },
     {
-        id: "50",
+        id: "51",
         Name: "Sauce tomate",
         Macro: "29 Calories | 5 g C | 1 g P | 0.2 g F",
         Price: 3,
@@ -292,7 +292,7 @@ export const defaultList: Ingredient[] = [
         Image: "/img2/sauce-tomate.jpg"
     },
     {
-        id: "51",
+        id: "52",
         Name: "Pois",
         Macro: "81 Calories | 14 g C | 5 g P | 0.4 g F",
         Price: 3,
