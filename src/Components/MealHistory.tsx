@@ -12,7 +12,7 @@ const MealHistory = () => {
         return ((saved) ? JSON.parse(saved) : [{
             RecipeName: "Bœuf Bourguignon",
             Ingredient: [
-                "1000g Bœuf à Braiser",
+                "1000g Boeuf",
                 "180g Carotte",
                 "160g Oignon",
                 "250mL Vin Rouge",
@@ -31,7 +31,7 @@ const MealHistory = () => {
         {
             RecipeName: "Poulet Basquaise",
             Ingredient: [
-                "750g Cuisse de Poulet",
+                "750g Blanc de Poulet",
                 "240g Poivron",
                 "240g Tomate",
                 "160g Oignon",
@@ -127,10 +127,10 @@ const MealHistory = () => {
 
         const updatedList = mealHistory.filter(e => e !== recipesToDelete);
         setmealHistory(updatedList);
-        localStorage.setItem("currentStockList", JSON.stringify(updatedList));
+        localStorage.setItem("mealHistoryList", JSON.stringify(updatedList));
         toast.success(`${recipesToDelete?.[0].RecipeName} et ${recipesToDelete?.[1].RecipeName} ont bien été supprimés`)
         setRecipesToDelete(null);
-        handleCloseModal2()
+        handleCloseModal2();
     }
     
     return(
