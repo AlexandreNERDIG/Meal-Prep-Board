@@ -484,21 +484,7 @@ const HomePage = () => {
         const availableGroceryList: string[] = [];
         const notAvailableGroceryList: string[] = [];
 
-        mergedGroceryMap.forEach((data, name) => {
-            const stockItem = currentStock.find(item => item.Name.trim().toLowerCase() === name);
-            const stockQty = stockItem?.Quantity || 0;
-
-            if (stockQty >= data.quantity && data.quantity >= 10) {
-                availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`);
-            } else if (stockQty > 0 && data.quantity > stockQty && data.quantity >= 10) {
-                availableGroceryList.push(`${stockQty}${data.unit} ${name} (Besoin de: ${data.quantity}${data.unit})`);
-            }
-
-            const qtyToBuy = Math.max(data.quantity - stockQty, 0);
-            if (qtyToBuy > 0 && data.quantity >= 10) {
-                notAvailableGroceryList.push(`${qtyToBuy}${data.unit} ${name}`);
-            }
-        });
+       
 
         return [availableGroceryList, notAvailableGroceryList];
     };
@@ -528,8 +514,14 @@ const HomePage = () => {
         localStorage.setItem("currentStockList", JSON.stringify(updatedStock));
         toast.success("Stocks mis à jour !");
         handleCloseConfirmationModal6();
-};
+    };
 
+    useEffect(() => {
+        const [available, notAvailable] = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
+        setAvailableGroceryList(available);
+        setNotAvailableGroceryList(notAvailable);
+    }, [weeklyRecipe1, weeklyRecipe2, currentStock, recipeList]);
+    
     const DailyMacros = () => {
         let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
         let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
