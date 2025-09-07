@@ -376,7 +376,7 @@ const HomePage = () => {
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
     });
 
-    const [currentStock] = useState<Ingredient[]>(() => {
+    const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
         });
@@ -446,18 +446,35 @@ const HomePage = () => {
         }
     }
 
+    const [modalState6, setModalState6] = useState<Boolean>(false);
+
+    const handleOpenConfirmationModal6 = () => {
+        setModalState6(true);
+    }
+
+    const handleCloseConfirmationModal6 = () => {
+        setModalState6(false);
+    }
+
     const WeeklyGroceries = (recipeList: Recipe[], weeklyRecipe1: number, weeklyRecipe2: number, currentStock: Ingredient[]): [string[], string[]] => {
-        const mergedGroceryMap = new Map<string, number>();
+        const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
 
         const addIngredients = (ingredients: string[]) => {
             for (const ingre of ingredients) {
                 const parts = ingre.trim().split(" ");
                 const numMatch = parts[0]?.match(/\d+/);
                 const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+                const unitMatch = parts[0]?.match(/[a-zA-Z]+/);
+                const unit = unitMatch ? unitMatch[0] : "g";
+
                 const name = parts.slice(1).join(" ").trim().toLowerCase();
 
-                const existingQty = mergedGroceryMap.get(name) || 0;
-                mergedGroceryMap.set(name, existingQty + quantity);
+                const existing = mergedGroceryMap.get(name);
+                if (existing) {
+                    mergedGroceryMap.set(name, { quantity: existing.quantity + quantity, unit });
+                } else {
+                    mergedGroceryMap.set(name, { quantity, unit });
+                }
             }
         };
 
@@ -467,32 +484,51 @@ const HomePage = () => {
         const availableGroceryList: string[] = [];
         const notAvailableGroceryList: string[] = [];
 
-        const stockArray: Ingredient[] = Array.isArray(currentStock) ? currentStock : [];
-
-        mergedGroceryMap.forEach((requiredQty, name) => {
-            const stockItem = stockArray.find(
-                (item) => item?.Name?.toLowerCase().includes(name)
-            );
-
+        mergedGroceryMap.forEach((data, name) => {
+            const stockItem = currentStock.find(item => item.Name.trim().toLowerCase() === name);
             const stockQty = stockItem?.Quantity || 0;
-            const unit = stockItem?.Unit || "g";
 
-            if ((stockQty > 0) && (requiredQty < stockQty) && (requiredQty >= 10)) {
-                availableGroceryList.push(`${requiredQty}${unit} ${name} (en stock: ${stockQty}${unit})`);
-            }
-            else if ((stockQty > 0) && (requiredQty >= stockQty) && (requiredQty >= 10)){
-                availableGroceryList.push(`${stockQty}${unit} ${name} (Besoin de: ${requiredQty}${unit})`);
+            if (stockQty >= data.quantity && data.quantity >= 10) {
+                availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`);
+            } else if (stockQty > 0 && data.quantity > stockQty && data.quantity >= 10) {
+                availableGroceryList.push(`${stockQty}${data.unit} ${name} (Besoin de: ${data.quantity}${data.unit})`);
             }
 
-            const qtyToBuy = Math.max(requiredQty - stockQty, 0);
-            if (qtyToBuy > 0 && (requiredQty >= 10)) {
-                notAvailableGroceryList.push(`${qtyToBuy}${unit} ${name}`);
+            const qtyToBuy = Math.max(data.quantity - stockQty, 0);
+            if (qtyToBuy > 0 && data.quantity >= 10) {
+                notAvailableGroceryList.push(`${qtyToBuy}${data.unit} ${name}`);
             }
         });
 
         return [availableGroceryList, notAvailableGroceryList];
     };
 
+    const stockDeduction = (groceryList: string[]) => {
+        if (!groceryList || !currentStock) return;
+
+        const updatedStock = currentStock.map(item => {
+            const match = groceryList.find(e => {
+                const parts = e.trim().split(" ");
+                const name = parts.slice(1).join(" ").split("(")[0].trim().toLowerCase();
+                return item.Name.trim().toLowerCase() === name;
+            });
+
+            if (!match) return item;
+
+            const numMatch = match.trim().split(" ")[0]?.match(/\d+/);
+            const neededQuantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+
+            return {
+                ...item,
+                Quantity: Math.max(item.Quantity - neededQuantity, 0),
+            };
+        });
+
+        setCurrentStock(updatedStock);
+        localStorage.setItem("currentStockList", JSON.stringify(updatedStock));
+        toast.success("Stocks mis à jour !");
+        handleCloseConfirmationModal6();
+};
 
     const DailyMacros = () => {
         let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
@@ -539,8 +575,8 @@ const HomePage = () => {
     const dailyMacros = DailyMacros();
     const weeklyMacros = WeeklyMacros();
     const weeklyGroceries = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
-    const availableGroceryList = weeklyGroceries[0];
-    const notAvailableGroceryList = weeklyGroceries[1];
+    const [availableGroceryList, setAvailableGroceryList] = useState(weeklyGroceries[0]);
+    const [notAvailableGroceryList, setNotAvailableGroceryList] = useState(weeklyGroceries[1]);
 
 
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
@@ -578,6 +614,15 @@ const HomePage = () => {
 
         toast.success("Liste de course envoyé");
         handleCloseConfirmationModal5();
+    };
+
+    const handleConfirmClick = async () => {
+        const [available, notAvailable] = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
+        setAvailableGroceryList(available);
+        setNotAvailableGroceryList(notAvailable);
+
+        await sendGroceryList(notAvailable);
+        handleOpenConfirmationModal6(); 
     };
 
     return(
@@ -684,9 +729,26 @@ const HomePage = () => {
                     </div>
 
                     <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={() => sendGroceryList(notAvailableGroceryList)}>Confirmer</button>
+                        <button 
+                            className="confirmDeleteBtn" onClick={handleConfirmClick}>Confirmer</button>
                         <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal5}>Annuler</button>
                     </div>
+                </div>
+            </div>
+        )}
+
+        {modalState6 && (
+            <div className="modalOverlay" onClick={handleCloseConfirmationModal6}>
+                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="head">
+                        <h3>Voulez vous actualiser les stocks Automatiquement ?</h3>
+                        <div><X className='logo' onClick={handleCloseConfirmationModal6}></X></div>
+                    </div>
+                  <p>Cette action n'est pas définitive, vous pourrez toujours actualiser les stocks dans <strong>"Meal History"</strong>.</p>
+                  <div className="deleteModalActions">
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(availableGroceryList)}>Confirmer</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal6}>Annuler</button>
+                  </div>
                 </div>
             </div>
         )}

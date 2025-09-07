@@ -552,7 +552,7 @@ const CurrentStock = () => {
 
         if (currentItem.id !== '6') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity - (50 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity - (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
@@ -569,7 +569,7 @@ const CurrentStock = () => {
 
         if (currentItem.id !== '6') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity + (50 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity + (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
