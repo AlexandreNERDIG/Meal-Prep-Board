@@ -4,6 +4,10 @@ Application pour organiser ses repas facilement.
 
 🚀 Installation & lancement
 
+---Installer Node.js (npm est inclus) :
+
+---Télécharge et installe depuis https://nodejs.org
+
 ---Dézipper le dossier où tu veux (ex : Bureau, Documents…).
 
 ---Créer un raccourci vers le fichier Meal-Prep-Board.bat :
