@@ -379,7 +379,7 @@ const HomePage = () => {
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
-        });
+    });
     
     const getRecipeScore = (recipe : Recipe) => {
         let score = 1;
@@ -484,7 +484,23 @@ const HomePage = () => {
         const availableGroceryList: string[] = [];
         const notAvailableGroceryList: string[] = [];
 
-       
+        mergedGroceryMap.forEach((data, name) => {
+            const stockItem = currentStock.find(item => item.Name.trim().toLowerCase() === name); 
+            const stockQty = stockItem?.Quantity || 0; 
+
+            if (stockQty >= data.quantity && data.quantity >= 10) {
+                availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`); 
+            } 
+            
+            else if (stockQty > 0 && data.quantity > stockQty && data.quantity >= 10) {
+                availableGroceryList.push(`${stockQty}${data.unit} ${name} (Besoin de: ${data.quantity}${data.unit})`); 
+            };
+            
+            const qtyToBuy = Math.max(data.quantity - stockQty, 0); 
+            if (qtyToBuy > 0 && data.quantity >= 10) {
+                notAvailableGroceryList.push(`${qtyToBuy}${data.unit} ${name}`);
+            } 
+        });
 
         return [availableGroceryList, notAvailableGroceryList];
     };
