@@ -2,8 +2,9 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe } from './typeFile';
+import { Recipe, Ingredient } from './typeFile';
 import { RecipeInfo } from './HomePage';
+import defaultList from './CurrentStock'
 
 const MealHistory = () => {
 
@@ -53,6 +54,11 @@ const MealHistory = () => {
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
             const saved = localStorage.getItem("globalRecipeList");
             return ((saved) ? JSON.parse(saved) : RecipeInfo)
+        });
+
+    const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
+            const exist = localStorage.getItem("currentStockList");
+            return ((exist) ? JSON.parse(exist) : defaultList);
         });
 
     useEffect( () => {
@@ -111,7 +117,7 @@ const MealHistory = () => {
     const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
 
     const handleOpenModal2 = (ingre : Recipe[]) => {
-        setRecipesToDelete(ingre)
+        setRecipesToDelete(ingre);
     }
 
     const handleCloseModal2 = () => {
@@ -131,7 +137,58 @@ const MealHistory = () => {
         toast.success(`${recipesToDelete?.[0].RecipeName} et ${recipesToDelete?.[1].RecipeName} ont bien été supprimés`)
         setRecipesToDelete(null);
         handleCloseModal2();
+    };
+
+    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+
+    const handleOpenModal4 = (recipe : Recipe) => {
+        setSelectedRecipe(recipe);
     }
+
+    const handleCloseModal4 = () => {
+        setSelectedRecipe(null)
+    }
+
+    const stockDeduction = (groceryList: string[]) => {
+        if (!groceryList || !currentStock) return;
+
+        const filteredGroceryList : string[] = [];
+
+        for (const element of groceryList) {
+            const parts = element.trim().split(" ");
+            const numMatch = parts[0]?.match(/\d+/);
+            const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+
+            if (quantity >= 10) {
+                filteredGroceryList.push(element);
+            }
+        }
+
+        if (!filteredGroceryList) return;
+
+        const updatedStock = currentStock.map(item => {
+            const match = filteredGroceryList.find(e => {
+                const parts = e.trim().split(" ");
+                const name = parts.slice(1).join(" ").split("(")[0].trim().toLowerCase();
+                return item.Name.trim().toLowerCase().includes(name);
+            });
+
+            if (!match) return item;
+
+            const numMatch = match.trim().split(" ")[0]?.match(/\d+/);
+            const neededQuantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+
+            return {
+                ...item,
+                Quantity: Math.max(item.Quantity - neededQuantity, 0),
+            };
+        });
+
+        setCurrentStock(updatedStock);
+        localStorage.setItem("currentStockList", JSON.stringify(updatedStock));
+        toast.success("Stocks mis à jour !");
+        handleCloseModal4();
+    };
     
     return(
         <>
@@ -159,7 +216,7 @@ const MealHistory = () => {
                                     />
                                     <X className='deleteIcon' onClick={() => handleOpenModal2(weeklyMeal)}></X>
                                     <p className='macrosPart'>{recipe.Macro}</p>
-                                    <ShoppingCart className='ShoppingCartIcon'></ShoppingCart>
+                                    <ShoppingCart className='ShoppingCartIcon' onClick={() => handleOpenModal4(recipe)}></ShoppingCart>
                                     <div className="centeredLinks">
                                         <button className="descBtn" onClick={() => handleOpenHistoryModal(recipe)}>Description</button>
                                     </div>
@@ -199,6 +256,33 @@ const MealHistory = () => {
                   <div className="deleteModalActions">
                     <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+                  </div>
+                </div>
+            </div>
+        )}
+
+        {selectedRecipe && (
+            <div className="modalOverlay" onClick={handleCloseModal4}>
+                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="head">
+                        <h3>Voulez vous déduire cette recette des Stocks ?</h3>
+                        <div><X className='logo' onClick={handleCloseModal4}></X></div>
+                    </div>
+                <p>Cette action concerne : </p>
+                {selectedRecipe.Ingredient
+                    .filter(e => {
+                        const parts = e.trim().split(" ");
+                        const numMatch = parts[0]?.match(/\d+/);
+                        const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+                        return quantity >= 10;
+                    })
+                    .map((e, index) => (
+                        <li key={index}>{e}</li>
+                    ))
+                }
+                <div className="deleteModalActions">
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.Ingredient)}>Confirmer</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseModal4}>Annuler</button>
                   </div>
                 </div>
             </div>
