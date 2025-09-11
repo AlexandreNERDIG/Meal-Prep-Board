@@ -1,11 +1,10 @@
 import './CurrentStock.css';
 import './NewMeal.css';
 import { X } from 'react-feather';
-import { Ingredient } from './typeFile';
+import { Ingredient, defaultList } from './typeFile';
 import { useState } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle } from "react-feather"
 import toast from 'react-hot-toast';
-import { defaultList } from './typeFile'
 
 const CurrentStock = () => {
 
@@ -201,14 +200,13 @@ const CurrentStock = () => {
     const deleteIngredient = () => {
         if (!ingredientToDelete) return;
 
-        const updatedList = currentStock.filter(e => e.Name.trim().toLocaleLowerCase() !== ingredientToDelete.Name.trim().toLocaleLowerCase());
+        const updatedList = currentStock.filter(e => e.id !== ingredientToDelete.id);
         setCurrentStock(updatedList);
         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
-        toast.error(`${ingredientToDelete.Name} a bien été supprimé`)
+        toast.error(`${ingredientToDelete.Name} a bien été supprimé`);
         setIngredientToDelete(null);
-        idRemove()
-        handleCloseModal2()
-    }
+        handleCloseModal2();
+    };
 
     return(
         <>

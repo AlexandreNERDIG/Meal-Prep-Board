@@ -1,9 +1,8 @@
 import { useState, useRef } from 'react';
-import { RecipeInfo } from './HomePage';
 import { X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
-import { Recipe } from './typeFile';
+import { Recipe, RecipeInfo } from './typeFile';
 
 const NewMeal = () => {
 

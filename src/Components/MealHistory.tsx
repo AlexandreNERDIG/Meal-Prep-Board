@@ -2,8 +2,7 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient } from './typeFile';
-import { RecipeInfo } from './HomePage';
+import { Recipe, Ingredient, RecipeInfo } from './typeFile';
 import defaultList from './CurrentStock'
 
 const MealHistory = () => {
