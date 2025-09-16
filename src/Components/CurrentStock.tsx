@@ -65,10 +65,6 @@ const CurrentStock = () => {
         setIdCounter(idCounter + 1)
     }
 
-    const idRemove = () => {
-        setIdCounter(idCounter - 1)
-    }
-
     const [modalState, setModalState] = useState<Boolean>(false);
 
     const [formData, setFormData] = useState<Ingredient>({
