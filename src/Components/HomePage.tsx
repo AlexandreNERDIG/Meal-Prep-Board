@@ -22,45 +22,45 @@ const HomePage = () => {
     
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [[{
-            RecipeName: "Bœuf Bourguignon",
-            Ingredient: [
-                "1000g Bœuf",
-                "180g Carotte",
-                "160g Oignon",
-                "250mL Vin Rouge",
-                "250mL Bouillon de Bœuf",
-                "10g Ail",
-                "10g Farine",
-                "Sel et Poivre"
+        return ((saved) ? JSON.parse(saved) : [{
+            "RecipeName": "Bœuf Bourguignon",
+            "Ingredient": [
+              "1000g Boeuf",
+              "180g Carotte",
+              "160g Oignon",
+              "250mL Vin Rouge",
+              "250mL Bouillon de Bœuf",
+              "10g Ail",
+              "10g Farine",
+              "Sel et Poivre"
             ],
-            Macro: "450 Calories | 15 g C | 38 g P | 22 g F",
-            PrepTime: "20 min",
-            CookTime: "3h",
-            Instructions: "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-            image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
-            Status: "normal"
+            "Macro": "450 Calories | 15 g C | 38 g P | 22 g F",
+            "PrepTime": "20 min",
+            "CookTime": "3h",
+            "Instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
+            "image": "../img/boeuf-bourgignon.jpg",
+            "Status": "normal"
         },
         {
-            RecipeName: "Poulet Basquaise",
-            Ingredient: [
-                "750g Blanc de Poulet",
-                "240g Poivron",
-                "240g Tomate",
-                "160g Oignon",
-                "10g Ail",
-                "200mL Bouillon de Volaille",
-                "5g Paprika",
-                "15mL Huile d'Olive",
-                "Sel et Poivre"
+            "RecipeName": "Poulet Basquaise",
+            "Ingredient": [
+              "750g Cuisse de Poulet",
+              "240g Poivron",
+              "240g Tomate",
+              "160g Oignon",
+              "10g Ail",
+              "200mL Bouillon de Volaille",
+              "5g Paprika",
+              "15mL Huile d'Olive",
+              "Sel et Poivre"
             ],
-            Macro: "400 Calories | 12 g C | 35 g P | 22 g F",
-            PrepTime: "15 min",
-            CookTime: "1h30",
-            Instructions: "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
-            image: "../img/Korean-Beef-and-Rice-Cakes-807x1024.jpg",
-            Status: "normal"
-        }]])
+            "Macro": "400 Calories | 12 g C | 35 g P | 22 g F",
+            "PrepTime": "15 min",
+            "CookTime": "1h30",
+            "Instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
+            "image": "../img/poulet-basquaise.jpg",
+            "Status": "normal"
+        }])
     });
 
     const [recipeList] = useState<Recipe[]>(() => {
