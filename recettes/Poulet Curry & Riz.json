@@ -1,21 +1,21 @@
 {
-    "RecipeName": "Poulet Curry & Riz",
-    "Ingredient": [
-        "900g Haut de cuisse de poulet",
-        "300g Pommes de terre",
-        "200g Carotte",
-        "150g Oignon",
-        "15g Ail",
-        "100g Golden Curry cubes",
-        "500mL Bouillon de poule",
-        "30mL Huile d'olive",
-        "200g Riz",
-        "Sel et Poivre"
-    ],
-    "Macro": "540 Calories | 50 g C | 44 g P | 19 g F",
-    "PrepTime": "20 min",
-    "CookTime": "40 min",
-    "Instructions": "Faire revenir l’oignon et l’ail dans l’huile. Ajouter le poulet en morceaux et faire dorer. Ajouter les carottes et pommes de terre en dés, puis verser le bouillon de poule. Laisser mijoter jusqu’à cuisson des légumes, puis incorporer les cubes de Golden Curry pour épaissir et assaisonner. Servir avec le riz cuit.",
-    "image": "../img/Curry-Poulet-Riz.jpg",
-    "Status": "maison"
+  "RecipeName": "Poulet Curry & Riz",
+  "Ingredient": [
+    "900g Haut de cuisse de poulet",
+    "300g Pommes de terre",
+    "200g Carotte",
+    "150g Oignon",
+    "15g Ail",
+    "100g Golden Curry cubes",
+    "500mL Bouillon de poule",
+    "30mL Huile d'olive",
+    "200g Riz",
+    "Sel et Poivre"
+  ],
+  "Macro": "540 Calories | 50 g C | 44 g P | 19 g F",
+  "PrepTime": "20 min",
+  "CookTime": "40 min",
+  "Instructions": "Faire revenir l’oignon et l’ail dans l’huile. Ajouter le poulet en morceaux et faire dorer. Ajouter les carottes et pommes de terre en dés, puis verser le bouillon de poule. Laisser mijoter jusqu’à cuisson des légumes, puis incorporer les cubes de Golden Curry pour épaissir et assaisonner. Servir avec le riz cuit.",
+  "image": "../img/poulet-curry.jpg",
+  "Status": "maison"
 }
