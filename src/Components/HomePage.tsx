@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const HomePage = () => {
 
-    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1412796434671210577/yt_IrQp_zZxjAALOCN0TKbZUTEICfus1xku_YhvTyq7bbT0ysvxkJkKnUlGgtlzfk0j6';
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1416785367654465699/T9fFJvBWwqqNCRHHwNr1GU1ckkgY_fvT1d5FiKindKJuG45_ZK_vMxAd_h5bKxmt9tWH';
 
     const RECIPES_KEY = "globalRecipeList";
 
@@ -25,7 +25,7 @@ const HomePage = () => {
         return ((saved) ? JSON.parse(saved) : [[{
             RecipeName: "Bœuf Bourguignon",
             Ingredient: [
-                "1000g Bœuf à Braiser",
+                "1000g Bœuf",
                 "180g Carotte",
                 "160g Oignon",
                 "250mL Vin Rouge",
@@ -44,7 +44,7 @@ const HomePage = () => {
         {
             RecipeName: "Poulet Basquaise",
             Ingredient: [
-                "750g Cuisse de Poulet",
+                "750g Blanc de Poulet",
                 "240g Poivron",
                 "240g Tomate",
                 "160g Oignon",
