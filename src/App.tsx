@@ -26,9 +26,7 @@ function App() {
         }
     };
 
-    useEffect(() => {
-        initLocalStorage();
-    }, []);
+    initLocalStorage();
 
     return (
         <Router>
