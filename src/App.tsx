@@ -5,7 +5,6 @@ import NavBar from './Components/NavBar';
 import NewMeal from './Components/NewMeal';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
-import { useEffect } from 'react';
 import { RecipeInfo, defaultList } from './Components/typeFile'
 import { Toaster } from 'react-hot-toast';
 import './App.css';
