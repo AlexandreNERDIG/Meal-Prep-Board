@@ -230,7 +230,7 @@ const HomePage = () => {
         setNotAvailableGroceryList(notAvailable);
     }, [weeklyRecipe1, weeklyRecipe2, currentStock, recipeList]);
     
-    const DailyMacros = () => {
+    const DailyMacros = () : string[] | null => {
         let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
         let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
         let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
@@ -245,7 +245,7 @@ const HomePage = () => {
         return FinalArr;
     }
 
-    const WeeklyMacros = () => {
+    const WeeklyMacros = () : string[] | null => {
         let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
         let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
         let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
