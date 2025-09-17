@@ -18,7 +18,7 @@ const HomePage = () => {
     }, []);
 
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
-    const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(2);
+    const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(1);
     
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
