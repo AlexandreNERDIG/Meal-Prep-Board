@@ -4,8 +4,6 @@ import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
 import { Recipe, RecipeInfo } from './typeFile';
 
-
-
 const RecipeList = () => {
 
     const RECIPES_KEY = "globalRecipeList";

@@ -7,8 +7,6 @@ import axios from 'axios';
 
 const HomePage = () => {
 
-    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1416785367654465699/T9fFJvBWwqqNCRHHwNr1GU1ckkgY_fvT1d5FiKindKJuG45_ZK_vMxAd_h5bKxmt9tWH';
-
     const RECIPES_KEY = "globalRecipeList";
 
     useEffect(() => {
@@ -61,7 +59,7 @@ const HomePage = () => {
             "Status": "normal"
         }])
     });
-    
+
     const [recipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
@@ -72,9 +70,15 @@ const HomePage = () => {
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
+    const [discordWebHook, setDiscordWebHook] = useState<string>(() => {
+        const saved = localStorage.getItem("discordWebhook");
+        return ((saved) ? JSON.parse(saved) : "")
+    });
+
     const [modalState6, setModalState6] = useState<Boolean>(false);
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
     const [askConfirmation5, setAskConfirmation5] = useState<boolean>(false);
+    const [modalState7, setModalState7] = useState<boolean>(false);
     
     const getRecipeScore = (recipe : Recipe) => {
         let score = 1;
@@ -141,12 +145,27 @@ const HomePage = () => {
         }
     }
 
-    const handleOpenConfirmationModal = () => {setAskConfirmation(true)}
-    const handleCloseConfirmationModal = () => {setAskConfirmation(false)}
-    const handleOpenConfirmationModal5 = () => {setAskConfirmation5(true)}
-    const handleCloseConfirmationModal5 = () => {setAskConfirmation5(false)}
-    const handleOpenConfirmationModal6 = () => {setModalState6(true)}
-    const handleCloseConfirmationModal6 = () => {setModalState6(false)}
+    const handleOpenConfirmationModal = () => {setAskConfirmation(true)};
+    const handleCloseConfirmationModal = () => {setAskConfirmation(false)};
+    const handleOpenConfirmationModal5 = () => {setAskConfirmation5(true)};
+    const handleCloseConfirmationModal5 = () => {setAskConfirmation5(false)};
+    const handleOpenConfirmationModal6 = () => {setModalState6(true)};
+    const handleCloseConfirmationModal6 = () => {setModalState6(false)};
+    const handleOpenModal7 = () => {setModalState7(true)};
+    const handleCloseModal7 = () => {setModalState7(false)};
+    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {setDiscordWebHook(e.target.value)};
+
+    const handleDiscordWebHook = () => {
+        const regex = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
+
+        if (regex.test(discordWebHook)) {
+            toast.success("Le discord Web Hook est maintenant fonctionnel");
+            localStorage.setItem("discordWebhook", JSON.stringify(discordWebHook));
+            handleCloseModal7();
+        } else {
+            toast.error("Le discord Web Hook n'est pas valide");
+        }
+    };
 
     const WeeklyGroceries = (recipeList: Recipe[], weeklyRecipe1: number, weeklyRecipe2: number, currentStock: Ingredient[]): [string[], string[]] => {
         const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
@@ -285,7 +304,7 @@ const HomePage = () => {
         };
       
         try {
-            await axios.post(DISCORD_WEBHOOK_URL, message);
+            await axios.post(discordWebHook, message);
             console.log('✅ Liste envoyée sur Discord !');
         } catch (error) {
             console.error('❌ Erreur lors de l’envoi :', error);
@@ -303,6 +322,16 @@ const HomePage = () => {
         await sendGroceryList(notAvailable);
         handleOpenConfirmationModal6(); 
     };
+
+    const whichModal = () => {
+        const regex = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
+
+        if (regex.test(discordWebHook)) {
+            handleOpenConfirmationModal5();
+        } else {
+            handleOpenModal7();
+        }
+    }
 
     return(
         <>
@@ -364,7 +393,8 @@ const HomePage = () => {
 
             <div className="centeredButtonDiv">
                 <div className="confirmationButtonSection" onClick={handleOpenConfirmationModal}>Confirm Meal Choices</div>
-                <div className="SMSIcon" onClick={handleOpenConfirmationModal5}><Smartphone></Smartphone></div>
+                <div className="confirmationButtonSection" onClick={handleOpenModal7}>Discord Web Hook</div>
+                <div className="SMSIcon" onClick={whichModal}><Smartphone></Smartphone></div>
             </div>
 
         </div>
@@ -412,8 +442,7 @@ const HomePage = () => {
                     </div>
 
                     <div className="deleteModalActions">
-                        <button 
-                            className="confirmDeleteBtn" onClick={handleConfirmClick}>Confirmer</button>
+                        <button className="confirmDeleteBtn" onClick={handleConfirmClick}>Confirmer</button>
                         <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal5}>Annuler</button>
                     </div>
                 </div>
@@ -434,6 +463,28 @@ const HomePage = () => {
                     <button className="confirmDeleteBtn" onClick={() => stockDeduction(availableGroceryList)}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal6}>Annuler</button>
                   </div>
+                </div>
+            </div>
+        )}
+
+        {/* Modal d'initialisation du WebHook */}
+
+        {modalState7 && (
+            <div className="modalOverlay" onClick={handleCloseModal7}>
+                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="head">
+                        <h3>Veuillez entrer le discord web hook à utiliser ?</h3>
+                        <div><X className='logo' onClick={handleCloseModal7}></X></div>
+                    </div>
+
+                    <p>Cette action n'est pas définitive, vous pourrez toujours le changer en recliquant sur : <strong className='green'>"Discord Web Hook"</strong></p>
+                    
+                    <input type="text" onChange={handleChange} placeholder="https://discord.com/api/webhooks/1234567891234567891/T9fFJvBWwqqNCRHHwNr1GU1ckkgY_fvT1d5FiKindKJuG45_ZK_vMxAd_h5bKxmt9twh"/>
+                    
+                    <div className="deleteModalActions">
+                        <button className="confirmDeleteBtn" onClick={handleDiscordWebHook}>Confirmer</button>
+                        <button className="cancelDeleteBtn" onClick={handleCloseModal7}>Annuler</button>
+                    </div>
                 </div>
             </div>
         )}
