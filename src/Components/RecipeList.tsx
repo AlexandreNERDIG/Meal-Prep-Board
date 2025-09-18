@@ -17,20 +17,12 @@ const RecipeList = () => {
     });
 
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-
-    const handleOpenModal = (recipe: Recipe) => {
-        setSelectedRecipe(recipe);
-    };
-
-    const handleCloseModal = () => {
-        setSelectedRecipe(null);
-    };
-
     const [recipeToDelete, setRecipeToDelete] = useState<Recipe | null>(null);
 
-    const handleAskDelete = () => {
-        setRecipeToDelete(selectedRecipe);
-    };
+    const handleOpenModal = (recipe: Recipe) => {setSelectedRecipe(recipe)};
+    const handleCloseModal = () => {setSelectedRecipe(null)};
+    const handleAskDelete = () => {setRecipeToDelete(selectedRecipe)};
+    const handleCancelDelete = () => {setRecipeToDelete(null)};
 
     const handleConfirmDelete = () => {
         if (!recipeToDelete) return;
@@ -42,10 +34,6 @@ const RecipeList = () => {
         setRecipeToDelete(null);
         handleCloseModal()
     };
-
-    const handleCancelDelete = () => {
-        setRecipeToDelete(null);
-    }
 
     const handleSingleDownloadRecipe = (recipe : Recipe) => {
         const dataStr = JSON.stringify(recipe, null, 2);
@@ -86,6 +74,9 @@ const RecipeList = () => {
                 ))}
             </div>
         </div>
+
+        {/* Modal d'affichage de recette */}
+
         {selectedRecipe && (
             <div className="modalOverlay" onClick={handleCloseModal}>
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
@@ -110,6 +101,9 @@ const RecipeList = () => {
                 </div>
             </div>
         )}
+
+        {/* Modal de suppression de recette */}
+
         {recipeToDelete && (
             <div className="modalOverlay" onClick={handleCloseModal}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>

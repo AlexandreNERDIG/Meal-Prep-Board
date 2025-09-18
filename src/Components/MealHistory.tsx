@@ -7,6 +7,15 @@ import defaultList from './CurrentStock'
 
 const MealHistory = () => {
 
+    const quotes: string[] = [
+    "« Bien manger, c’est le début du bonheur. » – Julia Child",
+    "« Un repas équilibré, c’est une pizza dans chaque main. »",
+    "« Laisser mijoter, c’est aimer sans précipitation. »",
+    "« Le secret d’une bonne recette, c’est de la faire avec amour. »",
+    "« Manger est un besoin, savoir manger est un art. » – François de La Rochefoucauld",
+    "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
+    ];
+
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
         return ((saved) ? JSON.parse(saved) : [{
@@ -65,29 +74,19 @@ const MealHistory = () => {
     }, [mealHistory])
 
     const [currentModalRecipe, setCurrentModalRecipe] = useState<Recipe | null>(null);
-
-    const handleOpenHistoryModal = (currentRecipe : Recipe) => {
-        setCurrentModalRecipe(currentRecipe);
-    };
-
-    const handleCloseHistoryModal = () => {
-        setCurrentModalRecipe(null);
-    }
-
-    const quotes: string[] = [
-    "« Bien manger, c’est le début du bonheur. » – Julia Child",
-    "« Un repas équilibré, c’est une pizza dans chaque main. »",
-    "« Laisser mijoter, c’est aimer sans précipitation. »",
-    "« Le secret d’une bonne recette, c’est de la faire avec amour. »",
-    "« Manger est un besoin, savoir manger est un art. » – François de La Rochefoucauld",
-    "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
-    ];
-
     const [currentQuote, setCurrentQuote] = useState<string>(quotes[Math.floor(Math.random() * quotes.length)]);
+    const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
+    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
-    const handleChangeQuote = () => {
-        setCurrentQuote(quotes[Math.floor(Math.random() * quotes.length)]);
-    };
+
+    const handleOpenHistoryModal = (currentRecipe : Recipe) => {setCurrentModalRecipe(currentRecipe)};
+    const handleCloseHistoryModal = () => {setCurrentModalRecipe(null)};
+    const handleChangeQuote = () => {setCurrentQuote(quotes[Math.floor(Math.random() * quotes.length)])};
+    const handleOpenModal2 = (ingre : Recipe[]) => {setRecipesToDelete(ingre)};
+    const handleCloseModal2 = () => {setRecipesToDelete(null)};
+    const handleCancelDelete = () => {setRecipesToDelete(null)};
+    const handleOpenModal4 = (recipe : Recipe) => {setSelectedRecipe(recipe)};
+    const handleCloseModal4 = () => {setSelectedRecipe(null)};
 
     const changeFavoriteState = (targetRecipe: Recipe) => {
         const newStatus = targetRecipe.Status === "favorite" ? "normal" : "favorite";
@@ -113,20 +112,6 @@ const MealHistory = () => {
         localStorage.setItem("globalRecipeList", JSON.stringify(recipeList));
     };
 
-    const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
-
-    const handleOpenModal2 = (ingre : Recipe[]) => {
-        setRecipesToDelete(ingre);
-    }
-
-    const handleCloseModal2 = () => {
-        setRecipesToDelete(null)
-    }
-
-    const handleCancelDelete = () => {
-        setRecipesToDelete(null);
-    }
-
     const deleteFromHistory = () => {
         if (!recipesToDelete) return;
 
@@ -137,16 +122,6 @@ const MealHistory = () => {
         setRecipesToDelete(null);
         handleCloseModal2();
     };
-
-    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-
-    const handleOpenModal4 = (recipe : Recipe) => {
-        setSelectedRecipe(recipe);
-    }
-
-    const handleCloseModal4 = () => {
-        setSelectedRecipe(null)
-    }
 
     const stockDeduction = (groceryList: string[]) => {
         if (!groceryList || !currentStock) return;
@@ -227,6 +202,8 @@ const MealHistory = () => {
             ))}
         </div>
 
+        {/* Modal d'affichage de la recette */}
+
         {currentModalRecipe && (
             <div className="modalOverlay" onClick={handleCloseHistoryModal}>
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
@@ -244,6 +221,8 @@ const MealHistory = () => {
             </div>
         )}
 
+        {/* Modal de confirmation de suppression de l'historique */}
+
         {recipesToDelete && (
             <div className="modalOverlay" onClick={handleCloseModal2}>
                 <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>
@@ -259,6 +238,8 @@ const MealHistory = () => {
                 </div>
             </div>
         )}
+
+        {/* Modal de confirmation de déduction des stocks */}
 
         {selectedRecipe && (
             <div className="modalOverlay" onClick={handleCloseModal4}>
