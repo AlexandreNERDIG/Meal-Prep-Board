@@ -26,6 +26,14 @@ const NewMeal = () => {
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
     });
 
+    const [modalState, setModalState] = useState<boolean>(false);
+    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
+
+    const handleOpenConfirmationModal = () => {setAskConfirmation(true)};
+    const handleCloseConfirmationModal = () => {setAskConfirmation(false)};
+    const handleOpenModal1 = () => {setModalState(true)};
+    const handleCloseModal1 = () => {setModalState(false)};
+
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
 
@@ -54,16 +62,6 @@ const NewMeal = () => {
             ...prev,
             Ingredient : [...prev.Ingredient, ""]
         }));
-    }
-
-    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
-
-    const handleOpenConfirmationModal = () => {
-        setAskConfirmation(true);
-    }
-
-    const handleCloseConfirmationModal = () => {
-        setAskConfirmation(false);
     }
 
     const ajouterRecette = () => {
@@ -163,17 +161,6 @@ const NewMeal = () => {
         }
         reader.readAsText(importedFiles[0]);
         handleCloseModal1();
-    }
-
-
-    const [modalState, setModalState] = useState<boolean>(false);
-
-    const handleOpenModal1 = () => {
-        setModalState(true);
-    }
-
-    const handleCloseModal1 = () => {
-        setModalState(false);
     }
 
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -282,6 +269,9 @@ const NewMeal = () => {
                     />
                 </div>
         </div>
+
+        {/* Modal d'ajout d'ingrédient */}
+
         {modalState && (
                     <div className="modalOverlay" onClick={handleCloseModal1}>
                         <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
@@ -297,6 +287,9 @@ const NewMeal = () => {
                         </div>
                     </div>
         )}
+
+        {/* Modal d'ajout d'ingrédient */}
+
         {askConfirmation && (
                     <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
                         <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>

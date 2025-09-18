@@ -14,16 +14,31 @@ const CurrentStock = () => {
     });
 
     const [searchValue, setSearchValue] = useState<string>("");
-
-    const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value)
-    }
-
     const [selectedCategory, setSelectedCategory] = useState<"Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre">("Tout");
+    const [idCounter, setIdCounter] = useState(currentStock.length);
+    const [modalState, setModalState] = useState<Boolean>(false);
+    const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
-    const handleCategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre");
-    }
+    const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {setSearchValue(e.target.value)};
+    const handleCategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedCategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
+    const idAdd = () => {setIdCounter(idCounter + 1)};
+    const handleOpenModal1 = () => {setModalState(true)};
+    const handleCloseModal1 = () => {
+        setFormData({
+        id: ``,
+        Name: "",
+        Macro: "* Calories | * g C | * g P | * g F",
+        Price: 0,
+        Quantity: 0,
+        Unit: "",
+        Category: "",
+        Image: "/img2/"
+    })
+        setModalState(false);
+    };
+    const handleOpenModal2 = (ingre : Ingredient) => {setIngredientToDelete(ingre)};
+    const handleCloseModal2 = () => {setIngredientToDelete(null)};
+    const handleCancelDelete = () => {setIngredientToDelete(null)};
 
     const handleMinusQuantityChange = (currentItem : Ingredient, event: React.MouseEvent) => {
         if (!currentStock) return;
@@ -59,13 +74,6 @@ const CurrentStock = () => {
         }
     }
 
-    const [idCounter, setIdCounter] = useState(currentStock.length)
-
-    const idAdd = () => {
-        setIdCounter(idCounter + 1)
-    }
-
-    const [modalState, setModalState] = useState<Boolean>(false);
 
     const [formData, setFormData] = useState<Ingredient>({
         id: "",
@@ -93,24 +101,6 @@ const CurrentStock = () => {
             Category: e.target.value as "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre"
         }));
     };
-
-    const handleOpenModal1 = () => {
-        setModalState(true);
-    }
-
-    const handleCloseModal1 = () => {
-        setFormData({
-        id: ``,
-        Name: "",
-        Macro: "* Calories | * g C | * g P | * g F",
-        Price: 0,
-        Quantity: 0,
-        Unit: "",
-        Category: "",
-        Image: "/img2/"
-    })
-        setModalState(false);
-    }
 
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -179,20 +169,6 @@ const CurrentStock = () => {
         handleCloseModal1()
     }
 
-    const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
-
-    const handleOpenModal2 = (ingre : Ingredient) => {
-        setIngredientToDelete(ingre)
-    }
-
-    const handleCloseModal2 = () => {
-        setIngredientToDelete(null)
-    }
-
-    const handleCancelDelete = () => {
-        setIngredientToDelete(null);
-    }
-
     const deleteIngredient = () => {
         if (!ingredientToDelete) return;
 
@@ -252,6 +228,8 @@ const CurrentStock = () => {
                     <PlusCircle onClick={handleOpenModal1}></PlusCircle>
                 </div>
             </div>
+
+            {/* Modal d'ajout d'ingrédient */}
 
            {modalState && (
                 <div className="modalOverlay" onClick={handleCloseModal1}>
@@ -322,6 +300,9 @@ const CurrentStock = () => {
                     </div>
                 </div>
             )} 
+
+            {/* Modal de confirmation de suppression d'un ingrédient */}
+
             {ingredientToDelete && (
                 <div className="modalOverlay" onClick={handleCloseModal2}>
                     <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>

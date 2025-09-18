@@ -19,7 +19,6 @@ const HomePage = () => {
 
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(1);
-    
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
         return ((saved) ? JSON.parse(saved) : [{
@@ -62,7 +61,7 @@ const HomePage = () => {
             "Status": "normal"
         }])
     });
-
+    
     const [recipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
         return ((saved) ? JSON.parse(saved) : RecipeInfo)
@@ -72,6 +71,10 @@ const HomePage = () => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
+
+    const [modalState6, setModalState6] = useState<Boolean>(false);
+    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
+    const [askConfirmation5, setAskConfirmation5] = useState<boolean>(false);
     
     const getRecipeScore = (recipe : Recipe) => {
         let score = 1;
@@ -138,15 +141,12 @@ const HomePage = () => {
         }
     }
 
-    const [modalState6, setModalState6] = useState<Boolean>(false);
-
-    const handleOpenConfirmationModal6 = () => {
-        setModalState6(true);
-    }
-
-    const handleCloseConfirmationModal6 = () => {
-        setModalState6(false);
-    }
+    const handleOpenConfirmationModal = () => {setAskConfirmation(true)}
+    const handleCloseConfirmationModal = () => {setAskConfirmation(false)}
+    const handleOpenConfirmationModal5 = () => {setAskConfirmation5(true)}
+    const handleCloseConfirmationModal5 = () => {setAskConfirmation5(false)}
+    const handleOpenConfirmationModal6 = () => {setModalState6(true)}
+    const handleCloseConfirmationModal6 = () => {setModalState6(false)}
 
     const WeeklyGroceries = (recipeList: Recipe[], weeklyRecipe1: number, weeklyRecipe2: number, currentStock: Ingredient[]): [string[], string[]] => {
         const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
@@ -277,27 +277,6 @@ const HomePage = () => {
     const weeklyGroceries = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
     const [availableGroceryList, setAvailableGroceryList] = useState(weeklyGroceries[0]);
     const [notAvailableGroceryList, setNotAvailableGroceryList] = useState(weeklyGroceries[1]);
-
-
-    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
-
-    const handleOpenConfirmationModal = () => {
-        setAskConfirmation(true);
-    }
-
-    const handleCloseConfirmationModal = () => {
-        setAskConfirmation(false);
-    }
-
-    const [askConfirmation5, setAskConfirmation5] = useState<boolean>(false);
-
-    const handleOpenConfirmationModal5 = () => {
-        setAskConfirmation5(true);
-    }
-
-    const handleCloseConfirmationModal5 = () => {
-        setAskConfirmation5(false);
-    }
     
     const sendGroceryList = async (list: string[]) => {
         
@@ -390,6 +369,8 @@ const HomePage = () => {
 
         </div>
 
+        {/* Modal de confirmation d'ajout des recettes à l'historique */}
+
         {askConfirmation && (
             <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
@@ -405,6 +386,8 @@ const HomePage = () => {
                 </div>
             </div>
         )}
+
+        {/* Modal de confirmation d'envoie de la liste de course */}
 
         {askConfirmation5 && (
             <div className="modalOverlay" onClick={handleCloseConfirmationModal5}>
@@ -436,6 +419,8 @@ const HomePage = () => {
                 </div>
             </div>
         )}
+
+        {/* Modal de confirmation d'acutalisation des stocks Automatiquement ou Manuellement */}
 
         {modalState6 && (
             <div className="modalOverlay" onClick={handleCloseConfirmationModal6}>
