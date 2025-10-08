@@ -1,8 +1,8 @@
 {
   "RecipeName": "Poulet Paprika / Patate",
   "Ingredient": [
-    "750g Cuisse de Poulet",
-    "300g Pommes de Terre",
+    "900g Blanc de Poulet",
+    "500g Pommes de Terre",
     "160g Oignon",
     "10g Ail",
     "250mL Bouillon de Volaille",
@@ -11,7 +11,7 @@
     "5g Thym",
     "Sel et Poivre"
   ],
-  "Macro": "400 Calories | 20 g C | 35 g P | 20 g F",
+  "Macro": "414 Calories | 21 g C | 58 g P | 3 g F",
   "PrepTime": "15 min",
   "CookTime": "1h30",
   "Instructions": "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (300g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
