@@ -15,13 +15,17 @@ const CurrentStock = () => {
 
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<"Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre">("Tout");
-    const [idCounter, setIdCounter] = useState(currentStock.length);
+    const [idCounter, setIdCounter] = useState(() => {
+        const exist = localStorage.getItem("currentStockList");
+        const list = exist ? JSON.parse(exist) : defaultList;
+        const maxId = list.reduce((max: number, ing: Ingredient) => Math.max(max, parseInt(ing.id, 10)), 0);
+        return maxId;
+    });
     const [modalState, setModalState] = useState<Boolean>(false);
     const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
     const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {setSearchValue(e.target.value)};
     const handleCategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedCategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
-    const idAdd = () => {setIdCounter(idCounter + 1)};
     const handleOpenModal1 = () => {setModalState(true)};
     const handleCloseModal1 = () => {
         setFormData({
@@ -165,7 +169,7 @@ const CurrentStock = () => {
             return updated;
         });
         toast.success("L'ingrédient a bien été ajouté");
-        idAdd()
+        setIdCounter(idCounter + 1);
         handleCloseModal1()
     }
 
