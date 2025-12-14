@@ -1,0 +1,21 @@
+{
+    "RecipeName": "Poulet Satay Riz et Poivrons",
+    "Ingredient": [
+      "900g Blanc de poulet",
+      "56g Beurre de cacahuète",
+      "45mL Sauce soja",
+      "30g Miel",
+      "300g Riz",
+      "300g Poivron",
+      "160g Oignon",
+      "15mL Huile d'olive",
+      "15g Gingembre",
+      "Sel et Poivre"
+    ],
+    "Macro": "650 Calories | 55 g C | 55 g P | 28 g F",
+    "PrepTime": "15 min",
+    "CookTime": "35 min",
+    "Instructions": "Faites cuire le riz. Faites dorer le poulet. Dans une poêle, faites revenir les poivrons, l'oignon et le gingembre. Préparez la sauce satay : mélangez beurre de cacahuète, sauce soja et miel. Versez la sauce sur le poulet et les légumes. Servez sur le riz.",
+    "image": "../img/chicken-satay-rice-peppers.jpg",
+    "Status": "mealprep"
+  }

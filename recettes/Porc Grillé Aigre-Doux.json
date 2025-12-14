@@ -1,0 +1,21 @@
+{
+    "RecipeName": "Porc Grillé Aigre-Doux",
+    "Ingredient": [
+      "900g Porc",
+      "30g Miel",
+      "45mL Sauce soja",
+      "15mL Vinaigre de riz",
+      "300g Riz",
+      "450g Brocoli",
+      "15mL Huile de sésame",
+      "15g Gingembre",
+      "15g Ail",
+      "Sel et Poivre"
+    ],
+    "Macro": "620 Calories | 55 g C | 45 g P | 25 g F",
+    "PrepTime": "15 min",
+    "CookTime": "30 min",
+    "Instructions": "Faites cuire le riz. Mélangez miel, sauce soja, vinaigre de riz et huile de sésame pour la sauce. Faites griller le porc coupé en cubes. Faites sauter le brocoli avec l'ail et le gingembre. Mélangez le porc et les légumes avec la sauce. Portionnez avec le riz.",
+    "image": "../img/pork-sweet-sour-brocoli.jpg",
+    "Status": "mealprep"
+  }

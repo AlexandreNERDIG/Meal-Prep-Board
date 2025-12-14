@@ -1,0 +1,21 @@
+{
+    "RecipeName": "Tofu Sauté Sauce Sésame",
+    "Ingredient": [
+        "500g Tofu Ferme",
+        "15mL Huile de sésame",
+        "45mL Sauce soja",
+        "30g Miel",
+        "300g Brocoli",
+        "300g Poivron rouge",
+        "160g Oignon",
+        "250g Riz",
+        "15g Gingembre",
+        "15mL Vinaigre de riz"
+    ],
+    "Macro": "470 Calories | 55 g C | 25 g P | 15 g F",
+    "PrepTime": "15 min",
+    "CookTime": "25 min",
+    "Instructions": "Faites cuire le riz. Préparez une sauce avec sauce soja, huile de sésame, miel, vinaigre et gingembre. Faites dorer le tofu. Ajoutez l'oignon, le brocoli et le poivron, faites-les sauter. Versez la sauce et mélangez. Servez sur le riz.",
+    "image": "../img/tofu-sesame-stirfry.jpg",
+    "Status": "normal"
+  }

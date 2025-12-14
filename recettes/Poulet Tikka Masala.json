@@ -1,0 +1,21 @@
+{
+    "RecipeName": "Poulet Tikka Masala",
+    "Ingredient": [
+      "900g Blanc de poulet",
+      "425g Sauce tomate",
+      "150mL Crème Fraîche",
+      "160g Oignon",
+      "15g Ail",
+      "270g Riz",
+      "15g Gingembre",
+      "30mL Huile d'olive",
+      "10g Curry poudre",
+      "Sel et Poivre"
+    ],
+    "Macro": "610 Calories | 45 g C | 55 g P | 25 g F",
+    "PrepTime": "15 min",
+    "CookTime": "35 min",
+    "Instructions": "Faites cuire le riz. Faites revenir l'oignon, l'ail et le gingembre dans l'huile. Ajoutez le poulet coupé et les épices (curry, cumin). Ajoutez la sauce tomate, puis la crème fraîche. Laissez mijoter 15 min. Servez avec le riz.",
+    "image": "../img/quick-chicken-tikka.jpg",
+    "Status": "mealprep"
+  }

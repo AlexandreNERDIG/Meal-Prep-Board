@@ -1,0 +1,21 @@
+{
+    "RecipeName": "Chicken Creamy Pasta",
+    "Ingredient": [
+      "900g Blanc de poulet",
+      "400g Pâtes",
+      "150mL Crème Fraîche",
+      "100g Parmesan",
+      "160g Oignon",
+      "10g Ail",
+      "30g Beurre",
+      "15mL Huile d'olive",
+      "500mL Bouillon de Poulet",
+      "Sel et Poivre"
+    ],
+    "Macro": "650 Calories | 60 g C | 55 g P | 20 g F",
+    "PrepTime": "10 min",
+    "CookTime": "25 min",
+    "Instructions": "Faites cuire les pâtes. Faites dorer le poulet dans l'huile et le beurre. Ajoutez l'oignon et l'ail. Versez le bouillon, la crème et le parmesan. Laissez mijoter jusqu'à épaississement. Incorporez les pâtes, assaisonnez et servez.",
+    "image": "../img/creamy-chicken-pasta.jpg",
+    "Status": "normal"
+  }

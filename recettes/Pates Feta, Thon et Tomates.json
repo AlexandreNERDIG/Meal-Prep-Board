@@ -1,0 +1,20 @@
+{
+    "RecipeName": "Pates Feta, Thon et Tomates",
+    "Ingredient": [
+      "600g Thon",
+      "400g Pâtes",
+      "300g Tomates cerise",
+      "100g Feta",
+      "15mL Huile d'olive",
+      "15g Ail",
+      "160g Oignon",
+      "30g Vinaigre de vin",
+      "Sel et Poivre"
+    ],
+    "Macro": "580 Calories | 40 g C | 45 g P | 25 g F",
+    "PrepTime": "20 min",
+    "CookTime": "15 min",
+    "Instructions": "Cuire les pâtes 'al dente'. Égouttez et émiettez le thon. Mélangez l'huile d'olive, l'ail, le vinaigre et l'oignon haché pour la vinaigrette. Dans un grand saladier, mélangez les pâtes refroidies, le thon, les tomates cerise coupées et la feta. Incorporez la vinaigrette et assaisonnez.",
+    "image": "../img/pasta-feta-tuna-salad.jpg",
+    "Status": "mealprep-froid"
+  }
