@@ -14,7 +14,7 @@ const CurrentStock = () => {
     });
 
     const [searchValue, setSearchValue] = useState<string>("");
-    const [selectedCategory, setSelectedCategory] = useState<"Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre">("Tout");
+    const [selectedcategory, setSelectedcategory] = useState<"Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre">("Tout");
     const [idCounter, setIdCounter] = useState(() => {
         const exist = localStorage.getItem("currentStockList");
         const list = exist ? JSON.parse(exist) : defaultList;
@@ -25,18 +25,23 @@ const CurrentStock = () => {
     const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
     const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {setSearchValue(e.target.value)};
-    const handleCategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedCategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
+    const handlecategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedcategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
     const handleOpenModal1 = () => {setModalState(true)};
     const handleCloseModal1 = () => {
         setFormData({
         id: ``,
-        Name: "",
-        Macro: "* Calories | * g C | * g P | * g F",
-        Price: 0,
-        Quantity: 0,
-        Unit: "",
-        Category: "",
-        Image: "/img2/"
+        name: "",
+        macro: {
+            calories : 0,
+            protein : 0,
+            fat : 0,
+            carbs : 0,
+        },
+        price: 0,
+        quantity: 0,
+        unit: "",
+        category: "",
+        image: "/img2/"
     })
         setModalState(false);
     };
@@ -47,15 +52,15 @@ const CurrentStock = () => {
     const handleMinusQuantityChange = (currentItem : Ingredient, event: React.MouseEvent) => {
         if (!currentStock) return;
 
-        if (currentItem.id !== '6') {
+        if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity - (10 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity - (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity - (1 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity - (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
@@ -64,15 +69,15 @@ const CurrentStock = () => {
     const handlePlusQuantityChange = (currentItem : Ingredient, event : React.MouseEvent) => {
         if (!currentStock) return;
 
-        if (currentItem.id !== '6') {
+        if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity + (10 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity + (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.Quantity + (1 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity + (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
@@ -81,14 +86,19 @@ const CurrentStock = () => {
 
     const [formData, setFormData] = useState<Ingredient>({
         id: "",
-        Name: "",
-        Macro: "* Calories | * g C | * g P | * g F",
-        Price: 0,
-        Quantity: 0,
-        Unit: "",
-        Category: "",
-        Image: "/img2/"
-    })
+        name: "",
+        macro: {
+            calories : 0,
+            protein : 0,
+            fat : 0,
+            carbs : 0,
+        },
+        price: 0,
+        quantity: 0,
+        unit: "",
+        category: "",
+        image: "/img2/"
+    });
 
     const formHandler = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -99,10 +109,10 @@ const CurrentStock = () => {
         }))
     }
 
-    const handleCategoryChangeBis = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handlecategoryChangeBis = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData((prev) => ({
             ...prev,
-            Category: e.target.value as "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre"
+            category: e.target.value as "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre"
         }));
     };
 
@@ -113,22 +123,22 @@ const CurrentStock = () => {
             return;
         }
 
-        const fileName = file.name;
+        const filename = file.name;
 
         setFormData((prev) => ({
             ...prev,
-            Image : `/img2/${fileName}`
+            Image : `/img2/${filename}`
         }))
         toast.success("L'image a bien été chargée")
     }
 
     const triCurrentStockList = (currentStockArr : Ingredient[]) => {
 
-        const protIngredient = currentStockArr.filter(element => element.Category === "Protéine");
-        const veggieIngredient = currentStockArr.filter(element => element.Category === "Légumes");
-        const feculentIngredient = currentStockArr.filter(element => element.Category === "Féculent");
-        const drinkIngredient = currentStockArr.filter(element => element.Category === "Boisson");
-        const otherIngredient = currentStockArr.filter(element => element.Category === "Autre");
+        const protIngredient = currentStockArr.filter(element => element.category === "Protéine");
+        const veggieIngredient = currentStockArr.filter(element => element.category === "Légumes");
+        const feculentIngredient = currentStockArr.filter(element => element.category === "Féculent");
+        const drinkIngredient = currentStockArr.filter(element => element.category === "Boisson");
+        const otherIngredient = currentStockArr.filter(element => element.category === "Autre");
 
         return [
             protIngredient,
@@ -142,10 +152,10 @@ const CurrentStock = () => {
     const ajouterIngredient = () => {
 
         if (
-            !formData.Name?.trim() ||
-            !formData.Unit?.trim() ||
-            !formData.Category?.trim() ||
-            formData.Price === undefined || formData.Price <= 0
+            !formData.name?.trim() ||
+            !formData.unit?.trim() ||
+            !formData.category?.trim() ||
+            formData.price === undefined || formData.price <= 0
         ) {
             toast.error("Veuillez remplir tous les champs obligatoires correctement");
             return;
@@ -156,7 +166,7 @@ const CurrentStock = () => {
             id: `${idCounter + 1}`
         }
 
-        if (currentStock.some(ingre => ingre.Name.trim().toLowerCase() === newIngredient.Name.trim().toLowerCase())) {
+        if (currentStock.some(ingre => ingre.name.trim().toLowerCase() === newIngredient.name.trim().toLowerCase())) {
             toast.error("Cet ingrédient existe déjà dans le stock");
             return;
         }
@@ -179,7 +189,7 @@ const CurrentStock = () => {
         const updatedList = currentStock.filter(e => e.id !== ingredientToDelete.id);
         setCurrentStock(updatedList);
         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
-        toast.error(`${ingredientToDelete.Name} a bien été supprimé`);
+        toast.error(`${ingredientToDelete.name} a bien été supprimé`);
         setIngredientToDelete(null);
         handleCloseModal2();
     };
@@ -196,7 +206,7 @@ const CurrentStock = () => {
                     <input type="text" className='searchInput' value={searchValue} onChange={handleSearchInput} placeholder='Vous cherchez un aliment en particulier ?'/>
                     <div className="searchIconContainer"><Search></Search></div>
                 </div>
-                <select className="category" name="category" value={selectedCategory} onChange={handleCategoryChange}>
+                <select className="category" name="category" value={selectedcategory} onChange={handlecategoryChange}>
                     <option value="Tout">Tout</option>
                     <option value="Protéine">Protéine</option>
                     <option value="Légumes">Légumes</option>
@@ -208,19 +218,19 @@ const CurrentStock = () => {
 
             <div className="currentStockGallery">
                 {currentStock
-                    ?.filter((item) => (selectedCategory === "Tout" || item.Category === selectedCategory) && item.Name.toLowerCase().includes(searchValue.toLowerCase()))
+                    ?.filter((item) => (selectedcategory === "Tout" || item.category === selectedcategory) && item.name.toLowerCase().includes(searchValue.toLowerCase()))
                     .map((item) => (
                       <div key={item.id} className="stockItem">
-                        <img src={item.Image} alt={item.Name} />
+                        <img src={item.image} alt={item.name} />
                         <div className="subTextDiv">
                             <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
-                            <h2>{item.Name}</h2>
-                            <h4>{item.Macro}</h4>
+                            <h2>{item.name}</h2>
+                            <h4>{`${item.macro.calories} Calories | ${item.macro.carbs} g C | ${item.macro.protein} g P | ${item.macro.fat} g F`}</h4>
                             <p><strong>Id : {item.id}</strong></p>
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
                                     <MinusCircle onClick={(e) => handleMinusQuantityChange(item, e)}></MinusCircle>
-                                    <div className="currentCount">{item.Quantity} {item.Unit}</div>
+                                    <div className="currentCount">{item.quantity} {item.unit}</div>
                                     <PlusCircle onClick={(e) => handlePlusQuantityChange(item, e)}></PlusCircle>
                                 </div>
                             </div>
@@ -247,8 +257,8 @@ const CurrentStock = () => {
                             <div className="sousElement">
                                 <label>Nom : </label>
                                 <textarea
-                                    name="Name"
-                                    value={formData.Name}
+                                    name="name"
+                                    value={formData.name}
                                     onChange={formHandler}
                                     placeholder='Entrer le nom'
                                 />
@@ -257,7 +267,7 @@ const CurrentStock = () => {
                                 <label>Macro : </label>
                                 <textarea
                                     name="Macro"
-                                    value={formData.Macro}
+                                    value={`${formData.macro.calories} Calories | ${formData.macro.carbs} g C | ${formData.macro.protein} g P | ${formData.macro.fat} g F`}
                                     onChange={formHandler}
                                     placeholder='Entrer les macros'
                                 />
@@ -265,24 +275,24 @@ const CurrentStock = () => {
                             <div className="sousElement">
                                 <label>Prix : </label>
                                 <textarea
-                                    name="Price"
-                                    value={formData.Price}
+                                    name="price"
+                                    value={formData.price}
                                     onChange={formHandler}
                                     placeholder='Entrer le prix au kilo'
                                 />
                             </div>
                             <div className="sousElement">
-                                <label>Unité : </label>
+                                <label>unité : </label>
                                 <textarea
-                                    name="Unit"
-                                    value={formData.Unit}
+                                    name="unit"
+                                    value={formData.unit}
                                     onChange={formHandler}
                                     placeholder="Entrer l'unité"
                                 />
                             </div>
                             <div className="sousElement">
                                 <label>Catégorie : </label>
-                                <select className="category" name="category" value={formData.Category} onChange={handleCategoryChangeBis}>
+                                <select className="category" name="category" value={formData.category} onChange={handlecategoryChangeBis}>
                                     <option value="''">-- Choisir --</option>
                                     <option value="Protéine">Protéine</option>
                                     <option value="Légumes">Légumes</option>
@@ -314,7 +324,7 @@ const CurrentStock = () => {
                             <h3>Confirmer la suppression</h3>
                             <div><X className='logo' onClick={handleCancelDelete}></X></div>
                         </div>
-                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.Name}</strong> ?<br/> Cette action est irréversible.</p>
+                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Cette action est irréversible.</p>
                       <div className="deleteModalActions">
                         <button className="confirmDeleteBtn" onClick={deleteIngredient}>Confirmer</button>
                         <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>

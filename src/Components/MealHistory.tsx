@@ -2,7 +2,7 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient, RecipeInfo } from './typeFile';
+import { Recipe, Ingredient, recipeInfo, RecipeIngredient } from './typeFile';
 import defaultList from './CurrentStock'
 
 const MealHistory = () => {
@@ -18,56 +18,18 @@ const MealHistory = () => {
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [{
-            "RecipeName": "Bœuf Bourguignon",
-            "Ingredient": [
-              "1000g Boeuf",
-              "180g Carotte",
-              "160g Oignon",
-              "250mL Vin Rouge",
-              "250mL Bouillon de Bœuf",
-              "10g Ail",
-              "10g Farine",
-              "Sel et Poivre"
-            ],
-            "Macro": "450 Calories | 15 g C | 38 g P | 22 g F",
-            "PrepTime": "20 min",
-            "CookTime": "3h",
-            "Instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-            "image": "../img/boeuf-bourgignon.jpg",
-            "Status": "normal"
-        },
-        {
-            "RecipeName": "Poulet Basquaise",
-            "Ingredient": [
-              "750g Cuisse de Poulet",
-              "240g Poivron",
-              "240g Tomate",
-              "160g Oignon",
-              "10g Ail",
-              "200mL Bouillon de Volaille",
-              "5g Paprika",
-              "15mL Huile d'Olive",
-              "Sel et Poivre"
-            ],
-            "Macro": "400 Calories | 12 g C | 35 g P | 22 g F",
-            "PrepTime": "15 min",
-            "CookTime": "1h30",
-            "Instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
-            "image": "../img/poulet-basquaise.jpg",
-            "Status": "normal"
-        }])
+        return ((saved) ? JSON.parse(saved) : recipeInfo)
     });
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
-            const saved = localStorage.getItem("globalRecipeList");
-            return ((saved) ? JSON.parse(saved) : RecipeInfo)
-        });
+        const saved = localStorage.getItem("globalRecipeList");
+        return ((saved) ? JSON.parse(saved) : recipeInfo)
+    });
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
-            const exist = localStorage.getItem("currentStockList");
-            return ((exist) ? JSON.parse(exist) : defaultList);
-        });
+        const exist = localStorage.getItem("currentStockList");
+        return ((exist) ? JSON.parse(exist) : defaultList);
+    });
 
     useEffect( () => {
         localStorage.setItem("mealHistoryList", JSON.stringify(mealHistory))
@@ -77,7 +39,6 @@ const MealHistory = () => {
     const [currentQuote, setCurrentQuote] = useState<string>(quotes[Math.floor(Math.random() * quotes.length)]);
     const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-
 
     const handleOpenHistoryModal = (currentRecipe : Recipe) => {setCurrentModalRecipe(currentRecipe)};
     const handleCloseHistoryModal = () => {setCurrentModalRecipe(null)};
@@ -89,28 +50,30 @@ const MealHistory = () => {
     const handleCloseModal4 = () => {setSelectedRecipe(null)};
 
     const changeFavoriteState = (targetRecipe: Recipe) => {
-        const newStatus = targetRecipe.Status === "favorite" ? "normal" : "favorite";
+        const newStatus = targetRecipe.status === "favorite" ? "normal" : "favorite";
 
         toast[newStatus === "favorite" ? "success" : "error"](
-            `${targetRecipe.RecipeName} a été ${newStatus === "favorite" ? "ajouté aux favoris" : "supprimé des favoris"}`
+            `${targetRecipe.recipeName} a été ${newStatus === "favorite" ? "ajouté aux favoris" : "supprimé des favoris"}`
         );
     
         setmealHistory(prevHistory => prevHistory.map(
             weeklyMeal => weeklyMeal.map(
-                recipe => recipe.RecipeName === targetRecipe.RecipeName
-                    ? { ...recipe, Status: newStatus }
+                recipe => recipe.recipeName === targetRecipe.recipeName
+                    ? { ...recipe, status: newStatus }
                     : recipe
             )
         ));
     
         setRecipeList(prevList => prevList.map(
-            recipe => recipe.RecipeName === targetRecipe.RecipeName
-                ? { ...recipe, Status: newStatus }
+            recipe => recipe.recipeName === targetRecipe.recipeName
+                ? { ...recipe, status: newStatus }
                 : recipe
         ));
-
-        localStorage.setItem("globalRecipeList", JSON.stringify(recipeList));
     };
+
+    useEffect(() => {
+        localStorage.setItem("globalRecipeList", JSON.stringify(recipeList));
+    }, [recipeList]);
 
     const deleteFromHistory = () => {
         if (!recipesToDelete) return;
@@ -118,20 +81,18 @@ const MealHistory = () => {
         const updatedList = mealHistory.filter(e => e !== recipesToDelete);
         setmealHistory(updatedList);
         localStorage.setItem("mealHistoryList", JSON.stringify(updatedList));
-        toast.success(`${recipesToDelete?.[0].RecipeName} et ${recipesToDelete?.[1].RecipeName} ont bien été supprimés`)
+        toast.success(`${recipesToDelete?.[0].recipeName} et ${recipesToDelete?.[1].recipeName} ont bien été supprimés`)
         setRecipesToDelete(null);
         handleCloseModal2();
     };
 
-    const stockDeduction = (groceryList: string[]) => {
+    const stockDeduction = (groceryList: RecipeIngredient[]) => {
         if (!groceryList || !currentStock) return;
 
-        const filteredGroceryList : string[] = [];
+        const filteredGroceryList : RecipeIngredient[] = [];
 
         for (const element of groceryList) {
-            const parts = element.trim().split(" ");
-            const numMatch = parts[0]?.match(/\d+/);
-            const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+            const quantity = element.quantity ? element.quantity : 0;
 
             if (quantity >= 10) {
                 filteredGroceryList.push(element);
@@ -142,19 +103,19 @@ const MealHistory = () => {
 
         const updatedStock = currentStock.map(item => {
             const match = filteredGroceryList.find(e => {
-                const parts = e.trim().split(" ");
-                const name = parts.slice(1).join(" ").split("(")[0].trim().toLowerCase();
-                return item.Name.trim().toLowerCase().includes(name);
+                const ing = currentStock.find(ele => ele.id == e.ingredientId);
+                const name = ing ? ing.name : ""
+                return item.name.trim().toLowerCase().includes(name);
             });
 
             if (!match) return item;
 
-            const numMatch = match.trim().split(" ")[0]?.match(/\d+/);
-            const neededQuantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+            const numMatch = match.quantity;
+            const neededQuantity = numMatch ? numMatch : 0;
 
             return {
                 ...item,
-                Quantity: Math.max(item.Quantity - neededQuantity, 0),
+                Quantity: Math.max(item.quantity - neededQuantity, 0),
             };
         });
 
@@ -163,6 +124,27 @@ const MealHistory = () => {
         toast.success("Stocks mis à jour !");
         handleCloseModal4();
     };
+
+    const macroCalculator = (recipe : Recipe) => {
+        const portions = 5
+        let cals = 0
+        let carbs = 0
+        let prot = 0
+        let fat = 0
+
+        for (const ingre of recipe.ingredient) {
+            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
+
+            if (!found) continue;
+
+            const ratio = ingre.quantity / 100
+            cals += found.macro.calories * ratio
+            carbs += found.macro.carbs * ratio
+            prot += found.macro.protein * ratio
+            fat += found.macro.fat * ratio
+        }
+        return (`${Math.round(cals / portions)} Calories | ${Math.round(carbs / portions)} g C | ${Math.round(prot / portions)} g P | ${Math.round(fat / portions)} g F`)
+    }
     
     return(
         <>
@@ -182,14 +164,14 @@ const MealHistory = () => {
                             <div className="recipeDisplay" key={recipeIndex}>
                                 <img src={recipe.image}/>
                                 <div className="textSubDiv">
-                                    <h2>{recipe.RecipeName}</h2>
+                                    <h2>{recipe.recipeName}</h2>
                                     <Bookmark 
                                         className='bookMarkIcon' 
-                                        color={recipe.Status === "favorite" ? "#78dc7d" : "white"} 
+                                        color={recipe.status === "favorite" ? "#78dc7d" : "white"} 
                                         onClick={() => changeFavoriteState(recipe)} 
                                     />
                                     <X className='deleteIcon' onClick={() => handleOpenModal2(weeklyMeal)}></X>
-                                    <p className='macrosPart'>{recipe.Macro}</p>
+                                    <p className='macrosPart'>{macroCalculator(recipe)}</p>
                                     <ShoppingCart className='ShoppingCartIcon' onClick={() => handleOpenModal4(recipe)}></ShoppingCart>
                                     <div className="centeredLinks">
                                         <button className="descBtn" onClick={() => handleOpenHistoryModal(recipe)}>Description</button>
@@ -207,15 +189,18 @@ const MealHistory = () => {
         {currentModalRecipe && (
             <div className="modalOverlay" onClick={handleCloseHistoryModal}>
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-                    <h2>{currentModalRecipe.RecipeName}</h2>
+                    <h2>{currentModalRecipe.recipeName}</h2>
 
-                    <p><strong>Préparation :</strong> {currentModalRecipe.PrepTime}</p>
-                    <p><strong>Cuisson :</strong> {currentModalRecipe.CookTime}</p>
-                    <p><strong>Ingrédients :</strong> <br /><br />{currentModalRecipe.Ingredient.map((element, index) => (
-                                <li key={index}>{element}</li>
-                            ))}</p>
-                    <p><strong>Instructions :</strong> <br /><br />{currentModalRecipe.Instructions}</p>
-                    <p><strong>Macros :</strong> <br /><br />{currentModalRecipe.Macro}</p>
+                    <p><strong>Préparation :</strong> {currentModalRecipe.prepTime}</p>
+                    <p><strong>Cuisson :</strong> {currentModalRecipe.cookTime}</p>
+                    <p><strong>Ingrédients :</strong> <br /><br />{currentModalRecipe.ingredient.map((element, index) => {
+                        const ing = currentStock.find(ele => ele.id == element.ingredientId)
+                        return (
+                            <li key={index}>{ing?.name} {element.quantity} {ing?.unit}</li>
+                        )
+                    })}</p>
+                    <p><strong>Instructions :</strong> <br /><br />{currentModalRecipe.instructions}</p>
+                    <p><strong>Macros :</strong> <br /><br />{macroCalculator(currentModalRecipe)}</p>
                     <button onClick={handleCloseHistoryModal}>Fermer</button>
                 </div>
             </div>
@@ -230,7 +215,7 @@ const MealHistory = () => {
                         <h3>Confirmer la suppression</h3>
                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
                     </div>
-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].RecipeName}</strong> et <strong>{recipesToDelete?.[1].RecipeName}</strong> ?<br/> Cette action est irréversible.</p>
+                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Cette action est irréversible.</p>
                   <div className="deleteModalActions">
                     <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
@@ -249,19 +234,20 @@ const MealHistory = () => {
                         <div><X className='logo' onClick={handleCloseModal4}></X></div>
                     </div>
                 <p>Cette action concerne : </p>
-                {selectedRecipe.Ingredient
+                {selectedRecipe.ingredient
                     .filter(e => {
-                        const parts = e.trim().split(" ");
-                        const numMatch = parts[0]?.match(/\d+/);
-                        const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
+                        const quantity = e.quantity ? e.quantity : 0;
                         return quantity >= 10;
                     })
-                    .map((e, index) => (
-                        <li key={index}>{e}</li>
-                    ))
+                    .map((e, index) => {
+                        const ing = currentStock.find(ele => ele.id == e.ingredientId)
+                        return(
+                            <li key={index}>{ing?.name}{e.quantity}</li>
+                        )
+                    })
                 }
                 <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.Ingredient)}>Confirmer</button>
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.ingredient)}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseModal4}>Annuler</button>
                   </div>
                 </div>

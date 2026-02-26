@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
-import { Recipe, RecipeInfo } from './typeFile';
+import { Recipe, recipeInfo } from './typeFile';
 
 const NewMeal = () => {
 
@@ -10,20 +10,20 @@ const NewMeal = () => {
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
     const [formData, setFormData] = useState<Recipe>({
-        RecipeName: "",
-        Ingredient: [""],
-        Macro: "",
-        PrepTime: "",
-        CookTime: "",
-        Instructions: "",
+        recipeName: "",
+        ingredient: [{ingredientId: "", quantity: 0}],
+        macro: "",
+        prepTime: "",
+        cookTime: "",
+        instructions: "",
         image: "",
-        Status: "normal"
+        status: "normal"
     });
     
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : RecipeInfo)
+        return ((saved) ? JSON.parse(saved) : recipeInfo)
     });
 
     const [modalState, setModalState] = useState<boolean>(false);
@@ -48,7 +48,7 @@ const NewMeal = () => {
         const value = e.target.value;
 
         setFormData((prev) => {
-            const updatedIngredients = [...prev.Ingredient];
+            const updatedIngredients = [...prev.ingredient];
             updatedIngredients[index] = value
             return {
                 ...prev,
@@ -60,30 +60,30 @@ const NewMeal = () => {
     const ajouterIngredient = () => {
         setFormData((prev) => ({
             ...prev,
-            Ingredient : [...prev.Ingredient, ""]
+            Ingredient : [...prev.ingredient, ""]
         }));
     }
 
     const ajouterRecette = () => {
-        const alreadyExist = recipeList.some(element => element.RecipeName === formData.RecipeName)
+        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName)
         
         if (alreadyExist) {
-            toast.error(`${formData.RecipeName} n'a pas pu être ajouté (Existe déjà)`)
+            toast.error(`${formData.recipeName} n'a pas pu être ajouté (Existe déjà)`)
             setFormData({
-                RecipeName: "",
-                Ingredient: [""],
-                Macro: "",
-                PrepTime: "",
-                CookTime: "",
-                Instructions: "",
+                recipeName: "",
+                ingredient: [{ingredientId: "", quantity: 0}],
+                macro: "",
+                prepTime: "",
+                cookTime: "",
+                instructions: "",
                 image: "",
-                Status: "normal"
+                status: "normal"
             });
             handleCloseConfirmationModal();
             return;
         }
 
-        if (!formData.RecipeName.trim() || formData.Ingredient.filter(i => i.trim() !== '').length === 0) {
+        if (!formData.recipeName.trim() || formData.ingredient.length === 0) {
             alert("Merci de remplir au moins le nom de la recette et un ingrédient.");
             handleCloseConfirmationModal();
             return;
@@ -92,17 +92,17 @@ const NewMeal = () => {
             const updatedRecipeList = [...recipeList, formData];
             setRecipeList(updatedRecipeList)
             setFormData({
-                RecipeName: "",
-                Ingredient: [""],
-                Macro: "",
-                PrepTime: "",
-                CookTime: "",
-                Instructions: "",
+                recipeName: "",
+                ingredient: [{ingredientId: "", quantity: 0}],
+                macro: "",
+                prepTime: "",
+                cookTime: "",
+                instructions: "",
                 image: "",
-                Status: "normal"
+                status: "normal"
             });
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-            toast.success(`${formData.RecipeName} ajoutée !`);
+            toast.success(`${formData.recipeName} ajoutée !`);
             nameRef.current?.focus();
             handleCloseConfirmationModal();
         }
@@ -128,7 +128,7 @@ const NewMeal = () => {
                 const currentRecipeName = parsedFileContent.RecipeName?.trim()
 
                 setRecipeList(prev => {
-                    const alreadyExist = prev.some(element => element.RecipeName === currentRecipeName);
+                    const alreadyExist = prev.some(element => element.recipeName === currentRecipeName);
 
                     if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
                         seen.add(currentRecipeName)
@@ -139,7 +139,7 @@ const NewMeal = () => {
                     }
                     return prev;
                 })
-                const alreadyExist = recipeList.some(element => element.RecipeName === currentRecipeName);
+                const alreadyExist = recipeList.some(element => element.recipeName === currentRecipeName);
 
                 if (seen.has(currentRecipeName) || alreadyExist) {
                         toast.error(`${currentRecipeName} n'a pas pu être ajouté (Existe déjà)`)
@@ -193,13 +193,13 @@ const NewMeal = () => {
                     <textarea
                       name="RecipeName"
                       ref={nameRef}
-                      value={formData.RecipeName}
+                      value={formData.recipeName}
                       onChange={handleChange}
                       placeholder='Entrer le nom de la recette'
                     />
 
                     <label>Ingredients : </label>
-                    {formData.Ingredient.map( (element, index) => (
+                    {formData.ingredient.map((element, index) => (
                         <div key={index}>
                             <input
                                 name='Ingredient'
@@ -217,7 +217,7 @@ const NewMeal = () => {
                     <label>Macros : </label>
                     <textarea
                       name="Macro"
-                      value={formData.Macro}
+                      value={formData.macro}
                       onChange={handleChange}
                       placeholder='Entrer les macros'
                     />
@@ -225,7 +225,7 @@ const NewMeal = () => {
                     <label>Temps de préparation : </label>
                     <textarea
                       name="PrepTime"
-                      value={formData.PrepTime}
+                      value={formData.prepTime}
                       onChange={handleChange}
                       placeholder='Entrer le temps de préparation'
                     />
@@ -233,7 +233,7 @@ const NewMeal = () => {
                     <label>Temps de cuisson : </label>
                     <textarea
                       name="CookTime"
-                      value={formData.CookTime}
+                      value={formData.cookTime}
                       onChange={handleChange}
                       placeholder='Entrer le temps de cuisson'
                     />
@@ -241,7 +241,7 @@ const NewMeal = () => {
                     <label>Instructions : </label>
                     <textarea
                       name="Instructions"
-                      value={formData.Instructions}
+                      value={formData.instructions}
                       onChange={handleChange}
                       placeholder='Entrer les instructions'
                     />
