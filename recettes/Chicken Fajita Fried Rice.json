@@ -1,22 +1,18 @@
 {
-  "RecipeName": "Chicken Fajita Fried Rice",
-  "Ingredient": [
-    "900g Blanc de poulet",
-    "30mL Huile d'olive",
-    "15g Jus de citron",
-    "300g Riz",
-    "200g Oignon",
-    "150g Poivron rouge",
-    "150g Poivron vert",
-    "15g Ail",
-    "30g Jus de citron",
-    "15mL Huile d'olive",
-    "Sel et Poivre"
+  "recipeName": "Chicken Fajita Fried Rice",
+  "ingredient": [
+    { "ingredientId": "1", "quantity": 900 },
+    { "ingredientId": "27", "quantity": 45 },
+    { "ingredientId": "57", "quantity": 45 },
+    { "ingredientId": "13", "quantity": 300 },
+    { "ingredientId": "11", "quantity": 200 },
+    { "ingredientId": "10", "quantity": 300 },
+    { "ingredientId": "44", "quantity": 15 },
+    { "ingredientId": "60", "quantity": 1 }
   ],
-  "Macro": "585 Calories | 44 g C | 48 g P | 22 g F",
-  "PrepTime": "20 min",
-  "CookTime": "30 min",
-  "Instructions": "Préparer le riz. Mariner le poulet avec les épices, puis le cuire par portions. Faire revenir les légumes, ajouter le riz et le poulet, mélanger et assaisonner avant de servir.",
+  "prepTime": "20 min",
+  "cookTime": "30 min",
+  "instructions": "Préparer le riz. Mariner le poulet avec les épices, puis le cuire par portions. Faire revenir les légumes, ajouter le riz et le poulet, mélanger et assaisonner avant de servir.",
   "image": "../img/Chicken-Fajita-Fried-Rice-807x1024.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

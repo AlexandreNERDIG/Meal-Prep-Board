@@ -1,24 +1,23 @@
 {
-  "RecipeName": "Chile Lemon Rice Bowls",
-  "Ingredient": [
-    "900g Haut de cuisse de poulet",
-    "150g Yaourt grec",
-    "30g Citron vert",
-    "300g Poivron",
-    "125g Oignon",
-    "340g Chou",
-    "20g Piment",
-    "30g Huile d'olive",
-    "15g Ail",
-    "227g Sauce tomate",
-    "50g Tomate",
-    "20g Coriandre",
-    "250g Riz"
+  "recipeName": "Chile Lemon Rice Bowls",
+  "ingredient": [
+    { "ingredientId": "2", "quantity": 900 },
+    { "ingredientId": "46", "quantity": 150 },
+    { "ingredientId": "34", "quantity": 30 },
+    { "ingredientId": "10", "quantity": 300 },
+    { "ingredientId": "11", "quantity": 125 },
+    { "ingredientId": "45", "quantity": 340 },
+    { "ingredientId": "42", "quantity": 20 },
+    { "ingredientId": "27", "quantity": 30 },
+    { "ingredientId": "44", "quantity": 15 },
+    { "ingredientId": "51", "quantity": 227 },
+    { "ingredientId": "22", "quantity": 50 },
+    { "ingredientId": "54", "quantity": 20 },
+    { "ingredientId": "13", "quantity": 250 }
   ],
-  "Macro": "560 Calories | 45 g C | 47 g P | 20 g F",
-  "PrepTime": "20 min",
-  "CookTime": "40 min",
-  "Instructions": "Préparer le poulet avec une marinade au yaourt, citron et épices, puis le rôtir au four avant de le découper. Faire revenir les légumes (poivrons, oignon, chou, ail et piment) avec huile, épices et sauce tomate. Ajouter le riz cuit et le poulet, mélanger avec du jus de citron et assaisonner.",
+  "prepTime": "20 min",
+  "cookTime": "40 min",
+  "instructions": "Préparer le poulet avec une marinade au yaourt, citron et épices, puis le rôtir au four avant de le découper. Faire revenir les légumes (poivrons, oignon, chou, ail et piment) avec huile, épices et sauce tomate. Ajouter le riz cuit et le poulet, mélanger avec du jus de citron et assaisonner.",
   "image": "../img/Chili-Lemon-Rice-Bowls-819x1024.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

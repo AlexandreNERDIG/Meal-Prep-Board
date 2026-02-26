@@ -1,25 +1,24 @@
 {
-  "RecipeName": "Sriracha Peanut Chicken",
-  "Ingredient": [
-    "900g Haut de cuisse de poulet",
-    "15g Huile d'olive",
-    "150g Poivron",
-    "75g Ciboule",
-    "227g Brocoli",
-    "100g Carotte",
-    "300g Riz",
-    "28g Beurre de cacahuète",
-    "60g Sauce soja",
-    "15g Vinaigre de riz",
-    "42g Miel",
-    "15g Sriracha",
-    "10g Huile de sésame",
-    "14g Mayonnaise"
+  "recipeName": "Sriracha Peanut Chicken",
+  "ingredient": [
+    { "ingredientId": "25", "quantity": 900 },
+    { "ingredientId": "27", "quantity": 15 },
+    { "ingredientId": "10", "quantity": 150 },
+    { "ingredientId": "33", "quantity": 75 },
+    { "ingredientId": "31", "quantity": 227 },
+    { "ingredientId": "21", "quantity": 100 },
+    { "ingredientId": "13", "quantity": 300 },
+    { "ingredientId": "37", "quantity": 28 },
+    { "ingredientId": "38", "quantity": 60 },
+    { "ingredientId": "39", "quantity": 15 },
+    { "ingredientId": "35", "quantity": 42 },
+    { "ingredientId": "36", "quantity": 15 },
+    { "ingredientId": "40", "quantity": 10 },
+    { "ingredientId": "60", "quantity": 14 }
   ],
-  "Macro": "548 Calories | 34 g C | 42 g P | 27 g F",
-  "PrepTime": "20 min",
-  "CookTime": "30 min",
-  "Instructions": "Faites cuire le riz. Mélangez la sauce avec miel, beurre de cacahuète, vinaigre, sauce soja, sriracha et huile de sésame. Faites mariner et cuire le poulet, puis faites revenir les légumes. Ajoutez le riz et mélangez avec la sauce et le poulet. Servez chaud avec ciboule si désiré.",
+  "prepTime": "20 min",
+  "cookTime": "30 min",
+  "instructions": "Faites cuire le riz. Mélangez la sauce avec miel, beurre de cacahuète, vinaigre, sauce soja, sriracha et huile de sésame. Faites mariner et cuire le poulet, puis faites revenir les légumes. Ajoutez le riz et mélangez avec la sauce et le poulet. Servez chaud avec ciboule si désiré.",
   "image": "../img/Sriracha-Peanut-Chicken-Rice-Bowls-807x1024.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

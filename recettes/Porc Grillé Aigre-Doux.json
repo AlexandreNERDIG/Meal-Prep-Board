@@ -1,21 +1,20 @@
 {
-    "RecipeName": "Porc Grillé Aigre-Doux",
-    "Ingredient": [
-      "900g Porc",
-      "30g Miel",
-      "45mL Sauce soja",
-      "15mL Vinaigre de riz",
-      "300g Riz",
-      "450g Brocoli",
-      "15mL Huile de sésame",
-      "15g Gingembre",
-      "15g Ail",
-      "Sel et Poivre"
-    ],
-    "Macro": "620 Calories | 55 g C | 45 g P | 25 g F",
-    "PrepTime": "15 min",
-    "CookTime": "30 min",
-    "Instructions": "Faites cuire le riz. Mélangez miel, sauce soja, vinaigre de riz et huile de sésame pour la sauce. Faites griller le porc coupé en cubes. Faites sauter le brocoli avec l'ail et le gingembre. Mélangez le porc et les légumes avec la sauce. Portionnez avec le riz.",
-    "image": "../img/pork-sweet-sour-brocoli.jpg",
-    "Status": "mealprep"
-  }
+  "recipeName": "Porc Grillé Aigre-Doux",
+  "ingredient": [
+    { "ingredientId": "30", "quantity": 900 },
+    { "ingredientId": "35", "quantity": 30 },
+    { "ingredientId": "38", "quantity": 45 },
+    { "ingredientId": "39", "quantity": 15 },
+    { "ingredientId": "15", "quantity": 300 },
+    { "ingredientId": "31", "quantity": 450 },
+    { "ingredientId": "40", "quantity": 15 },
+    { "ingredientId": "43", "quantity": 15 },
+    { "ingredientId": "44", "quantity": 15 },
+    { "ingredientId": "60", "quantity": 1 }
+  ],
+  "prepTime": "15 min",
+  "cookTime": "30 min",
+  "instructions": "Faites cuire le riz. Mélangez miel, sauce soja, vinaigre de riz et huile de sésame pour la sauce. Faites griller le porc coupé en cubes. Faites sauter le brocoli avec l'ail et le gingembre. Mélangez le porc et les légumes avec la sauce. Portionnez avec le riz.",
+  "image": "../img/pork-sweet-sour-brocoli.jpg",
+  "status": "mealprep"
+}

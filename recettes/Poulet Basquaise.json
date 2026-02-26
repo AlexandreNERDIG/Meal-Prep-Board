@@ -1,20 +1,19 @@
 {
-  "RecipeName": "Poulet Basquaise",
-  "Ingredient": [
-    "750g Blanc de Poulet",
-    "240g Poivron",
-    "240g Tomate",
-    "160g Oignon",
-    "10g Ail",
-    "200mL Bouillon de Volaille",
-    "250g Riz",
-    "15mL Huile d'Olive",
-    "Sel et Poivre"
+  "recipeName": "Poulet Basquaise",
+  "ingredient": [
+    { "ingredientId": "1", "quantity": 750 },
+    { "ingredientId": "10", "quantity": 240 },
+    { "ingredientId": "22", "quantity": 240 },
+    { "ingredientId": "11", "quantity": 160 },
+    { "ingredientId": "44", "quantity": 10 },
+    { "ingredientId": "61", "quantity": 200 },
+    { "ingredientId": "15", "quantity": 250 },
+    { "ingredientId": "27", "quantity": 15 },
+    { "ingredientId": "60", "quantity": 1 }
   ],
-  "Macro": "550 Calories | 55 g C | 55 g P | 15 g F",
-  "PrepTime": "15 min",
-  "CookTime": "1h30",
-  "Instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
+  "prepTime": "15 min",
+  "cookTime": "1h30",
+  "instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
   "image": "../img/poulet-basquaise.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

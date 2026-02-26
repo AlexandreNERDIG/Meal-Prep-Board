@@ -2,7 +2,8 @@ import { useState } from 'react';
 import toast from "react-hot-toast"
 import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
-import { Recipe, RecipeInfo } from './typeFile';
+import { Recipe, recipeInfo, Ingredient, defaultList } from './typeFile';
+import MealHistory from './MealHistory';
 
 const RecipeList = () => {
 
@@ -11,7 +12,12 @@ const RecipeList = () => {
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : RecipeInfo)
+        return ((saved) ? JSON.parse(saved) : recipeInfo)
+    });
+
+    const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
+            const exist = localStorage.getItem("currentStockList");
+            return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -25,10 +31,10 @@ const RecipeList = () => {
     const handleConfirmDelete = () => {
         if (!recipeToDelete) return;
 
-        const updatedRecipeList = recipeList.filter(element => element.RecipeName !== recipeToDelete.RecipeName);
+        const updatedRecipeList = recipeList.filter(element => element.recipeName !== recipeToDelete.recipeName);
         setRecipeList(updatedRecipeList);
         localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList));
-        toast.error(`${recipeToDelete.RecipeName} à bien été supprimer`)
+        toast.error(`${recipeToDelete.recipeName} à bien été supprimer`)
         setRecipeToDelete(null);
         handleCloseModal()
     };
@@ -40,12 +46,32 @@ const RecipeList = () => {
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${recipe.RecipeName || "recette"}.json`;
+        a.download = `${recipe.recipeName || "recette"}.json`;
         a.click();
 
         URL.revokeObjectURL(url);
-
         toast.success("Téléchargement en cours");
+    }
+
+    const macroCalculator = (recipe : Recipe) => {
+        const portions = 5
+        let cals = 0
+        let carbs = 0
+        let prot = 0
+        let fat = 0
+
+        for (const ingre of recipe.ingredient) {
+            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
+
+            if (!found) continue;
+
+            const ratio = ingre.quantity / 100
+            cals += found.macro.calories * ratio
+            carbs += found.macro.carbs * ratio
+            prot += found.macro.protein * ratio
+            fat += found.macro.fat * ratio
+        }
+        return (`${Math.round(cals / portions)} Calories | ${Math.round(carbs / portions)} g C | ${Math.round(prot / portions)} g P | ${Math.round(fat / portions)} g F`)
     }
 
     return(
@@ -59,10 +85,10 @@ const RecipeList = () => {
                     <div key={index} className="flashCard">
                         <img src={element.image}/>
                         <div className="subDivText">
-                            <h3>{element.PrepTime}</h3>
-                            <h2>{element.RecipeName}</h2>
-                            <p>{element.Instructions}</p>
-                            <p className="macro">{element.Macro}</p>
+                            <h3>{element.prepTime}</h3>
+                            <h2>{element.recipeName}</h2>
+                            <p>{element.instructions}</p>
+                            <p className="macro">{macroCalculator(element)}</p>
                             <div className="centeredButton">
                                 <button className="descBtn" onClick={() => handleOpenModal(element)}>Description</button>
                                 <Download className='DlBoutton' onClick={() => handleSingleDownloadRecipe(element)}></Download>
@@ -79,7 +105,7 @@ const RecipeList = () => {
             <div className="modalOverlay" onClick={handleCloseModal}>
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="boxInfos">
-                        <h2>{selectedRecipe.RecipeName}</h2>
+                        <h2>{selectedRecipe.recipeName}</h2>
                         <div 
                           className="icon"
                           onMouseEnter={() => setIsHovered(true)}
@@ -88,13 +114,18 @@ const RecipeList = () => {
                             {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
                         </div>
                     </div>
-                    <p><strong>Préparation :</strong> {selectedRecipe.PrepTime}</p>
-                    <p><strong>Cuisson :</strong> {selectedRecipe.CookTime}</p>
-                    <p><strong>Ingrédients :</strong> <br /><br />{selectedRecipe.Ingredient.map((element, index) => (
-                                <li key={index}>{element}</li>
-                            ))}</p>
-                    <p><strong>Instructions :</strong> <br /><br />{selectedRecipe.Instructions}</p>
-                    <p><strong>Macros :</strong> <br /><br />{selectedRecipe.Macro}</p>
+                    <p><strong>Préparation :</strong> {selectedRecipe.prepTime}</p>
+                    <p><strong>Cuisson :</strong> {selectedRecipe.cookTime}</p>
+                    <p><strong>Ingrédients :</strong> <br/><br/>
+                        {selectedRecipe.ingredient.map((element, index) => {
+                            const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
+                            return (
+                                <li key={index}>{ing?.name} {element.quantity} {ing?.unit}</li>
+                            )
+                        })}
+                    </p>
+                    <p><strong>Instructions :</strong> <br /><br />{selectedRecipe.instructions}</p>
+                    <p><strong>Macros :</strong> <br /><br />{macroCalculator(selectedRecipe)}</p>
                     <button onClick={handleCloseModal}>Fermer</button>
                 </div>
             </div>
@@ -109,7 +140,7 @@ const RecipeList = () => {
                         <h3>Confirmer la suppression</h3>
                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
                     </div>
-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.RecipeName}</strong> ?<br/> Cette action est irréversible.</p>
+                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.recipeName}</strong> ?<br/> Cette action est irréversible.</p>
                   <div className="deleteModalActions">
                     <button className="confirmDeleteBtn" onClick={handleConfirmDelete}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCancelDelete}>Annuler</button>

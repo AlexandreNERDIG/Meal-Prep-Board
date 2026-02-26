@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './HomePage.css';
 import { X, Smartphone} from 'react-feather';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient, RecipeInfo, defaultList } from './typeFile';
+import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
 
 const HomePage = () => {
@@ -11,7 +11,7 @@ const HomePage = () => {
 
     useEffect(() => {
         if (!localStorage.getItem(RECIPES_KEY)) {
-            localStorage.setItem(RECIPES_KEY, JSON.stringify(RecipeInfo));
+            localStorage.setItem(RECIPES_KEY, JSON.stringify(recipeInfo));
         }
     }, []);
 
@@ -62,7 +62,7 @@ const HomePage = () => {
 
     const [recipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : RecipeInfo)
+        return ((saved) ? JSON.parse(saved) : recipeInfo)
     });
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
@@ -83,24 +83,25 @@ const HomePage = () => {
     const getRecipeScore = (recipe : Recipe) => {
         let score = 1;
 
-        if (recipe.Status === "favorite") score += 2;
+        if (recipe.status === "favorite") score += 2;
 
-        recipe.Ingredient.forEach(ing => {
-            const ingParts = ing.split(" ");
-            const numMatch = ingParts[0].match(/\d+/); 
-            const ingNum = numMatch ? parseInt(numMatch[0], 10) : 0;
-            const ingName = ingParts.slice(1).join(" ");
+        recipe.ingredient.forEach(ing => {
+            const ingParts = currentStock.find(ele => ele.id == ing.ingredientId);
+            const ingName = ingParts ? ingParts.name : "";
 
-            const found = currentStock.find(s => s.Name.toLowerCase().includes(ingName.toLowerCase()) && s.Quantity >= ingNum);
+            const numMatch = ing.quantity; 
+            const ingNum = numMatch ? numMatch : 0;
+
+            const found = currentStock.find(s => s.name.toLowerCase().includes(ingName.toLowerCase()) && s.quantity >= ingNum);
             if (found) {
-              if (found.Category === "Protéine") score += 1;
-              else if (found.Category === "Féculent" || found.Category === "Légumes") score += 0.5;
+              if (found.category === "Protéine") score += 1;
+              else if (found.category === "Féculent" || found.category === "Légumes") score += 0.5;
             }
         });
 
         const last3weeks = mealHistory.slice(-3).flat();
 
-        if (last3weeks.some(r => r.RecipeName === recipe.RecipeName)) {
+        if (last3weeks.some(r => r.recipeName === recipe.recipeName)) {
             score -= 2 
         } else {
             score += 1
@@ -114,7 +115,7 @@ const HomePage = () => {
             recipe,
             score: getRecipeScore(recipe)
         }));
-        scoredRecipes.forEach(e => console.log(e.score, e.recipe.RecipeName));
+        scoredRecipes.forEach(e => console.log(e.score, e.recipe.recipeName));
         scoredRecipes.sort((a, b) => b.score - a.score);
         return scoredRecipes.map(item => item.recipe);
     }
@@ -170,15 +171,16 @@ const HomePage = () => {
     const WeeklyGroceries = (recipeList: Recipe[], weeklyRecipe1: number, weeklyRecipe2: number, currentStock: Ingredient[]): [string[], string[]] => {
         const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
 
-        const addIngredients = (ingredients: string[]) => {
+        const addIngredients = (ingredients: RecipeIngredient[]) => {
             for (const ingre of ingredients) {
-                const parts = ingre.trim().split(" ");
-                const numMatch = parts[0]?.match(/\d+/);
-                const quantity = numMatch ? parseInt(numMatch[0], 10) : 0;
-                const unitMatch = parts[0]?.match(/[a-zA-Z]+/);
-                const unit = unitMatch ? unitMatch[0] : "g";
+                const ing = currentStock.find(ele => ele.id == ingre.ingredientId);
+                const name = ing ? ing.name : "";
 
-                const name = parts.slice(1).join(" ").trim().toLowerCase();
+                const numMatch = ingre.quantity; 
+                const quantity = numMatch ? numMatch : 0;
+
+                const unitMatch = ing?.unit;
+                const unit = unitMatch ? unitMatch : "g";
 
                 const existing = mergedGroceryMap.get(name);
                 if (existing) {
@@ -189,15 +191,15 @@ const HomePage = () => {
             }
         };
 
-        addIngredients(recipeList[weeklyRecipe1]?.Ingredient || []);
-        addIngredients(recipeList[weeklyRecipe2]?.Ingredient || []);
+        addIngredients(recipeList[weeklyRecipe1]?.ingredient || []);
+        addIngredients(recipeList[weeklyRecipe2]?.ingredient || []);
 
         const availableGroceryList: string[] = [];
         const notAvailableGroceryList: string[] = [];
 
         mergedGroceryMap.forEach((data, name) => {
-            const stockItem = currentStock.find(item => item.Name.trim().toLowerCase() === name); 
-            const stockQty = stockItem?.Quantity || 0; 
+            const stockItem = currentStock.find(item => item.name.trim().toLowerCase() === name); 
+            const stockQty = stockItem?.quantity || 0; 
 
             if (stockQty >= data.quantity && data.quantity >= 10) {
                 availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`); 
@@ -223,7 +225,7 @@ const HomePage = () => {
             const match = groceryList.find(e => {
                 const parts = e.trim().split(" ");
                 const name = parts.slice(1).join(" ").split("(")[0].trim().toLowerCase();
-                return item.Name.trim().toLowerCase() === name;
+                return item.name.trim().toLowerCase() === name;
             });
 
             if (!match) return item;
@@ -233,7 +235,7 @@ const HomePage = () => {
 
             return {
                 ...item,
-                Quantity: Math.max(item.Quantity - neededQuantity, 0),
+                Quantity: Math.max(item.quantity - neededQuantity, 0),
             };
         });
 
@@ -248,35 +250,37 @@ const HomePage = () => {
         setAvailableGroceryList(available);
         setNotAvailableGroceryList(notAvailable);
     }, [weeklyRecipe1, weeklyRecipe2, currentStock, recipeList]);
-    
-    const DailyMacros = () : string[] | null => {
-        let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
-        let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
-        let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
-        let FinalArr = [""]
-        if (NumTab1 == null || NumTab2 == null) {
-            return null
-        }
-        for (let i =0; i < NumTab1.length; i++) {
-            let ValeurFinale = +NumTab1[i] + +NumTab2[i]
-            FinalArr.push(ValeurFinale + " " + ConstArr[i])
-        }
-        return FinalArr;
-    }
 
-    const WeeklyMacros = () : string[] | null => {
-        let NumTab1 = recipeList[weeklyRecipe1].Macro.match(/\d+/g)
-        let NumTab2 = recipeList[weeklyRecipe2].Macro.match(/\d+/g)
-        let ConstArr = ["Calories", "Carbs", "Proteines", "Fat"]
-        let FinalArr = [""]
-        if (NumTab1 == null || NumTab2 == null) {
-            return null
+    const macroCalculatorDaily = (recipe : Recipe, portions : number) => {
+        let cals = 0
+        let carbs = 0
+        let prot = 0
+        let fat = 0
+
+        for (const ingre of recipe.ingredient) {
+            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
+
+            if (!found) continue;
+
+            const ratio = ingre.quantity / 100
+            cals += found.macro.calories * ratio
+            carbs += found.macro.carbs * ratio
+            prot += found.macro.protein * ratio
+            fat += found.macro.fat * ratio
         }
-        for (let i =0; i < NumTab1.length; i++) {
-            let ValeurFinale = (+NumTab1[i] * 5) + (+NumTab2[i] * 5)
-            FinalArr.push(ValeurFinale + " " + ConstArr[i])
-        }
-        return FinalArr;
+        return ([Math.round(cals / portions), Math.round(carbs / portions), Math.round(prot / portions), Math.round(fat / portions)])
+    }
+    
+    const DailyMacros = (portions : number)=> {
+        if (!recipeList[weeklyRecipe1]) return;
+        if (!recipeList[weeklyRecipe2]) return;
+
+        let NumTab1 = macroCalculatorDaily(recipeList[weeklyRecipe1], portions) 
+        let NumTab2 = macroCalculatorDaily(recipeList[weeklyRecipe2], portions) 
+
+        let finalArr = [`${Math.round(NumTab1[0]+NumTab2[0])} Calories`, `${Math.round(NumTab1[1]+NumTab2[1])} g C`, `${Math.round(NumTab1[2]+NumTab2[2])} g P`, `${Math.round(NumTab1[3]+NumTab2[3])} g F`]
+    
+        return finalArr;
     }
 
     const confirmedChoices = () => {
@@ -291,8 +295,8 @@ const HomePage = () => {
         handleCloseConfirmationModal();
     };
 
-    const dailyMacros = DailyMacros();
-    const weeklyMacros = WeeklyMacros();
+    const dailyMacros = DailyMacros(5);
+    const weeklyMacros = DailyMacros(1);
     const weeklyGroceries = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
     const [availableGroceryList, setAvailableGroceryList] = useState(weeklyGroceries[0]);
     const [notAvailableGroceryList, setNotAvailableGroceryList] = useState(weeklyGroceries[1]);
@@ -345,25 +349,31 @@ const HomePage = () => {
                     <div className="recipe">
                         <img src={recipeList[weeklyRecipe1]?.image} />
                         <div className="recipeDetails">
-                            <h2>{recipeList[weeklyRecipe1]?.RecipeName}</h2>
+                            <h2>{recipeList[weeklyRecipe1]?.recipeName}</h2>
                             <ul>
-                                {recipeList[weeklyRecipe1]?.Ingredient.map((element, index) => (
-                                    <li key={index}>{element}</li>
-                                ))}
+                                {recipeList[weeklyRecipe1]?.ingredient.map((element, index) => {
+                                    const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
+                                    return (
+                                        <li key={index}>{element.quantity}{ing?.unit} {ing?.name}</li>
+                                    )
+                                })}
                             </ul>
-                            <h5>{recipeList[weeklyRecipe1]?.Macro}</h5>
+                            <h5>{recipeList[weeklyRecipe1]?.macro}</h5>
                             <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
                         </div>
                     </div>
                     <div className="recipe">
                         <div className="recipeDetails">
-                            <h2>{recipeList[weeklyRecipe2]?.RecipeName}</h2>
+                            <h2>{recipeList[weeklyRecipe2]?.recipeName}</h2>
                             <ul>
-                                {recipeList[weeklyRecipe2]?.Ingredient.map((element, index) => (
-                                    <li key={index}>{element}</li>
-                                ))}
+                                {recipeList[weeklyRecipe2]?.ingredient.map((element, index) => {
+                                    const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
+                                    return (
+                                        <li key={index}>{element.quantity}{ing?.unit} {ing?.name}</li>
+                                    )
+                                })}
                             </ul>
-                            <h5>{recipeList[weeklyRecipe2]?.Macro}</h5>
+                            <h5>{recipeList[weeklyRecipe2]?.macro}</h5>
                             <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
                         </div>
                         <img src={recipeList[weeklyRecipe2]?.image}/>

@@ -1,21 +1,20 @@
 {
-  "RecipeName": "Hot Honey Pork Stir Fry",
-  "Ingredient": [
-    "900g Porc",
-    "15g Huile d'olive",
-    "150g Poivron",
-    "75g Ciboule",
-    "340g Haricots verts",
-    "300g Riz",
-    "30g Huile de sésame",
-    "45g Sauce soja",
-    "15g Vinaigre de riz",
-    "85g Miel"
+  "recipeName": "Hot Honey Pork Stir Fry",
+  "ingredient": [
+    { "ingredientId": "30", "quantity": 900 },
+    { "ingredientId": "30", "quantity": 15 },
+    { "ingredientId": "10", "quantity": 150 },
+    { "ingredientId": "33", "quantity": 75 },
+    { "ingredientId": "50", "quantity": 340 },
+    { "ingredientId": "13", "quantity": 300 },
+    { "ingredientId": "40", "quantity": 30 },
+    { "ingredientId": "38", "quantity": 45 },
+    { "ingredientId": "39", "quantity": 15 },
+    { "ingredientId": "35", "quantity": 85 }
   ],
-  "Macro": "805 Calories | 71 g C | 42 g P | 39 g F",
-  "PrepTime": "10 min",
-  "CookTime": "25 min",
-  "Instructions": "Faites cuire le riz. Coupez les légumes et mélangez la sauce avec miel, vinaigre, sauce soja et huile de sésame. Faites revenir le porc, puis les légumes. Mélangez le tout avec la sauce et servez chaud.",
+  "prepTime": "10 min",
+  "cookTime": "25 min",
+  "instructions": "Faites cuire le riz. Coupez les légumes et mélangez la sauce avec miel, vinaigre, sauce soja et huile de sésame. Faites revenir le porc, puis les légumes. Mélangez le tout avec la sauce et servez chaud.",
   "image": "../img/Hot-Honey-Pork-Stir-Fry-807x1024.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

@@ -1,21 +1,20 @@
 {
-  "RecipeName": "Peanut Turkey Stir Fry",
-  "Ingredient": [
-    "900g Dinde",
-    "680g Poêlé Wok",
-    "150g Riz",
-    "15mL Huile d'olive",
-    "45mL Sauce soja",
-    "84g Miel",
-    "56g Beurre de cacahuète",
-    "30mL Vinaigre de riz",
-    "10mL Huile de sésame",
-    "Sel et Poivre"
+  "recipeName": "Peanut Turkey Stir Fry",
+  "ingredient": [
+    { "ingredientId": "53", "quantity": 900 },
+    { "ingredientId": "41", "quantity": 680 },
+    { "ingredientId": "15", "quantity": 150 },
+    { "ingredientId": "27", "quantity": 15 },
+    { "ingredientId": "38", "quantity": 45 },
+    { "ingredientId": "35", "quantity": 84 },
+    { "ingredientId": "37", "quantity": 56 },
+    { "ingredientId": "39", "quantity": 30 },
+    { "ingredientId": "40", "quantity": 10 },
+    { "ingredientId": "60", "quantity": 1 }
   ],
-  "Macro": "632 Calories | 57 g C | 42 g P | 26 g F",
-  "PrepTime": "5 min",
-  "CookTime": "25 min",
-  "Instructions": "Cuire le riz. Faire revenir la dinde et les légumes dans l’huile d’olive. Ajouter la sauce au beurre de cacahuète et mélanger jusqu’à épaississement, puis servir chaud.",
+  "prepTime": "5 min",
+  "cookTime": "25 min",
+  "instructions": "Cuire le riz. Faire revenir la dinde et les légumes dans l’huile d’olive. Ajouter la sauce au beurre de cacahuète et mélanger jusqu’à épaississement, puis servir chaud.",
   "image": "../img/Peanut-Turkey-Stir-Fry.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

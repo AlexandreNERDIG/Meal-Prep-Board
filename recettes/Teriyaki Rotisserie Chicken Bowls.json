@@ -1,22 +1,21 @@
 {
-    "RecipeName": "Teriyaki Rotisserie Chicken Bowls",
-    "Ingredient": [
-        "900g Poulet",
-        "135g Teriyaki sauce",
-        "10g Graines de sésame",
-        "10g Ciboule",
-        "290g Riz", 
-        "15g Sauce soja",
-        "15g Vinaigre de riz",
-        "15g Crispy Chilie Oil",
-        "340g Chou",
-        "100g Carotte",
-        "21g Miel"
-    ],
-    "Macro": "587 Calories | 33 g C | 39 g P | 28 g F",
-    "PrepTime": "20 min",
-    "CookTime": "5 min",
-    "Instructions": "Cuisez le riz. Mélangez le chou, carotte, vinaigre, huile de chili et miel pour la slaw. Ajoutez le poulet, sauce teriyaki, riz, sauce soja et vinaigre de riz. Servez chaud avec graines de sésame et ciboule.",
-    "image": "../img/Teriyaki-Rotisserie-Chicken-Bowls-WP-807x1024.jpg",
-    "Status": "normal"
+  "recipeName": "Teriyaki Rotisserie Chicken Bowls",
+  "ingredient": [
+    { "ingredientId": "9", "quantity": 900 },
+    { "ingredientId": "18", "quantity": 135 },
+    { "ingredientId": "6", "quantity": 10 },
+    { "ingredientId": "24", "quantity": 10 },
+    { "ingredientId": "19", "quantity": 290 },
+    { "ingredientId": "5", "quantity": 15 },
+    { "ingredientId": "7", "quantity": 15 },
+    { "ingredientId": "38", "quantity": 15 },
+    { "ingredientId": "34", "quantity": 340 },
+    { "ingredientId": "20", "quantity": 100 },
+    { "ingredientId": "36", "quantity": 21 }
+  ],
+  "prepTime": "20 min",
+  "cookTime": "5 min",
+  "instructions": "Cuisez le riz. Mélangez le chou, carotte, vinaigre, huile de chili et miel pour la slaw. Ajoutez le poulet, sauce teriyaki, riz, sauce soja et vinaigre de riz. Servez chaud avec graines de sésame et ciboule.",
+  "image": "../img/Teriyaki-Rotisserie-Chicken-Bowls-WP-807x1024.jpg",
+  "status": "normal"
 }

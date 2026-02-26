@@ -1,19 +1,18 @@
 {
-  "RecipeName": "Easy Ground Chicken Curry",
-  "Ingredient": [
-    "900g Blanc de poulet",
-    "125g Oignon",
-    "30g Huile d'olive",
-    "15g Ail",
-    "15g Gingembre",
-    "425g Sauce tomate",
-    "270g Riz",
-    "450g Pois"
+  "recipeName": "Easy Ground Chicken Curry",
+  "ingredient": [
+    { "ingredientId": "1", "quantity": 900 },
+    { "ingredientId": "12", "quantity": 125 },
+    { "ingredientId": "30", "quantity": 30 },
+    { "ingredientId": "15", "quantity": 15 },
+    { "ingredientId": "43", "quantity": 15 },
+    { "ingredientId": "51", "quantity": 425 },
+    { "ingredientId": "13", "quantity": 270 },
+    { "ingredientId": "52", "quantity": 450 }
   ],
-  "Macro": "590 Calories | 56 g C | 49 g P | 18 g F",
-  "PrepTime": "10 min",
-  "CookTime": "30 min",
-  "Instructions": "Faites cuire le riz avec un peu d'huile, cumin et ail. Pendant ce temps, faites revenir l'oignon, l'ail, le gingembre et les épices, puis ajoutez le poulet et faites-le dorer. Ajoutez la sauce tomate et l'eau, laissez mijoter pour épaissir. Mélangez avec le riz et les pois, assaisonnez, servez chaud.",
+  "prepTime": "10 min",
+  "cookTime": "30 min",
+  "instructions": "Faites cuire le riz avec un peu d'huile, cumin et ail. Pendant ce temps, faites revenir l'oignon, l'ail, le gingembre et les épices, puis ajoutez le poulet et faites-le dorer. Ajoutez la sauce tomate et l'eau, laissez mijoter pour épaissir. Mélangez avec le riz et les pois, assaisonnez, servez chaud.",
   "image": "../img/Ground-Chicken-Curry-807x1024.jpg",
-  "Status": "normal"
+  "status": "normal"
 }

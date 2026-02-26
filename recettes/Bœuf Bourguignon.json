@@ -1,20 +1,19 @@
 {
-  "RecipeName": "Bœuf Bourguignon",
-  "Ingredient": [
-    "1000g Boeuf",
-    "180g Carotte",
-    "160g Oignon",
-    "250mL Vin Rouge",
-    "250mL Bouillon de Bœuf",
-    "750g Pommes de terre",
-    "10g Ail",
-    "10g Farine",
-    "Sel et Poivre"
+  "recipeName": "Bœuf Bourguignon",
+  "ingredient": [
+    { "ingredientId": "7", "quantity": 1000 },
+    { "ingredientId": "21", "quantity": 180 },
+    { "ingredientId": "11", "quantity": 160 },
+    { "ingredientId": "26", "quantity": 250 },
+    { "ingredientId": "61", "quantity": 250 },
+    { "ingredientId": "14", "quantity": 750 },
+    { "ingredientId": "44", "quantity": 10 },
+    { "ingredientId": "55", "quantity": 10 },
+    { "ingredientId": "60", "quantity": 1 }
   ],
-  "Macro": "480 Calories | 20 g C | 38 g P | 24 g F",
-  "PrepTime": "20 min",
-  "CookTime": "3h",
-  "Instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
+  "prepTime": "20 min",
+  "cookTime": "3h",
+  "instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
   "image": "../img/boeuf-bourgignon.jpg",
-  "Status": "normal"
+  "status": "normal"
 }
