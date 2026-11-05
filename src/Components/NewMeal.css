@@ -143,3 +143,62 @@
     margin-left: 0.75rem;
     padding: 0.5rem 0.75rem;
 }
+
+/* Ligne d'ingrédient : menu déroulant + quantité + unité + bouton supprimer */
+
+.textInput select {
+    border: 2px solid #fff;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    background: #3a3a3e;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.textInput select:focus {
+    outline: none;
+    border: 2px solid #78dc7d;
+}
+
+.ingredientRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.ingredientRow select {
+    flex: 1;
+    min-width: 0;
+}
+
+.ingredientRow input {
+    width: 90px;
+    margin-bottom: 0;
+}
+
+.unitLabel {
+    min-width: 3.5rem;
+    font-size: 0.8rem;
+    color: #ffffffcb;
+}
+
+.removeIngredient {
+    cursor: pointer;
+    color: #fff;
+    flex-shrink: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.removeIngredient:hover {
+    color: #78dc7d;
+    transform: scale(1.15);
+}
+
+/* Macros et coût calculés en direct */
+
+.previewValue {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}

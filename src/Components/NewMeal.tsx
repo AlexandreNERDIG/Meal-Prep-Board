@@ -2,28 +2,44 @@ import { useState, useRef } from 'react';
 import { X} from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
-import { Recipe, recipeInfo } from './typeFile';
+import { Recipe, Ingredient, RecipeIngredient, recipeInfo, defaultList } from './typeFile';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, findIngredient, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+
+type IngredientRow = {
+    ingredientId: string;
+    quantity: string;
+};
+
+const emptyRow: IngredientRow = { ingredientId: "", quantity: "" };
+
+const emptyRecipe: Recipe = {
+    recipeName: "",
+    ingredient: [],
+    prepTime: "",
+    cookTime: "",
+    instructions: "",
+    image: "",
+    status: "normal"
+};
+
+const CATEGORIES: Ingredient["category"][] = ["Protéine", "Légumes", "Féculent", "Boisson", "Autre"];
 
 const NewMeal = () => {
 
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const [formData, setFormData] = useState<Recipe>({
-        recipeName: "",
-        ingredient: [{ingredientId: "", quantity: 0}],
-        macro: "",
-        prepTime: "",
-        cookTime: "",
-        instructions: "",
-        image: "",
-        status: "normal"
-    });
-    
+    const [formData, setFormData] = useState<Recipe>(emptyRecipe);
+    const [rows, setRows] = useState<IngredientRow[]>([emptyRow]);
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
         const saved = localStorage.getItem(RECIPES_KEY);
         return ((saved) ? JSON.parse(saved) : recipeInfo)
+    });
+
+    const [currentStock] = useState<Ingredient[]>(() => {
+        const exist = localStorage.getItem("currentStockList");
+        return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
     const [modalState, setModalState] = useState<boolean>(false);
@@ -43,66 +59,60 @@ const NewMeal = () => {
         }))
     }
 
-    const handleChangeIngredient = (e : React.ChangeEvent<HTMLInputElement>) => {
-        const index = Number(e.target.dataset.index);
-        const value = e.target.value;
-
-        setFormData((prev) => {
-            const updatedIngredients = [...prev.ingredient];
-            updatedIngredients[index] = value
-            return {
-                ...prev,
-                Ingredient : updatedIngredients
-            }
-        })
+    const handleRowChange = (index : number, field : keyof IngredientRow, value : string) => {
+        setRows((prev) => prev.map((row, i) => (i === index) ? { ...row, [field] : value } : row));
     }
 
     const ajouterIngredient = () => {
-        setFormData((prev) => ({
-            ...prev,
-            Ingredient : [...prev.ingredient, ""]
-        }));
+        setRows((prev) => [...prev, emptyRow]);
+    }
+
+    const supprimerIngredient = (index : number) => {
+        setRows((prev) => (prev.length > 1) ? prev.filter((_, i) => i !== index) : [emptyRow]);
+    }
+
+    const validIngredients = (): RecipeIngredient[] => {
+        return rows
+            .filter(row => row.ingredientId !== "" && Number(row.quantity.replace(",", ".")) > 0)
+            .map(row => ({ ingredientId: row.ingredientId, quantity: Number(row.quantity.replace(",", ".")) }));
+    }
+
+    const previewIngredients = validIngredients();
+    const previewMacros = formatMacros(calcRecipeMacros(previewIngredients, currentStock));
+    const previewCost = calcRecipeCost(previewIngredients, currentStock);
+
+    const resetForm = () => {
+        setFormData(emptyRecipe);
+        setRows([emptyRow]);
     }
 
     const ajouterRecette = () => {
-        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName)
-        
+        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim())
+
         if (alreadyExist) {
             toast.error(`${formData.recipeName} n'a pas pu être ajouté (Existe déjà)`)
-            setFormData({
-                recipeName: "",
-                ingredient: [{ingredientId: "", quantity: 0}],
-                macro: "",
-                prepTime: "",
-                cookTime: "",
-                instructions: "",
-                image: "",
-                status: "normal"
-            });
             handleCloseConfirmationModal();
             return;
         }
 
-        if (!formData.recipeName.trim() || formData.ingredient.length === 0) {
-            alert("Merci de remplir au moins le nom de la recette et un ingrédient.");
+        const ingredients = validIngredients();
+
+        if (!formData.recipeName.trim() || ingredients.length === 0) {
+            alert("Merci de remplir au moins le nom de la recette et un ingrédient (avec sa quantité).");
             handleCloseConfirmationModal();
             return;
         }
         if (askConfirmation) {
-            const updatedRecipeList = [...recipeList, formData];
+            const newRecipe : Recipe = {
+                ...formData,
+                recipeName: formData.recipeName.trim(),
+                ingredient: ingredients
+            };
+            const updatedRecipeList = [...recipeList, newRecipe];
             setRecipeList(updatedRecipeList)
-            setFormData({
-                recipeName: "",
-                ingredient: [{ingredientId: "", quantity: 0}],
-                macro: "",
-                prepTime: "",
-                cookTime: "",
-                instructions: "",
-                image: "",
-                status: "normal"
-            });
+            resetForm();
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-            toast.success(`${formData.recipeName} ajoutée !`);
+            toast.success(`${newRecipe.recipeName} ajoutée !`);
             nameRef.current?.focus();
             handleCloseConfirmationModal();
         }
@@ -124,8 +134,16 @@ const NewMeal = () => {
 
             reader.onload = () => {
                 const fileContent = reader.result as string;
-                const parsedFileContent = JSON.parse(fileContent);
-                const currentRecipeName = parsedFileContent.RecipeName?.trim()
+
+                let parsedFileContent;
+                try {
+                    parsedFileContent = JSON.parse(fileContent);
+                } catch {
+                    toast.error(`${file.name} n'est pas un fichier JSON valide`)
+                    return;
+                }
+
+                const currentRecipeName = parsedFileContent.recipeName?.trim()
 
                 setRecipeList(prev => {
                     const alreadyExist = prev.some(element => element.recipeName === currentRecipeName);
@@ -133,7 +151,8 @@ const NewMeal = () => {
                     if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
                         seen.add(currentRecipeName)
                         toast.success(`${currentRecipeName} à bien été ajouté`)
-                        const updatedRecipeList = [...prev, parsedFileContent];
+                        // status : uniquement "favorite" ou "normal" (certains anciens JSON avaient d'autres valeurs)
+                        const updatedRecipeList = [...prev, { ...parsedFileContent, status: parsedFileContent.status === "favorite" ? "favorite" : "normal" }];
                         localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
                         return updatedRecipeList
                     }
@@ -152,12 +171,24 @@ const NewMeal = () => {
 
     const handleSingleJsonImport = () => {
         if (!importedFiles || importedFiles.length === 0) return;
-    
+
         const reader = new FileReader()
         reader.onload = () => {
             const content = reader.result as string;
-            const parsedData = JSON.parse(content);
-            setFormData(parsedData)
+
+            let parsedData : Recipe;
+            try {
+                parsedData = JSON.parse(content);
+            } catch {
+                toast.error("Ce fichier n'est pas un fichier JSON valide")
+                return;
+            }
+
+            setFormData({ ...emptyRecipe, ...parsedData, status: parsedData.status === "favorite" ? "favorite" : "normal" })
+            setRows((parsedData.ingredient && parsedData.ingredient.length > 0)
+                ? parsedData.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
+                : [emptyRow]
+            )
         }
         reader.readAsText(importedFiles[0]);
         handleCloseModal1();
@@ -191,7 +222,7 @@ const NewMeal = () => {
                 <div className="textInput">
                     <label>Nom de la recette : </label>
                     <textarea
-                      name="RecipeName"
+                      name="recipeName"
                       ref={nameRef}
                       value={formData.recipeName}
                       onChange={handleChange}
@@ -199,32 +230,59 @@ const NewMeal = () => {
                     />
 
                     <label>Ingredients : </label>
-                    {formData.ingredient.map((element, index) => (
-                        <div key={index}>
-                            <input
-                                name='Ingredient'
-                                data-index={index}
-                                value={element}
-                                onChange={handleChangeIngredient}
-                                placeholder='Entrer les ingrédients'
-                            />
-                        </div>
-                    ))}
+                    {rows.map((row, index) => {
+                        const selectedIngredient = findIngredient(currentStock, row.ingredientId);
+
+                        return (
+                            <div key={index} className="ingredientRow">
+                                <select
+                                    value={row.ingredientId}
+                                    onChange={(e) => handleRowChange(index, "ingredientId", e.target.value)}
+                                >
+                                    <option value="">-- Choisir un ingrédient --</option>
+                                    {CATEGORIES.map(category => (
+                                        <optgroup key={category} label={category}>
+                                            {currentStock
+                                                .filter(ing => ing.category === category)
+                                                .map(ing => (
+                                                    <option
+                                                        key={ing.id}
+                                                        value={ing.id}
+                                                        disabled={rows.some((r, i) => i !== index && r.ingredientId === ing.id)}
+                                                    >
+                                                        {ing.name}{ing.unit ? ` (${ing.unit})` : ""}
+                                                    </option>
+                                                ))
+                                            }
+                                        </optgroup>
+                                    ))}
+                                </select>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="any"
+                                    value={row.quantity}
+                                    onChange={(e) => handleRowChange(index, "quantity", e.target.value)}
+                                    placeholder='Quantité'
+                                />
+                                <span className="unitLabel">{selectedIngredient?.unit || ""}</span>
+                                <X className="removeIngredient" onClick={() => supprimerIngredient(index)}></X>
+                            </div>
+                        )
+                    })}
                     <div className="centerButton">
                         <button onClick={ajouterIngredient} className='Btn'>Ajouter un Ingredient</button>
                     </div>
 
-                    <label>Macros : </label>
-                    <textarea
-                      name="Macro"
-                      value={formData.macro}
-                      onChange={handleChange}
-                      placeholder='Entrer les macros'
-                    />
+                    <label>Macros (par portion, pour {DEFAULT_PORTIONS} portions) : </label>
+                    <p className="previewValue">{previewMacros}</p>
+
+                    <label>Coût : </label>
+                    <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / DEFAULT_PORTIONS)} / portion)`}</p>
 
                     <label>Temps de préparation : </label>
                     <textarea
-                      name="PrepTime"
+                      name="prepTime"
                       value={formData.prepTime}
                       onChange={handleChange}
                       placeholder='Entrer le temps de préparation'
@@ -232,7 +290,7 @@ const NewMeal = () => {
 
                     <label>Temps de cuisson : </label>
                     <textarea
-                      name="CookTime"
+                      name="cookTime"
                       value={formData.cookTime}
                       onChange={handleChange}
                       placeholder='Entrer le temps de cuisson'
@@ -240,7 +298,7 @@ const NewMeal = () => {
 
                     <label>Instructions : </label>
                     <textarea
-                      name="Instructions"
+                      name="instructions"
                       value={formData.instructions}
                       onChange={handleChange}
                       placeholder='Entrer les instructions'
@@ -255,7 +313,7 @@ const NewMeal = () => {
             </div>
                 <div className="centerButton2">
                     <button onClick={handleOpenConfirmationModal} className='Btn2'>Ajouter la Recette à la Liste</button>
-                    <input 
+                    <input
                       type='file'
                       accept=".json"
                       onChange={(e) => {

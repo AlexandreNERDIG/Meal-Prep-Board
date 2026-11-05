@@ -5,6 +5,38 @@ import { Ingredient, defaultList } from './typeFile';
 import { useState } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle } from "react-feather"
 import toast from 'react-hot-toast';
+import { priceUnitLabel } from '../lib/recipeUtils';
+
+type IngredientForm = {
+    name: string;
+    calories: string;
+    carbs: string;
+    protein: string;
+    fat: string;
+    price: string;
+    unit: Ingredient["unit"];
+    category: Ingredient["category"];
+    image: string;
+    trackStock: boolean;
+};
+
+const emptyIngredientForm: IngredientForm = {
+    name: "",
+    calories: "",
+    carbs: "",
+    protein: "",
+    fat: "",
+    price: "",
+    unit: "",
+    category: "",
+    image: "/img2/",
+    trackStock: true
+};
+
+const toNumber = (value: string): number => {
+    const parsed = Number(value.replace(",", "."));
+    return (Number.isFinite(parsed) && parsed >= 0) ? parsed : 0;
+};
 
 const CurrentStock = () => {
 
@@ -28,21 +60,7 @@ const CurrentStock = () => {
     const handlecategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedcategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
     const handleOpenModal1 = () => {setModalState(true)};
     const handleCloseModal1 = () => {
-        setFormData({
-        id: ``,
-        name: "",
-        macro: {
-            calories : 0,
-            protein : 0,
-            fat : 0,
-            carbs : 0,
-        },
-        price: 0,
-        quantity: 0,
-        unit: "",
-        category: "",
-        image: "/img2/"
-    })
+        setFormData(emptyIngredientForm)
         setModalState(false);
     };
     const handleOpenModal2 = (ingre : Ingredient) => {setIngredientToDelete(ingre)};
@@ -54,13 +72,13 @@ const CurrentStock = () => {
 
         if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity - (10 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity - (1 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
@@ -71,48 +89,35 @@ const CurrentStock = () => {
 
         if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity + (10 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, Quantity : Math.max(0, element.quantity + (1 * multiplier))} : element)
+            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
     }
 
 
-    const [formData, setFormData] = useState<Ingredient>({
-        id: "",
-        name: "",
-        macro: {
-            calories : 0,
-            protein : 0,
-            fat : 0,
-            carbs : 0,
-        },
-        price: 0,
-        quantity: 0,
-        unit: "",
-        category: "",
-        image: "/img2/"
-    });
+    const [formData, setFormData] = useState<IngredientForm>(emptyIngredientForm);
 
-    const formHandler = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
+    const formHandler = (e : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        const isCheckbox = (e.target as HTMLInputElement).type === "checkbox";
 
         setFormData((prev) => ({
             ...prev,
-            [name] : value
+            [name] : isCheckbox ? (e.target as HTMLInputElement).checked : value
         }))
     }
 
     const handlecategoryChangeBis = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData((prev) => ({
             ...prev,
-            category: e.target.value as "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre"
+            category: e.target.value as Ingredient["category"]
         }));
     };
 
@@ -127,7 +132,7 @@ const CurrentStock = () => {
 
         setFormData((prev) => ({
             ...prev,
-            Image : `/img2/${filename}`
+            image : `/img2/${filename}`
         }))
         toast.success("L'image a bien été chargée")
     }
@@ -151,19 +156,33 @@ const CurrentStock = () => {
 
     const ajouterIngredient = () => {
 
+        const price = toNumber(formData.price);
+
         if (
-            !formData.name?.trim() ||
-            !formData.unit?.trim() ||
-            !formData.category?.trim() ||
-            formData.price === undefined || formData.price <= 0
+            !formData.name.trim() ||
+            !formData.unit ||
+            !formData.category ||
+            price <= 0
         ) {
             toast.error("Veuillez remplir tous les champs obligatoires correctement");
             return;
         }
 
         const newIngredient : Ingredient = {
-            ...formData,
-            id: `${idCounter + 1}`
+            id: `${idCounter + 1}`,
+            name: formData.name.trim(),
+            macro: {
+                calories: toNumber(formData.calories),
+                carbs: toNumber(formData.carbs),
+                protein: toNumber(formData.protein),
+                fat: toNumber(formData.fat),
+            },
+            price: price,
+            quantity: 0,
+            unit: formData.unit,
+            category: formData.category,
+            image: formData.image,
+            trackStock: formData.trackStock
         }
 
         if (currentStock.some(ingre => ingre.name.trim().toLowerCase() === newIngredient.name.trim().toLowerCase())) {
@@ -193,6 +212,8 @@ const CurrentStock = () => {
         setIngredientToDelete(null);
         handleCloseModal2();
     };
+
+    const macroBase = (formData.unit === "g" || formData.unit === "mL") ? `pour 100 ${formData.unit}` : "pour 1 unité";
 
     return(
         <>
@@ -226,6 +247,7 @@ const CurrentStock = () => {
                             <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
                             <h2>{item.name}</h2>
                             <h4>{`${item.macro.calories} Calories | ${item.macro.carbs} g C | ${item.macro.protein} g P | ${item.macro.fat} g F`}</h4>
+                            <p>{`${item.price} ${priceUnitLabel(item.unit)}`}</p>
                             <p><strong>Id : {item.id}</strong></p>
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
@@ -264,36 +286,73 @@ const CurrentStock = () => {
                                 />
                             </div>
                             <div className="sousElement">
-                                <label>Macro : </label>
-                                <textarea
-                                    name="Macro"
-                                    value={`${formData.macro.calories} Calories | ${formData.macro.carbs} g C | ${formData.macro.protein} g P | ${formData.macro.fat} g F`}
-                                    onChange={formHandler}
-                                    placeholder='Entrer les macros'
-                                />
+                                <label>Unité : </label>
+                                <select className="category" name="unit" value={formData.unit} onChange={formHandler}>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="g">g</option>
+                                    <option value="mL">mL</option>
+                                    <option value="unités">unités</option>
+                                </select>
                             </div>
                             <div className="sousElement">
                                 <label>Prix : </label>
-                                <textarea
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
                                     name="price"
                                     value={formData.price}
                                     onChange={formHandler}
-                                    placeholder='Entrer le prix au kilo'
+                                    placeholder={`Prix (${priceUnitLabel(formData.unit)})`}
                                 />
                             </div>
                             <div className="sousElement">
-                                <label>unité : </label>
-                                <textarea
-                                    name="unit"
-                                    value={formData.unit}
+                                <label>Calories : </label>
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
+                                    name="calories"
+                                    value={formData.calories}
                                     onChange={formHandler}
-                                    placeholder="Entrer l'unité"
+                                    placeholder='kcal'
+                                />
+                            </div>
+                            <div className="sousElement">
+                                <label>Glucides : </label>
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
+                                    name="carbs"
+                                    value={formData.carbs}
+                                    onChange={formHandler}
+                                    placeholder='g'
+                                />
+                            </div>
+                            <div className="sousElement">
+                                <label>Protéines : </label>
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
+                                    name="protein"
+                                    value={formData.protein}
+                                    onChange={formHandler}
+                                    placeholder='g'
+                                />
+                            </div>
+                            <div className="sousElement">
+                                <label>Lipides : </label>
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
+                                    name="fat"
+                                    value={formData.fat}
+                                    onChange={formHandler}
+                                    placeholder='g'
                                 />
                             </div>
                             <div className="sousElement">
                                 <label>Catégorie : </label>
                                 <select className="category" name="category" value={formData.category} onChange={handlecategoryChangeBis}>
-                                    <option value="''">-- Choisir --</option>
+                                    <option value="">-- Choisir --</option>
                                     <option value="Protéine">Protéine</option>
                                     <option value="Légumes">Légumes</option>
                                     <option value="Féculent">Féculent</option>
@@ -302,11 +361,18 @@ const CurrentStock = () => {
                                 </select>
                             </div>
                             <div className="sousElement">
+                                <label>Suivi dans le stock : </label>
+                                <input type="checkbox" name="trackStock" checked={formData.trackStock} onChange={formHandler}/>
+                                <span> (décocher pour les épices, sel... : ils n'apparaîtront pas dans la liste de courses)</span>
+                            </div>
+                            <div className="sousElement">
                                 <label>Image : </label>
                                 <input type="file" onChange={handleImagePath}/>
                             </div>
                         </div>
-                        
+
+                        <p>{`Les macros sont à saisir ${macroBase}. Le prix est en ${priceUnitLabel(formData.unit)}.`}</p>
+
                         <div className="deleteModalActions">
                             <button className="confirmDeleteBtn" onClick={ajouterIngredient}>Ajouté l'Ingrédient</button>
                             <button className="cancelDeleteBtn" onClick={handleCloseModal1}>Annuler</button>

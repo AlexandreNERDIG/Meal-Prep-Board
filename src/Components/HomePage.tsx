@@ -4,6 +4,7 @@ import { X, Smartphone} from 'react-feather';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, DEFAULT_PORTIONS } from '../lib/recipeUtils';
 
 const HomePage = () => {
 
@@ -19,45 +20,7 @@ const HomePage = () => {
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(1);
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [{
-            "RecipeName": "Bœuf Bourguignon",
-            "Ingredient": [
-              "1000g Boeuf",
-              "180g Carotte",
-              "160g Oignon",
-              "250mL Vin Rouge",
-              "250mL Bouillon de Bœuf",
-              "10g Ail",
-              "10g Farine",
-              "Sel et Poivre"
-            ],
-            "Macro": "450 Calories | 15 g C | 38 g P | 22 g F",
-            "PrepTime": "20 min",
-            "CookTime": "3h",
-            "Instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-            "image": "../img/boeuf-bourgignon.jpg",
-            "Status": "normal"
-        },
-        {
-            "RecipeName": "Poulet Basquaise",
-            "Ingredient": [
-              "750g Cuisse de Poulet",
-              "240g Poivron",
-              "240g Tomate",
-              "160g Oignon",
-              "10g Ail",
-              "200mL Bouillon de Volaille",
-              "5g Paprika",
-              "15mL Huile d'Olive",
-              "Sel et Poivre"
-            ],
-            "Macro": "400 Calories | 12 g C | 35 g P | 22 g F",
-            "PrepTime": "15 min",
-            "CookTime": "1h30",
-            "Instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
-            "image": "../img/poulet-basquaise.jpg",
-            "Status": "normal"
-        }])
+        return ((saved) ? JSON.parse(saved) : [])
     });
 
     const [recipeList] = useState<Recipe[]>(() => {
@@ -86,16 +49,12 @@ const HomePage = () => {
         if (recipe.status === "favorite") score += 2;
 
         recipe.ingredient.forEach(ing => {
-            const ingParts = currentStock.find(ele => ele.id == ing.ingredientId);
-            const ingName = ingParts ? ingParts.name : "";
+            const stockItem = currentStock.find(ele => ele.id == ing.ingredientId);
+            const ingNum = ing.quantity ? ing.quantity : 0;
 
-            const numMatch = ing.quantity; 
-            const ingNum = numMatch ? numMatch : 0;
-
-            const found = currentStock.find(s => s.name.toLowerCase().includes(ingName.toLowerCase()) && s.quantity >= ingNum);
-            if (found) {
-              if (found.category === "Protéine") score += 1;
-              else if (found.category === "Féculent" || found.category === "Légumes") score += 0.5;
+            if (stockItem && stockItem.quantity >= ingNum) {
+              if (stockItem.category === "Protéine") score += 1;
+              else if (stockItem.category === "Féculent" || stockItem.category === "Légumes") score += 0.5;
             }
         });
 
@@ -174,9 +133,10 @@ const HomePage = () => {
         const addIngredients = (ingredients: RecipeIngredient[]) => {
             for (const ingre of ingredients) {
                 const ing = currentStock.find(ele => ele.id == ingre.ingredientId);
-                const name = ing ? ing.name : "";
+                if (!ing || !isStockTracked(ing)) continue;
+                const name = ing.name;
 
-                const numMatch = ingre.quantity; 
+                const numMatch = ingre.quantity;
                 const quantity = numMatch ? numMatch : 0;
 
                 const unitMatch = ing?.unit;
@@ -198,19 +158,19 @@ const HomePage = () => {
         const notAvailableGroceryList: string[] = [];
 
         mergedGroceryMap.forEach((data, name) => {
-            const stockItem = currentStock.find(item => item.name.trim().toLowerCase() === name); 
+            const stockItem = currentStock.find(item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
             const stockQty = stockItem?.quantity || 0; 
 
-            if (stockQty >= data.quantity && data.quantity >= 10) {
+            if (stockQty >= data.quantity && data.quantity > 0) {
                 availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`); 
             } 
             
-            else if (stockQty > 0 && data.quantity > stockQty && data.quantity >= 10) {
+            else if (stockQty > 0 && data.quantity > stockQty) {
                 availableGroceryList.push(`${stockQty}${data.unit} ${name} (Besoin de: ${data.quantity}${data.unit})`); 
             };
             
             const qtyToBuy = Math.max(data.quantity - stockQty, 0); 
-            if (qtyToBuy > 0 && data.quantity >= 10) {
+            if (qtyToBuy > 0) {
                 notAvailableGroceryList.push(`${qtyToBuy}${data.unit} ${name}`);
             } 
         });
@@ -221,21 +181,22 @@ const HomePage = () => {
     const stockDeduction = (groceryList: string[]) => {
         if (!groceryList || !currentStock) return;
 
+        const parseGroceryLine = (line: string) => {
+            const parsed = line.trim().match(/^(\d+(?:\.\d+)?)\s*(?:g|mL|unités)?\s+(.+?)(?:\s+\((?:en stock|Besoin de):.*\))?$/);
+            if (!parsed) return null;
+            return { quantity: parseFloat(parsed[1]), name: parsed[2].trim().toLowerCase() };
+        };
+
         const updatedStock = currentStock.map(item => {
-            const match = groceryList.find(e => {
-                const parts = e.trim().split(" ");
-                const name = parts.slice(1).join(" ").split("(")[0].trim().toLowerCase();
-                return item.name.trim().toLowerCase() === name;
-            });
+            const match = groceryList
+                .map(parseGroceryLine)
+                .find(parsed => parsed !== null && parsed.name === item.name.trim().toLowerCase());
 
             if (!match) return item;
 
-            const numMatch = match.trim().split(" ")[0]?.match(/\d+/);
-            const neededQuantity = numMatch ? parseInt(numMatch[0], 10) : 0;
-
             return {
                 ...item,
-                Quantity: Math.max(item.quantity - neededQuantity, 0),
+                quantity: Math.max(item.quantity - match.quantity, 0),
             };
         });
 
@@ -252,24 +213,23 @@ const HomePage = () => {
     }, [weeklyRecipe1, weeklyRecipe2, currentStock, recipeList]);
 
     const macroCalculatorDaily = (recipe : Recipe, portions : number) => {
-        let cals = 0
-        let carbs = 0
-        let prot = 0
-        let fat = 0
-
-        for (const ingre of recipe.ingredient) {
-            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
-
-            if (!found) continue;
-
-            const ratio = ingre.quantity / 100
-            cals += found.macro.calories * ratio
-            carbs += found.macro.carbs * ratio
-            prot += found.macro.protein * ratio
-            fat += found.macro.fat * ratio
-        }
-        return ([Math.round(cals / portions), Math.round(carbs / portions), Math.round(prot / portions), Math.round(fat / portions)])
+        const macros = calcRecipeMacros(recipe.ingredient, currentStock, portions);
+        return ([macros.calories, macros.carbs, macros.protein, macros.fat])
     }
+
+    const recipeMacroText = (recipe : Recipe | undefined) => {
+        return recipe ? formatMacros(calcRecipeMacros(recipe.ingredient, currentStock)) : "";
+    }
+
+    const recipeCostText = (recipe : Recipe | undefined) => {
+        if (!recipe) return "";
+        const total = calcRecipeCost(recipe.ingredient, currentStock);
+        return `${formatPrice(total)} (${formatPrice(total / DEFAULT_PORTIONS)} / portion)`;
+    }
+
+    const weeklyCost = (recipeList[weeklyRecipe1] && recipeList[weeklyRecipe2])
+        ? calcRecipeCost(recipeList[weeklyRecipe1].ingredient, currentStock) + calcRecipeCost(recipeList[weeklyRecipe2].ingredient, currentStock)
+        : 0;
     
     const DailyMacros = (portions : number)=> {
         if (!recipeList[weeklyRecipe1]) return;
@@ -358,7 +318,8 @@ const HomePage = () => {
                                     )
                                 })}
                             </ul>
-                            <h5>{recipeList[weeklyRecipe1]?.macro}</h5>
+                            <h5>{recipeMacroText(recipeList[weeklyRecipe1])}</h5>
+                            <h5>{recipeCostText(recipeList[weeklyRecipe1])}</h5>
                             <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
                         </div>
                     </div>
@@ -373,7 +334,8 @@ const HomePage = () => {
                                     )
                                 })}
                             </ul>
-                            <h5>{recipeList[weeklyRecipe2]?.macro}</h5>
+                            <h5>{recipeMacroText(recipeList[weeklyRecipe2])}</h5>
+                            <h5>{recipeCostText(recipeList[weeklyRecipe2])}</h5>
                             <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
                         </div>
                         <img src={recipeList[weeklyRecipe2]?.image}/>
@@ -390,6 +352,7 @@ const HomePage = () => {
                                 <p key={index}>{element}</p>
                             ))
                             : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
+                            <p>{`${formatPrice(weeklyCost / DEFAULT_PORTIONS)} / jour`}</p>
                     </div>
                     <div className="subMacro">
                             <h3 className='MacrosSubPart'>Weekly Macros : </h3>
@@ -397,6 +360,7 @@ const HomePage = () => {
                             <p key={index}>{element}</p> 
                             ))
                             : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
+                            <p>{`${formatPrice(weeklyCost)} / semaine`}</p>
                     </div>
                 </div>
             </div>
