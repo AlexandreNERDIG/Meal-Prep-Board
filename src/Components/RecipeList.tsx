@@ -3,7 +3,7 @@ import toast from "react-hot-toast"
 import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
 import { Recipe, recipeInfo, Ingredient, defaultList } from './typeFile';
-import MealHistory from './MealHistory';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, DEFAULT_PORTIONS } from '../lib/recipeUtils';
 
 const RecipeList = () => {
 
@@ -15,7 +15,7 @@ const RecipeList = () => {
         return ((saved) ? JSON.parse(saved) : recipeInfo)
     });
 
-    const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
+    const [currentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
@@ -54,24 +54,12 @@ const RecipeList = () => {
     }
 
     const macroCalculator = (recipe : Recipe) => {
-        const portions = 5
-        let cals = 0
-        let carbs = 0
-        let prot = 0
-        let fat = 0
+        return formatMacros(calcRecipeMacros(recipe.ingredient, currentStock));
+    }
 
-        for (const ingre of recipe.ingredient) {
-            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
-
-            if (!found) continue;
-
-            const ratio = ingre.quantity / 100
-            cals += found.macro.calories * ratio
-            carbs += found.macro.carbs * ratio
-            prot += found.macro.protein * ratio
-            fat += found.macro.fat * ratio
-        }
-        return (`${Math.round(cals / portions)} Calories | ${Math.round(carbs / portions)} g C | ${Math.round(prot / portions)} g P | ${Math.round(fat / portions)} g F`)
+    const costCalculator = (recipe : Recipe) => {
+        const total = calcRecipeCost(recipe.ingredient, currentStock);
+        return `${formatPrice(total)} (${formatPrice(total / DEFAULT_PORTIONS)} / portion)`;
     }
 
     return(
@@ -89,6 +77,7 @@ const RecipeList = () => {
                             <h2>{element.recipeName}</h2>
                             <p>{element.instructions}</p>
                             <p className="macro">{macroCalculator(element)}</p>
+                            <p className="macro">{costCalculator(element)}</p>
                             <div className="centeredButton">
                                 <button className="descBtn" onClick={() => handleOpenModal(element)}>Description</button>
                                 <Download className='DlBoutton' onClick={() => handleSingleDownloadRecipe(element)}></Download>
@@ -126,6 +115,7 @@ const RecipeList = () => {
                     </p>
                     <p><strong>Instructions :</strong> <br /><br />{selectedRecipe.instructions}</p>
                     <p><strong>Macros :</strong> <br /><br />{macroCalculator(selectedRecipe)}</p>
+                    <p><strong>Coût :</strong> <br /><br />{costCalculator(selectedRecipe)}</p>
                     <button onClick={handleCloseModal}>Fermer</button>
                 </div>
             </div>

@@ -28,6 +28,9 @@ export type Ingredient = {
     unit: "g" | "mL" | "unités" | "";
     category: 'Protéine' | 'Légumes' | 'Féculent' | 'Boisson' | 'Autre' | "";
     image: string;
+    // false = ingrédient non suivi dans le stock (épices, sel...) : jamais dans la liste de courses ni déduit.
+    // Absent = suivi (les ingrédients déjà enregistrés dans ton localStorage n'ont pas ce champ).
+    trackStock?: boolean;
 }
 
 export const recipeInfo: Recipe[] = [

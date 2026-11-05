@@ -2,8 +2,8 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient, recipeInfo, RecipeIngredient } from './typeFile';
-import defaultList from './CurrentStock'
+import { Recipe, Ingredient, recipeInfo, RecipeIngredient, defaultList } from './typeFile';
+import { calcRecipeMacros, formatMacros, findIngredient, isStockTracked } from '../lib/recipeUtils';
 
 const MealHistory = () => {
 
@@ -18,7 +18,7 @@ const MealHistory = () => {
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
         const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : recipeInfo)
+        return ((saved) ? JSON.parse(saved) : [])
     });
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
@@ -94,7 +94,7 @@ const MealHistory = () => {
         for (const element of groceryList) {
             const quantity = element.quantity ? element.quantity : 0;
 
-            if (quantity >= 10) {
+            if (quantity > 0 && isStockTracked(findIngredient(currentStock, element.ingredientId))) {
                 filteredGroceryList.push(element);
             }
         }
@@ -102,11 +102,8 @@ const MealHistory = () => {
         if (!filteredGroceryList) return;
 
         const updatedStock = currentStock.map(item => {
-            const match = filteredGroceryList.find(e => {
-                const ing = currentStock.find(ele => ele.id == e.ingredientId);
-                const name = ing ? ing.name : ""
-                return item.name.trim().toLowerCase().includes(name);
-            });
+            // On retrouve l'ingrédient par son id (plus fiable qu'une comparaison de noms)
+            const match = filteredGroceryList.find(e => String(e.ingredientId) === String(item.id));
 
             if (!match) return item;
 
@@ -115,7 +112,7 @@ const MealHistory = () => {
 
             return {
                 ...item,
-                Quantity: Math.max(item.quantity - neededQuantity, 0),
+                quantity: Math.max(item.quantity - neededQuantity, 0),
             };
         });
 
@@ -125,25 +122,9 @@ const MealHistory = () => {
         handleCloseModal4();
     };
 
+    // Le calcul est maintenant dans src/lib/recipeUtils.ts (partagé avec Home, Recipe List et New Meal)
     const macroCalculator = (recipe : Recipe) => {
-        const portions = 5
-        let cals = 0
-        let carbs = 0
-        let prot = 0
-        let fat = 0
-
-        for (const ingre of recipe.ingredient) {
-            const found = currentStock.find(ingredient => ingredient.id == ingre.ingredientId)
-
-            if (!found) continue;
-
-            const ratio = ingre.quantity / 100
-            cals += found.macro.calories * ratio
-            carbs += found.macro.carbs * ratio
-            prot += found.macro.protein * ratio
-            fat += found.macro.fat * ratio
-        }
-        return (`${Math.round(cals / portions)} Calories | ${Math.round(carbs / portions)} g C | ${Math.round(prot / portions)} g P | ${Math.round(fat / portions)} g F`)
+        return formatMacros(calcRecipeMacros(recipe.ingredient, currentStock));
     }
     
     return(
@@ -237,7 +218,7 @@ const MealHistory = () => {
                 {selectedRecipe.ingredient
                     .filter(e => {
                         const quantity = e.quantity ? e.quantity : 0;
-                        return quantity >= 10;
+                        return quantity > 0 && isStockTracked(findIngredient(currentStock, e.ingredientId));
                     })
                     .map((e, index) => {
                         const ing = currentStock.find(ele => ele.id == e.ingredientId)
