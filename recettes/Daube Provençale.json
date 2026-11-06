@@ -12,8 +12,8 @@
     { "ingredientId": "27", "quantity": 15 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "15 min",
-  "cookTime": "2h30",
+  "prepTime": 15,
+  "cookTime": 150,
   "instructions": "Faites dorer la viande, ajoutez 2 oignons (160g), 2 gousses d'ail (10g) et 2 carottes (120g). Versez le vin (250mL) et les tomates (240g), laissez mijoter 2h30.",
   "image": "../img/daube-provencale.jpg",
   "status": "normal"

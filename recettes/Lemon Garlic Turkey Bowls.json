@@ -10,8 +10,8 @@
     { "ingredientId": "34", "quantity": 65 },
     { "ingredientId": "59", "quantity": 150 }
   ],
-  "prepTime": "10 min",
-  "cookTime": "35 min",
+  "prepTime": 10,
+  "cookTime": 35,
   "instructions": "Coupez les pommes de terre et le brocoli, puis faites-les rôtir. Faites revenir la dinde dans l'huile, ajoutez l'ail, le riz, le citron et les épices. Mélangez avec les légumes rôtis et servez avec du tzatziki.",
   "image": "../img/Lemon-Garlic-Turkey-Bowls-806x1024.jpg",
   "status": "normal"

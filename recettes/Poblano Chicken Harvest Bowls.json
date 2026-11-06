@@ -18,8 +18,8 @@
     { "ingredientId": "49", "quantity": 50 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "30 min",
-  "cookTime": "35 min",
+  "prepTime": 30,
+  "cookTime": 35,
   "instructions": "Cuire le riz et préparer la sauce poblano en mixant les poivrons, oignon et ail avec le yaourt. Rôtir les légumes et faire revenir le poulet assaisonné. Assembler le tout avec les graines de courge et la feta avant de servir.",
   "image": "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg",
   "status": "normal"

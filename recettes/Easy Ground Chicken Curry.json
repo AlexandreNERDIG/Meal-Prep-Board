@@ -10,8 +10,8 @@
     { "ingredientId": "13", "quantity": 270 },
     { "ingredientId": "52", "quantity": 450 }
   ],
-  "prepTime": "10 min",
-  "cookTime": "30 min",
+  "prepTime": 10,
+  "cookTime": 30,
   "instructions": "Faites cuire le riz avec un peu d'huile, cumin et ail. Pendant ce temps, faites revenir l'oignon, l'ail, le gingembre et les épices, puis ajoutez le poulet et faites-le dorer. Ajoutez la sauce tomate et l'eau, laissez mijoter pour épaissir. Mélangez avec le riz et les pois, assaisonnez, servez chaud.",
   "image": "../img/Ground-Chicken-Curry-807x1024.jpg",
   "status": "normal"

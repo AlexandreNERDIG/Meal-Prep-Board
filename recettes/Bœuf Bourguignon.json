@@ -11,8 +11,8 @@
     { "ingredientId": "55", "quantity": 10 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "3h",
+  "prepTime": 20,
+  "cookTime": 180,
   "instructions": "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
   "image": "../img/boeuf-bourgignon.jpg",
   "status": "normal"

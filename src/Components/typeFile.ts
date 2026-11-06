@@ -6,8 +6,8 @@ export type RecipeIngredient = {
 export type Recipe = {
     recipeName: string;
     ingredient: RecipeIngredient[];
-    prepTime: string;
-    cookTime: string;
+    prepTime: number; // en minutes
+    cookTime: number; // en minutes
     instructions: string;
     image: string;
     status: 'favorite' | 'normal';
@@ -45,8 +45,8 @@ export const recipeInfo: Recipe[] = [
       { ingredientId: "44", quantity: 10 },
       { ingredientId: "55", quantity: 10 }
     ],
-    prepTime: "20 min",
-    cookTime: "3h",
+    prepTime: 20,
+    cookTime: 180,
     instructions:
       "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
     image: "../img/boeuf-bourgignon.jpg",
@@ -64,8 +64,8 @@ export const recipeInfo: Recipe[] = [
       { ingredientId: "61", quantity: 200 },
       { ingredientId: "27", quantity: 15 }
     ],
-    prepTime: "15 min",
-    cookTime: "1h30",
+    prepTime: 15,
+    cookTime: 90,
     instructions:
       "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
     image: "../img/poulet-basquaise.jpg",

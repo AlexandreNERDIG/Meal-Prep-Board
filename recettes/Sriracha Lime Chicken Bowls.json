@@ -12,8 +12,8 @@
     { "ingredientId": "35", "quantity": 37 },
     { "ingredientId": "60", "quantity": 0 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "40 min",
+  "prepTime": 20,
+  "cookTime": 40,
   "instructions": "Cuire le riz. Mélanger la sauce avec sriracha, citron et miel, puis mariner le poulet avant cuisson au four. Rôtir la patate douce et faire revenir le brocoli avec la ciboule, puis combiner tous les ingrédients et servir chaud.",
   "image": "../img/Sriracha-Lime-Chicken-Bowls-807x1024.jpg",
   "status": "normal"

@@ -11,8 +11,8 @@
     { "ingredientId": "61", "quantity": 30 },
     { "ingredientId": "54", "quantity": 11 }
   ],
-  "prepTime": "10 min",
-  "cookTime": "35 min",
+  "prepTime": 10,
+  "cookTime": 35,
   "instructions": "Faites cuire le riz. Faites revenir le boeuf puis les légumes (poivron, oignon, chou) avec huile d'olive. Mélangez le tout avec le riz, citron vert, salsa verde et coriandre. Servez chaud.",
   "image": "../img/Salsa-Verde-Beef-Bowls-807x1024.jpg",
   "status": "normal"

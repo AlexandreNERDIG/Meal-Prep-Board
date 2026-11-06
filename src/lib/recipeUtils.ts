@@ -1,4 +1,13 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
+import { recipeInfo } from '../Components/typeFile';
+
+// Image de remplacement quand un ingrédient n'a pas d'image (SVG intégré : aucun service externe)
+export const NO_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250"><rect width="300" height="250" fill="#2c2c2c"/><text x="150" y="132" fill="#ffffff" font-family="sans-serif" font-size="18" text-anchor="middle">Pas d'image</text></svg>`
+);
+
+// Catégories d'ingrédients (filtre de la page Stock, menu déroulant de New Meal, formulaire d'ajout)
+export const INGREDIENT_CATEGORIES = ["Protéine", "Légumes", "Féculent", "Boisson", "Autre"] as const;
 
 // Nombre de portions par défaut d'une recette (c'était écrit en dur dans 3 composants)
 export const DEFAULT_PORTIONS = 5;
@@ -87,4 +96,63 @@ export const priceUnitLabel = (unit: Ingredient["unit"]): string => {
     if (unit === "g") return "€ / kg";
     if (unit === "mL") return "€ / L";
     return "€ / unité";
+};
+
+// Répartition des calories entre glucides (4 kcal/g), protéines (4 kcal/g) et lipides (9 kcal/g), en %
+export const calorieSplit = (macros: Macros): { carbs: number; protein: number; fat: number } => {
+    const carbs = macros.carbs * 4;
+    const protein = macros.protein * 4;
+    const fat = macros.fat * 9;
+    const total = carbs + protein + fat;
+
+    if (total <= 0) return { carbs: 0, protein: 0, fat: 0 };
+
+    const carbsPercent = Math.round((carbs / total) * 100);
+    const proteinPercent = Math.round((protein / total) * 100);
+    return { carbs: carbsPercent, protein: proteinPercent, fat: 100 - carbsPercent - proteinPercent };
+};
+
+// ---- Durées : stockées en MINUTES (nombre), affichées en "20 min" / "1h30" ----
+
+// Convertit une durée en minutes. Accepte un nombre, ou un ancien texte ("20 min", "1h30", "3h", "45").
+export const toMinutes = (value: unknown): number => {
+    if (typeof value === "number") return Number.isFinite(value) ? Math.max(0, Math.round(value)) : 0;
+    if (typeof value !== "string") return 0;
+
+    const parsed = value.trim().match(/^(?:(\d+)\s*h)?\s*(?:(\d+)\s*(?:min|m)?)?$/i);
+    if (!parsed) return 0;
+
+    return Number(parsed[1] ?? 0) * 60 + Number(parsed[2] ?? 0);
+};
+
+export const formatDuration = (value: number | string): string => {
+    const total = toMinutes(value);
+    if (total === 0) return "—";
+
+    const hours = Math.floor(total / 60);
+    const minutes = total % 60;
+
+    if (hours === 0) return `${minutes} min`;
+    return minutes === 0 ? `${hours}h` : `${hours}h${String(minutes).padStart(2, "0")}`;
+};
+
+// Remet une recette (ancien JSON, localStorage, fichier importé) au format actuel :
+// temps en minutes, et status uniquement "favorite" ou "normal".
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const normalizeRecipe = (raw: Record<string, any>): Recipe => ({
+    ...raw,
+    prepTime: toMinutes(raw.prepTime),
+    cookTime: toMinutes(raw.cookTime),
+    status: raw.status === "favorite" ? "favorite" : "normal",
+} as Recipe);
+
+export const loadRecipes = (): Recipe[] => {
+    const saved = localStorage.getItem("globalRecipeList");
+    return (saved ? JSON.parse(saved) : recipeInfo).map(normalizeRecipe);
+};
+
+export const loadMealHistory = (): Recipe[][] => {
+    const saved = localStorage.getItem("mealHistoryList");
+    const history: Recipe[][] = saved ? JSON.parse(saved) : [];
+    return history.map(week => week.map(normalizeRecipe));
 };

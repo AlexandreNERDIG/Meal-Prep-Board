@@ -220,20 +220,6 @@
     color: #2f8b35;
 }
 
-.textInput1 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    max-width: 100%;
-}
-
-.sousElement {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
 .deleteModalContent2 {
     background: linear-gradient(135deg, #3a3a3e, #27272b);
     color: white;
@@ -241,6 +227,8 @@
     margin-left: 250px;
     padding: 2rem;
     border-radius: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
     max-width: 750px;
     width: 90%;
     box-shadow: 0 12px 20px rgba(0, 1, 2, 0.6);
@@ -293,14 +281,109 @@
     margin-right: 0.75rem;
 }
 
-.textInput1 textarea, 
-.textInput1 input {
-    margin-top: -0.5rem;
-    padding: 0.5rem 0rem 0rem 0.5rem;
-    width: 70%;
-    font-size: 0.7rem;
+/* Filtre par catégorie (puces) */
+
+.categoryFilter {
+    margin-top: 1rem;
 }
 
-.textInput1 input {
-    padding: 0.5rem;
+.emptyStock {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem 0;
+}
+
+/* Formulaire d'ajout d'ingrédient */
+
+.ingredientForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    text-align: left;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.formField > label,
+.formField > .fieldTitle {
+    color: #78dc7d;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.formField small {
+    color: #9ca3af;
+    font-weight: 500;
+    margin-left: 0.4rem;
+}
+
+.ingredientForm input[type="text"] {
+    background: #3a3a3e;
+    border: 2px solid #fff;
+    color: white;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease;
+}
+
+.ingredientForm input[type="text"]:focus {
+    border-color: #78dc7d;
+}
+
+.ingredientForm input[type="text"]::placeholder {
+    color: #ffffff80;
+}
+
+.ingredientForm .inputWithSuffix input {
+    width: 110px;
+}
+
+.macroInputs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.macroInputs .macroInput {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.macroInputs .macroInput > label {
+    color: #ffffffcb;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.macroInputs .inputWithSuffix input {
+    width: 100%;
+    min-width: 0;
+}
+
+.checkField {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    cursor: pointer;
+}
+
+.checkField input {
+    margin-top: 0.2rem;
+    accent-color: #78dc7d;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.checkField small {
+    display: block;
+    color: #9ca3af;
+    font-weight: 500;
 }

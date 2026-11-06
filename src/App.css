@@ -40,3 +40,125 @@ body {
 .sectionHeader p:hover {
     color: #78dc7d;
 }
+
+/* ---------- Éléments d'interface partagés (puces, bouton de fichier, champs) ---------- */
+
+/* Puces : filtre de catégories, choix de catégorie / d'unité dans les formulaires */
+
+.chipRow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.chipRowLeft {
+    justify-content: flex-start;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid #4a4a50;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.25s all ease;
+}
+
+.chip:hover {
+    border-color: #78dc7d;
+    transform: translateY(-1px);
+}
+
+.chip:focus-visible {
+    outline: 2px solid #78dc7d;
+    outline-offset: 2px;
+}
+
+.chip.active {
+    background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
+    border-color: #78dc7d;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.chipCount {
+    font-size: 0.7rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Bouton de sélection de fichier : le vrai <input type="file"> est caché dans le <label> */
+
+.fileBtn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 0.6rem;
+    border: 2px dashed #78dc7d;
+    color: #78dc7d;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.25s all ease;
+}
+
+.fileBtn:hover {
+    background: rgba(120, 220, 125, 0.12);
+    border-style: solid;
+    transform: translateY(-1px);
+}
+
+.fileBtn:focus-within {
+    outline: 2px solid #78dc7d;
+    outline-offset: 2px;
+}
+
+.fileBtn input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fileName {
+    color: #ffffffcb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Champ + unité ("20 min", "€ / kg", "kcal"...) */
+
+.inputWithSuffix {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.inputWithSuffix span {
+    color: #ffffffcb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.fileRow {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}

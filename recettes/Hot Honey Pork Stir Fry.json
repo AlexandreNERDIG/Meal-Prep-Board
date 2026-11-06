@@ -12,8 +12,8 @@
     { "ingredientId": "39", "quantity": 15 },
     { "ingredientId": "35", "quantity": 85 }
   ],
-  "prepTime": "10 min",
-  "cookTime": "25 min",
+  "prepTime": 10,
+  "cookTime": 25,
   "instructions": "Faites cuire le riz. Coupez les légumes et mélangez la sauce avec miel, vinaigre, sauce soja et huile de sésame. Faites revenir le porc, puis les légumes. Mélangez le tout avec la sauce et servez chaud.",
   "image": "../img/Hot-Honey-Pork-Stir-Fry-807x1024.jpg",
   "status": "normal"

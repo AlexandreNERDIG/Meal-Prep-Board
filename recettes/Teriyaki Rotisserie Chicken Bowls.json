@@ -13,8 +13,8 @@
     { "ingredientId": "20", "quantity": 100 },
     { "ingredientId": "36", "quantity": 21 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "5 min",
+  "prepTime": 20,
+  "cookTime": 5,
   "instructions": "Cuisez le riz. Mélangez le chou, carotte, vinaigre, huile de chili et miel pour la slaw. Ajoutez le poulet, sauce teriyaki, riz, sauce soja et vinaigre de riz. Servez chaud avec graines de sésame et ciboule.",
   "image": "../img/Teriyaki-Rotisserie-Chicken-Bowls-WP-807x1024.jpg",
   "status": "normal"

@@ -12,8 +12,8 @@
     { "ingredientId": "27", "quantity": 15 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "1h30",
+  "prepTime": 20,
+  "cookTime": 90,
   "instructions": "Faites revenir le bœuf, 2 oignons (160g) et 2 gousses d'ail (10g) dans l'huile. Ajoutez les champignons (250g). Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
   "image": "../img/Boeuf-Stroganoff.png",
   "status": "normal"

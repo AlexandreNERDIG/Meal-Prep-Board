@@ -13,8 +13,8 @@
     { "ingredientId": "55", "quantity": 10 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "2h",
+  "prepTime": 20,
+  "cookTime": 120,
   "instructions": "Faites revenir la viande avec 2 oignons (160g) et le beurre (75g). Ajoutez 3 carottes (180g), 2 poireaux (180g). Couvrez d’eau et laissez mijoter 2h. À la fin, incorporez la crème (150mL), le jus de citron (50mL) et la farine (10g).",
   "image": "../img/blanquette-de-veau.jpg",
   "status": "normal"

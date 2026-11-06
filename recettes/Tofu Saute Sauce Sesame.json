@@ -12,8 +12,8 @@
     { "ingredientId": "15", "quantity": 15 },
     { "ingredientId": "7", "quantity": 15 }
   ],
-  "prepTime": "15 min",
-  "cookTime": "25 min",
+  "prepTime": 15,
+  "cookTime": 25,
   "instructions": "Faites cuire le riz. Préparez une sauce avec sauce soja, huile de sésame, miel, vinaigre et gingembre. Faites dorer le tofu. Ajoutez l'oignon, le brocoli et le poivron, faites-les sauter. Versez la sauce et mélangez. Servez sur le riz.",
   "image": "../img/tofu-sesame-stirfry.jpg",
   "status": "normal"

@@ -12,8 +12,8 @@
     { "ingredientId": "40", "quantity": 10 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "5 min",
-  "cookTime": "25 min",
+  "prepTime": 5,
+  "cookTime": 25,
   "instructions": "Cuire le riz. Faire revenir la dinde et les légumes dans l’huile d’olive. Ajouter la sauce au beurre de cacahuète et mélanger jusqu’à épaississement, puis servir chaud.",
   "image": "../img/Peanut-Turkey-Stir-Fry.jpg",
   "status": "normal"

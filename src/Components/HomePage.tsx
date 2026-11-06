@@ -4,7 +4,8 @@ import { X, Smartphone} from 'react-feather';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import MacroSummary from './MacroSummary';
 
 const HomePage = () => {
 
@@ -18,15 +19,9 @@ const HomePage = () => {
 
     const [weeklyRecipe1, setWeeklyRecipe1] = useState<number>(0);
     const [weeklyRecipe2, setWeeklyRecipe2] = useState<number>(1);
-    const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
-        const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [])
-    });
+    const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
 
-    const [recipeList] = useState<Recipe[]>(() => {
-        const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : recipeInfo)
-    });
+    const [recipeList] = useState<Recipe[]>(loadRecipes);
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
@@ -212,11 +207,6 @@ const HomePage = () => {
         setNotAvailableGroceryList(notAvailable);
     }, [weeklyRecipe1, weeklyRecipe2, currentStock, recipeList]);
 
-    const macroCalculatorDaily = (recipe : Recipe, portions : number) => {
-        const macros = calcRecipeMacros(recipe.ingredient, currentStock, portions);
-        return ([macros.calories, macros.carbs, macros.protein, macros.fat])
-    }
-
     const recipeMacroText = (recipe : Recipe | undefined) => {
         return recipe ? formatMacros(calcRecipeMacros(recipe.ingredient, currentStock)) : "";
     }
@@ -231,17 +221,15 @@ const HomePage = () => {
         ? calcRecipeCost(recipeList[weeklyRecipe1].ingredient, currentStock) + calcRecipeCost(recipeList[weeklyRecipe2].ingredient, currentStock)
         : 0;
     
-    const DailyMacros = (portions : number)=> {
-        if (!recipeList[weeklyRecipe1]) return;
-        if (!recipeList[weeklyRecipe2]) return;
-
-        let NumTab1 = macroCalculatorDaily(recipeList[weeklyRecipe1], portions) 
-        let NumTab2 = macroCalculatorDaily(recipeList[weeklyRecipe2], portions) 
-
-        let finalArr = [`${Math.round(NumTab1[0]+NumTab2[0])} Calories`, `${Math.round(NumTab1[1]+NumTab2[1])} g C`, `${Math.round(NumTab1[2]+NumTab2[2])} g P`, `${Math.round(NumTab1[3]+NumTab2[3])} g F`]
-    
-        return finalArr;
-    }
+    // Apports : on additionne les ingrédients des 2 recettes, puis on divise par le nombre de portions
+    //  - par jour    : 1 portion de chaque recette (total / DEFAULT_PORTIONS)
+    //  - la semaine  : les 2 recettes entières (total / 1)
+    const weeklyRecipesReady = Boolean(recipeList[weeklyRecipe1] && recipeList[weeklyRecipe2]);
+    const weeklyIngredients = weeklyRecipesReady
+        ? [...recipeList[weeklyRecipe1].ingredient, ...recipeList[weeklyRecipe2].ingredient]
+        : [];
+    const dailyMacros = weeklyRecipesReady ? calcRecipeMacros(weeklyIngredients, currentStock, DEFAULT_PORTIONS) : null;
+    const weeklyMacros = weeklyRecipesReady ? calcRecipeMacros(weeklyIngredients, currentStock, 1) : null;
 
     const confirmedChoices = () => {
         const newRecipes = [
@@ -255,8 +243,6 @@ const HomePage = () => {
         handleCloseConfirmationModal();
     };
 
-    const dailyMacros = DailyMacros(5);
-    const weeklyMacros = DailyMacros(1);
     const weeklyGroceries = WeeklyGroceries(recipeList, weeklyRecipe1, weeklyRecipe2, currentStock);
     const [availableGroceryList, setAvailableGroceryList] = useState(weeklyGroceries[0]);
     const [notAvailableGroceryList, setNotAvailableGroceryList] = useState(weeklyGroceries[1]);
@@ -345,24 +331,26 @@ const HomePage = () => {
 
             <div className="NutritionSection">
                 <div className="sectionHeader"><p>Weekly Intakes</p></div>
-                <div className="WeeklyInfos">
-                    <div className="subMacro">
-                            <h3 className='MacrosSubPart'>Daily Macros : </h3>
-                            {dailyMacros ? dailyMacros.map((element, index) => (
-                                <p key={index}>{element}</p>
-                            ))
-                            : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
-                            <p>{`${formatPrice(weeklyCost / DEFAULT_PORTIONS)} / jour`}</p>
+                {dailyMacros && weeklyMacros ? (
+                    <div className="macroCards">
+                        <MacroSummary
+                            title="Par jour"
+                            subtitle="1 portion de chaque recette"
+                            macros={dailyMacros}
+                            cost={weeklyCost / DEFAULT_PORTIONS}
+                            costLabel="par jour"
+                        />
+                        <MacroSummary
+                            title="Sur la semaine"
+                            subtitle={`${DEFAULT_PORTIONS} jours, 2 repas par jour`}
+                            macros={weeklyMacros}
+                            cost={weeklyCost}
+                            costLabel="pour la semaine"
+                        />
                     </div>
-                    <div className="subMacro">
-                            <h3 className='MacrosSubPart'>Weekly Macros : </h3>
-                            {weeklyMacros ? weeklyMacros.map((element, index) => (
-                            <p key={index}>{element}</p> 
-                            ))
-                            : <p>{"Pas d'info mais Hassoul ca devrait pas arriver"}</p>}
-                            <p>{`${formatPrice(weeklyCost)} / semaine`}</p>
-                    </div>
-                </div>
+                ) : (
+                    <p className="emptyHint">Génère les recettes de la semaine pour voir tes apports.</p>
+                )}
             </div>
 
             <div className="centeredButtonDiv">

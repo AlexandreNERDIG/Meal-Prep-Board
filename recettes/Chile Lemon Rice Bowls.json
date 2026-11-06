@@ -15,8 +15,8 @@
     { "ingredientId": "54", "quantity": 20 },
     { "ingredientId": "13", "quantity": 250 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "40 min",
+  "prepTime": 20,
+  "cookTime": 40,
   "instructions": "Préparer le poulet avec une marinade au yaourt, citron et épices, puis le rôtir au four avant de le découper. Faire revenir les légumes (poivrons, oignon, chou, ail et piment) avec huile, épices et sauce tomate. Ajouter le riz cuit et le poulet, mélanger avec du jus de citron et assaisonner.",
   "image": "../img/Chili-Lemon-Rice-Bowls-819x1024.jpg",
   "status": "normal"

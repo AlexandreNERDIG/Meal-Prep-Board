@@ -12,8 +12,8 @@
     { "ingredientId": "10", "quantity": 10 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "15 min",
-  "cookTime": "35 min",
+  "prepTime": 15,
+  "cookTime": 35,
   "instructions": "Faites cuire le riz. Faites revenir l'oignon, l'ail et le gingembre dans l'huile. Ajoutez le poulet coupé et les épices (curry, cumin). Ajoutez la sauce tomate, puis la crème fraîche. Laissez mijoter 15 min. Servez avec le riz.",
   "image": "../img/quick-chicken-tikka.jpg",
   "status": "normal"

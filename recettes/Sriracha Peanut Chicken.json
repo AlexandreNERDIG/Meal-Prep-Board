@@ -16,8 +16,8 @@
     { "ingredientId": "40", "quantity": 10 },
     { "ingredientId": "60", "quantity": 14 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "30 min",
+  "prepTime": 20,
+  "cookTime": 30,
   "instructions": "Faites cuire le riz. Mélangez la sauce avec miel, beurre de cacahuète, vinaigre, sauce soja, sriracha et huile de sésame. Faites mariner et cuire le poulet, puis faites revenir les légumes. Ajoutez le riz et mélangez avec la sauce et le poulet. Servez chaud avec ciboule si désiré.",
   "image": "../img/Sriracha-Peanut-Chicken-Rice-Bowls-807x1024.jpg",
   "status": "normal"

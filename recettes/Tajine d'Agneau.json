@@ -11,8 +11,8 @@
     { "ingredientId": "10", "quantity": 10 },
     { "ingredientId": "25", "quantity": 5 }
   ],
-  "prepTime": "15 min",
-  "cookTime": "2h",
+  "prepTime": 15,
+  "cookTime": 120,
   "instructions": "Faites revenir l'agneau, puis ajoutez 2 oignons (160g), 2 gousses d'ail (10g), 2 carottes (120g) et 2 navets (160g). Versez le bouillon et laissez mijoter 1h30. Ajoutez les pommes de terre (250g) et les petits pois (200g) 30 minutes avant la fin.",
   "image": "../img/Tagine-agneau.jpg",
   "status": "normal"

@@ -11,8 +11,8 @@
     { "ingredientId": "27", "quantity": 15 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "15 min",
-  "cookTime": "1h30",
+  "prepTime": 15,
+  "cookTime": 90,
   "instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
   "image": "../img/poulet-basquaise.jpg",
   "status": "normal"

@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
-import { X} from 'react-feather';
+import { X, Upload, Image as ImageIcon } from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
-import { Recipe, Ingredient, RecipeIngredient, recipeInfo, defaultList } from './typeFile';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, findIngredient, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS } from '../lib/recipeUtils';
 
 type IngredientRow = {
     ingredientId: string;
@@ -15,14 +15,19 @@ const emptyRow: IngredientRow = { ingredientId: "", quantity: "" };
 const emptyRecipe: Recipe = {
     recipeName: "",
     ingredient: [],
-    prepTime: "",
-    cookTime: "",
+    prepTime: 0,
+    cookTime: 0,
     instructions: "",
     image: "",
     status: "normal"
 };
 
-const CATEGORIES: Ingredient["category"][] = ["Protéine", "Légumes", "Féculent", "Boisson", "Autre"];
+// Un JSON de recette valide a au minimum un nom et une liste d'ingrédients
+const isRecipeLike = (value: unknown): value is Record<string, unknown> => {
+    if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+    const candidate = value as Record<string, unknown>;
+    return typeof candidate.recipeName === "string" && Array.isArray(candidate.ingredient);
+};
 
 const NewMeal = () => {
 
@@ -32,23 +37,17 @@ const NewMeal = () => {
     const [formData, setFormData] = useState<Recipe>(emptyRecipe);
     const [rows, setRows] = useState<IngredientRow[]>([emptyRow]);
 
-    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
-        const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : recipeInfo)
-    });
+    const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
 
     const [currentStock] = useState<Ingredient[]>(() => {
         const exist = localStorage.getItem("currentStockList");
         return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
-    const [modalState, setModalState] = useState<boolean>(false);
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
 
     const handleOpenConfirmationModal = () => {setAskConfirmation(true)};
     const handleCloseConfirmationModal = () => {setAskConfirmation(false)};
-    const handleOpenModal1 = () => {setModalState(true)};
-    const handleCloseModal1 = () => {setModalState(false)};
 
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -56,6 +55,16 @@ const NewMeal = () => {
         setFormData((prev) => ({
             ...prev,
             [name] : value
+        }))
+    }
+
+    // Les temps sont des nombres de minutes : on ne garde que les chiffres (impossible d'oublier "min")
+    const handleTimeChange = (field : "prepTime" | "cookTime", value : string) => {
+        const minutes = Math.max(0, parseInt(value, 10) || 0);
+
+        setFormData((prev) => ({
+            ...prev,
+            [field] : minutes
         }))
     }
 
@@ -118,80 +127,68 @@ const NewMeal = () => {
         }
     }
 
-    const [importedFiles, setImportedFiles] = useState<FileList | null>(null);
+    // Import de fichiers JSON :
+    //  - 1 fichier  : la recette est chargée dans le formulaire (on peut la relire / la modifier avant de l'ajouter)
+    //  - plusieurs  : elles sont ajoutées directement à la liste
+    // Les anciens JSON (temps en texte, status "mealprep"...) sont remis au bon format par normalizeRecipe.
+    const handleJsonImport = async (e : React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files ?? []);
+        e.target.value = "";  // permet de réimporter le même fichier juste après
+        if (files.length === 0) return;
 
-    const handleMultiJsonImport = () => {
-        if (!importedFiles) return;
+        const contents = await Promise.all(files.map(async file => ({ name: file.name, text: await file.text() })));
 
-        let seen = new Set();
-
-        for (let i = 0; i < importedFiles.length; i++) {
-
-            const file = importedFiles[i];
-            if (!file) continue;
-
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                const fileContent = reader.result as string;
-
-                let parsedFileContent;
-                try {
-                    parsedFileContent = JSON.parse(fileContent);
-                } catch {
-                    toast.error(`${file.name} n'est pas un fichier JSON valide`)
-                    return;
-                }
-
-                const currentRecipeName = parsedFileContent.recipeName?.trim()
-
-                setRecipeList(prev => {
-                    const alreadyExist = prev.some(element => element.recipeName === currentRecipeName);
-
-                    if (!seen.has(currentRecipeName) && currentRecipeName && !alreadyExist) {
-                        seen.add(currentRecipeName)
-                        toast.success(`${currentRecipeName} à bien été ajouté`)
-                        // status : uniquement "favorite" ou "normal" (certains anciens JSON avaient d'autres valeurs)
-                        const updatedRecipeList = [...prev, { ...parsedFileContent, status: parsedFileContent.status === "favorite" ? "favorite" : "normal" }];
-                        localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-                        return updatedRecipeList
-                    }
-                    return prev;
-                })
-                const alreadyExist = recipeList.some(element => element.recipeName === currentRecipeName);
-
-                if (seen.has(currentRecipeName) || alreadyExist) {
-                        toast.error(`${currentRecipeName} n'a pas pu être ajouté (Existe déjà)`)
-                }
-            }
-            reader.readAsText(file);
-        }
-        handleCloseModal1();
-    }
-
-    const handleSingleJsonImport = () => {
-        if (!importedFiles || importedFiles.length === 0) return;
-
-        const reader = new FileReader()
-        reader.onload = () => {
-            const content = reader.result as string;
-
-            let parsedData : Recipe;
+        const parseRecipe = (name : string, text : string): Recipe | null => {
+            let parsed : unknown;
             try {
-                parsedData = JSON.parse(content);
+                parsed = JSON.parse(text);
             } catch {
-                toast.error("Ce fichier n'est pas un fichier JSON valide")
-                return;
+                toast.error(`${name} n'est pas un fichier JSON valide`)
+                return null;
             }
 
-            setFormData({ ...emptyRecipe, ...parsedData, status: parsedData.status === "favorite" ? "favorite" : "normal" })
-            setRows((parsedData.ingredient && parsedData.ingredient.length > 0)
-                ? parsedData.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
+            if (!isRecipeLike(parsed)) {
+                toast.error(`${name} n'a pas le format d'une recette`)
+                return null;
+            }
+
+            return normalizeRecipe(parsed);
+        }
+
+        if (contents.length === 1) {
+            const recipe = parseRecipe(contents[0].name, contents[0].text);
+            if (!recipe) return;
+
+            setFormData({ ...emptyRecipe, ...recipe })
+            setRows(recipe.ingredient.length > 0
+                ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
                 : [emptyRow]
             )
+            toast.success(`${recipe.recipeName} chargée dans le formulaire`)
+            return;
         }
-        reader.readAsText(importedFiles[0]);
-        handleCloseModal1();
+
+        const updatedRecipeList = [...recipeList];
+
+        for (const { name, text } of contents) {
+            const recipe = parseRecipe(name, text);
+            if (!recipe) continue;
+
+            const currentRecipeName = recipe.recipeName.trim();
+
+            if (!currentRecipeName || updatedRecipeList.some(element => element.recipeName === currentRecipeName)) {
+                toast.error(`${currentRecipeName || name} n'a pas pu être ajouté (Existe déjà)`)
+                continue;
+            }
+
+            updatedRecipeList.push({ ...recipe, recipeName: currentRecipeName });
+            toast.success(`${currentRecipeName} à bien été ajouté`)
+        }
+
+        if (updatedRecipeList.length !== recipeList.length) {
+            setRecipeList(updatedRecipeList);
+            localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+        }
     }
 
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -211,6 +208,7 @@ const NewMeal = () => {
     }
 
     const placeholder = "https://placehold.co/500x450/2c2c2c/ffffff?text=Pas+d'image&font=montserrat";
+    const imageName = formData.image.split("/").pop() || "";
 
     return(
         <>
@@ -240,7 +238,7 @@ const NewMeal = () => {
                                     onChange={(e) => handleRowChange(index, "ingredientId", e.target.value)}
                                 >
                                     <option value="">-- Choisir un ingrédient --</option>
-                                    {CATEGORIES.map(category => (
+                                    {INGREDIENT_CATEGORIES.map(category => (
                                         <optgroup key={category} label={category}>
                                             {currentStock
                                                 .filter(ing => ing.category === category)
@@ -281,20 +279,32 @@ const NewMeal = () => {
                     <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / DEFAULT_PORTIONS)} / portion)`}</p>
 
                     <label>Temps de préparation : </label>
-                    <textarea
-                      name="prepTime"
-                      value={formData.prepTime}
-                      onChange={handleChange}
-                      placeholder='Entrer le temps de préparation'
-                    />
+                    <div className="timeRow">
+                        <input
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={formData.prepTime || ""}
+                          onChange={(e) => handleTimeChange("prepTime", e.target.value)}
+                          placeholder='20'
+                        />
+                        <span className="unitLabel">min</span>
+                        {formData.prepTime >= 60 && <span className="timeHint">{`= ${formatDuration(formData.prepTime)}`}</span>}
+                    </div>
 
                     <label>Temps de cuisson : </label>
-                    <textarea
-                      name="cookTime"
-                      value={formData.cookTime}
-                      onChange={handleChange}
-                      placeholder='Entrer le temps de cuisson'
-                    />
+                    <div className="timeRow">
+                        <input
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={formData.cookTime || ""}
+                          onChange={(e) => handleTimeChange("cookTime", e.target.value)}
+                          placeholder='30'
+                        />
+                        <span className="unitLabel">min</span>
+                        {formData.cookTime >= 60 && <span className="timeHint">{`= ${formatDuration(formData.cookTime)}`}</span>}
+                    </div>
 
                     <label>Instructions : </label>
                     <textarea
@@ -305,7 +315,13 @@ const NewMeal = () => {
                     />
 
                     <label>Image : </label>
-                    <input type="file" onChange={handleImagePath}/>
+                    <div className="fileRow">
+                        <label className="fileBtn">
+                            <ImageIcon size={16}/> Choisir une image
+                            <input type="file" accept="image/*" onChange={handleImagePath}/>
+                        </label>
+                        <span className="fileName">{imageName || "Aucune image"}</span>
+                    </div>
                 </div>
                 <div className="imageInput">
                     <img src={formData.image || placeholder} alt="Recette"/>
@@ -313,40 +329,14 @@ const NewMeal = () => {
             </div>
                 <div className="centerButton2">
                     <button onClick={handleOpenConfirmationModal} className='Btn2'>Ajouter la Recette à la Liste</button>
-                    <input
-                      type='file'
-                      accept=".json"
-                      onChange={(e) => {
-                        if (e.target.files) {
-                            setImportedFiles(e.target.files);
-                            handleOpenModal1();
-                        }
-                      }}
-                      className='Btn3'
-                      multiple
-                    />
+                    <label className="fileBtn importBtn">
+                        <Upload size={16}/> Importer des recettes (.json)
+                        <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
+                    </label>
                 </div>
         </div>
 
-        {/* Modal d'ajout d'ingrédient */}
-
-        {modalState && (
-                    <div className="modalOverlay" onClick={handleCloseModal1}>
-                        <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
-                            <div className="head">
-                                <h3>Confirmer le nombre de Fichier</h3>
-                                <div><X className='logo' onClick={handleCloseModal1}></X></div>
-                            </div>
-                          <p>Combien de fichier avez-vous <strong>importer</strong> ?</p>
-                          <div className="deleteModalActions">
-                            <button className="confirmDeleteBtn" onClick={handleMultiJsonImport}>Plusieurs</button>
-                            <button className="cancelDeleteBtn" onClick={handleSingleJsonImport}>1 seul</button>
-                          </div>
-                        </div>
-                    </div>
-        )}
-
-        {/* Modal d'ajout d'ingrédient */}
+        {/* Modal de confirmation d'ajout de la recette */}
 
         {askConfirmation && (
                     <div className="modalOverlay" onClick={handleCloseConfirmationModal}>

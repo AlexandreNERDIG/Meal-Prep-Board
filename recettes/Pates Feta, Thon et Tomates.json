@@ -11,8 +11,8 @@
     { "ingredientId": "39", "quantity": 30 },
     { "ingredientId": "60", "quantity": 1 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "15 min",
+  "prepTime": 20,
+  "cookTime": 15,
   "instructions": "Cuire les pâtes 'al dente'. Égouttez et émiettez le thon. Mélangez l'huile d'olive, l'ail, le vinaigre et l'oignon haché pour la vinaigrette. Dans un grand saladier, mélangez les pâtes refroidies, le thon, les tomates cerise coupées et la feta. Incorporez la vinaigrette et assaisonnez.",
   "image": "../img/pasta-feta-tuna-salad.jpg",
   "status": "normal"

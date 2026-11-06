@@ -15,8 +15,8 @@
     { "ingredientId": "13", "quantity": 250 },
     { "ingredientId": "60", "quantity": 0 }
   ],
-  "prepTime": "20 min",
-  "cookTime": "30 min",
+  "prepTime": 20,
+  "cookTime": 30,
   "instructions": "Cuire le riz. Faire revenir le boeuf et les légumes, puis ajouter la sauce épicée et laisser épaissir. Servir le tout chaud avec le riz.",
   "image": "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
   "status": "normal"
