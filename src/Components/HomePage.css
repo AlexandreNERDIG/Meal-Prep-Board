@@ -130,18 +130,6 @@
     align-items: center;
 }
 
-.WeeklyInfos {
-    display: flex;
-    justify-content: space-around;
-    width: 70%;
-    gap: 2rem;
-    background: linear-gradient(135deg, #3a3a3e, #27272b);
-    border: 2px solid #3a3a3e;
-    padding: 1rem 2rem;
-    border-radius: 16px;
-    box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.5);
-}
-
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -160,23 +148,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #45a049, #2e7d32);
-}
-
-.subMacro {
-    padding: 0.35rem;
-    width: 45%;
-    color: #78dc7d; 
-    text-align: center;
-}
-
-.subMacro h3{
-    text-decoration: underline;
-}
-
-.subMacro p {
-    color: #fff;
-    padding: 1px;
-    text-align: left;
 }
 
 .centeredButtonDiv {
@@ -276,4 +247,125 @@
 
 .green {
     color: #78dc7d; 
+}
+
+/* Résumé des apports (Par jour / Sur la semaine) */
+
+.macroCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+}
+
+.macroCard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem 1.75rem;
+    color: #fff;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    border: 2px solid #3a3a3e;
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.macroCardHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.macroCardHead h3 {
+    color: #78dc7d;
+    font-size: 1.3rem;
+}
+
+.macroCardHead span {
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+.macroCalories {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.macroCalories strong {
+    font-size: 2.8rem;
+    line-height: 1;
+}
+
+.macroCalories span {
+    color: #78dc7d;
+    font-weight: 700;
+}
+
+.macroSplitBar {
+    display: flex;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #1e2122;
+}
+
+.macroSeg.carbs, .macroTile.carbs { --macro-color: #78dc7d; }
+.macroSeg.protein, .macroTile.protein { --macro-color: #6fb7e9; }
+.macroSeg.fat, .macroTile.fat { --macro-color: #e8c468; }
+
+.macroSeg {
+    background: var(--macro-color);
+    transition: width 0.4s ease;
+}
+
+.macroTiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.macroTile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.6rem 0.5rem;
+    background: #1e2122;
+    border-top: 3px solid var(--macro-color);
+    border-radius: 10px;
+}
+
+.macroTile strong {
+    font-size: 1.15rem;
+}
+
+.macroTileLabel, .macroTilePercent {
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+.macroCost {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid #3a3a3e;
+}
+
+.macroCost strong {
+    color: #78dc7d;
+    font-size: 1.2rem;
+}
+
+.macroCost span {
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+.emptyHint {
+    color: #9ca3af;
+    text-align: center;
+    padding: 1rem 0;
 }

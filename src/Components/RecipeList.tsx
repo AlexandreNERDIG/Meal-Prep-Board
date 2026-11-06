@@ -2,18 +2,15 @@ import { useState } from 'react';
 import toast from "react-hot-toast"
 import { Trash, Trash2, X, Download} from 'react-feather';
 import './RecipeList.css';
-import { Recipe, recipeInfo, Ingredient, defaultList } from './typeFile';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { Recipe, Ingredient, defaultList } from './typeFile';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS } from '../lib/recipeUtils';
 
 const RecipeList = () => {
 
     const RECIPES_KEY = "globalRecipeList";
     const [isHovered, setIsHovered] = useState(false);
 
-    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
-        const saved = localStorage.getItem(RECIPES_KEY);
-        return ((saved) ? JSON.parse(saved) : recipeInfo)
-    });
+    const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
 
     const [currentStock] = useState<Ingredient[]>(() => {
             const exist = localStorage.getItem("currentStockList");
@@ -73,7 +70,7 @@ const RecipeList = () => {
                     <div key={index} className="flashCard">
                         <img src={element.image}/>
                         <div className="subDivText">
-                            <h3>{element.prepTime}</h3>
+                            <h3>{formatDuration(element.prepTime)}</h3>
                             <h2>{element.recipeName}</h2>
                             <p>{element.instructions}</p>
                             <p className="macro">{macroCalculator(element)}</p>
@@ -103,8 +100,8 @@ const RecipeList = () => {
                             {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
                         </div>
                     </div>
-                    <p><strong>Préparation :</strong> {selectedRecipe.prepTime}</p>
-                    <p><strong>Cuisson :</strong> {selectedRecipe.cookTime}</p>
+                    <p><strong>Préparation :</strong> {formatDuration(selectedRecipe.prepTime)}</p>
+                    <p><strong>Cuisson :</strong> {formatDuration(selectedRecipe.cookTime)}</p>
                     <p><strong>Ingrédients :</strong> <br/><br/>
                         {selectedRecipe.ingredient.map((element, index) => {
                             const ing = currentStock.find(ingre => ingre.id == element.ingredientId)

@@ -3,9 +3,9 @@ import './NewMeal.css';
 import { X } from 'react-feather';
 import { Ingredient, defaultList } from './typeFile';
 import { useState } from 'react';
-import { Search, Aperture, MinusCircle, PlusCircle } from "react-feather"
+import { Search, Aperture, MinusCircle, PlusCircle, Upload } from "react-feather"
 import toast from 'react-hot-toast';
-import { priceUnitLabel } from '../lib/recipeUtils';
+import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE } from '../lib/recipeUtils';
 
 type IngredientForm = {
     name: string;
@@ -29,9 +29,13 @@ const emptyIngredientForm: IngredientForm = {
     price: "",
     unit: "",
     category: "",
-    image: "/img2/",
+    image: "",
     trackStock: true
 };
+
+const UNITS = ["g", "mL", "unités"] as const;
+
+type CategoryFilter = "Tout" | typeof INGREDIENT_CATEGORIES[number];
 
 const toNumber = (value: string): number => {
     const parsed = Number(value.replace(",", "."));
@@ -46,7 +50,7 @@ const CurrentStock = () => {
     });
 
     const [searchValue, setSearchValue] = useState<string>("");
-    const [selectedcategory, setSelectedcategory] = useState<"Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre">("Tout");
+    const [selectedcategory, setSelectedcategory] = useState<CategoryFilter>("Tout");
     const [idCounter, setIdCounter] = useState(() => {
         const exist = localStorage.getItem("currentStockList");
         const list = exist ? JSON.parse(exist) : defaultList;
@@ -57,7 +61,6 @@ const CurrentStock = () => {
     const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
     const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {setSearchValue(e.target.value)};
-    const handlecategoryChange = (e : React.ChangeEvent<HTMLSelectElement>) => {setSelectedcategory(e.target.value as "Tout" | "Protéine" | "Légumes" | "Féculent" | "Boisson" | "Autre")};
     const handleOpenModal1 = () => {setModalState(true)};
     const handleCloseModal1 = () => {
         setFormData(emptyIngredientForm)
@@ -114,11 +117,12 @@ const CurrentStock = () => {
         }))
     }
 
-    const handlecategoryChangeBis = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData((prev) => ({
-            ...prev,
-            category: e.target.value as Ingredient["category"]
-        }));
+    const handleFormCategory = (category: Ingredient["category"]) => {
+        setFormData((prev) => ({ ...prev, category }));
+    };
+
+    const handleFormUnit = (unit: Ingredient["unit"]) => {
+        setFormData((prev) => ({ ...prev, unit }));
     };
 
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -213,7 +217,15 @@ const CurrentStock = () => {
         handleCloseModal2();
     };
 
-    const macroBase = (formData.unit === "g" || formData.unit === "mL") ? `pour 100 ${formData.unit}` : "pour 1 unité";
+    const macroBase = (formData.unit === "g" || formData.unit === "mL")
+        ? `pour 100 ${formData.unit}`
+        : (formData.unit === "unités" ? "pour 1 unité" : "choisis d'abord l'unité");
+
+    const visibleItems = currentStock.filter((item) => (selectedcategory === "Tout" || item.category === selectedcategory) && item.name.toLowerCase().includes(searchValue.toLowerCase()));
+
+    const countFor = (category: CategoryFilter) => (category === "Tout") ? currentStock.length : currentStock.filter(item => item.category === category).length;
+
+    const imageName = formData.image.split("/").pop() || "";
 
     return(
         <>
@@ -227,22 +239,32 @@ const CurrentStock = () => {
                     <input type="text" className='searchInput' value={searchValue} onChange={handleSearchInput} placeholder='Vous cherchez un aliment en particulier ?'/>
                     <div className="searchIconContainer"><Search></Search></div>
                 </div>
-                <select className="category" name="category" value={selectedcategory} onChange={handlecategoryChange}>
-                    <option value="Tout">Tout</option>
-                    <option value="Protéine">Protéine</option>
-                    <option value="Légumes">Légumes</option>
-                    <option value="Féculent">Féculent</option>
-                    <option value="Boisson">Boisson</option>
-                    <option value="Autre">Autre</option>
-                </select>
+            </div>
+
+            <div className="chipRow categoryFilter">
+                {(["Tout", ...INGREDIENT_CATEGORIES] as CategoryFilter[]).map(category => (
+                    <button
+                        type="button"
+                        key={category}
+                        className={`chip ${selectedcategory === category ? "active" : ""}`}
+                        onClick={() => setSelectedcategory(category)}
+                    >
+                        {category}
+                        <span className="chipCount">{countFor(category)}</span>
+                    </button>
+                ))}
             </div>
 
             <div className="currentStockGallery">
-                {currentStock
-                    ?.filter((item) => (selectedcategory === "Tout" || item.category === selectedcategory) && item.name.toLowerCase().includes(searchValue.toLowerCase()))
+                {visibleItems.length === 0 && <p className="emptyStock">Aucun ingrédient trouvé.</p>}
+                {visibleItems
                     .map((item) => (
                       <div key={item.id} className="stockItem">
-                        <img src={item.image} alt={item.name} />
+                        <img
+                            src={(item.image && item.image !== "/img2/") ? item.image : NO_IMAGE}
+                            alt={item.name}
+                            onError={(e) => { if (e.currentTarget.src !== NO_IMAGE) e.currentTarget.src = NO_IMAGE; }}
+                        />
                         <div className="subTextDiv">
                             <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
                             <h2>{item.name}</h2>
@@ -275,103 +297,114 @@ const CurrentStock = () => {
                             <div><X className='logo' onClick={handleCloseModal1}></X></div>
                         </div>
 
-                        <div className="textInput1">
-                            <div className="sousElement">
-                                <label>Nom : </label>
-                                <textarea
+                        <div className="ingredientForm">
+                            <div className="formField">
+                                <label htmlFor="ingredientName">Nom</label>
+                                <input
+                                    id="ingredientName"
+                                    type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={formHandler}
-                                    placeholder='Entrer le nom'
+                                    placeholder="Ex : Blanc de poulet"
                                 />
                             </div>
-                            <div className="sousElement">
-                                <label>Unité : </label>
-                                <select className="category" name="unit" value={formData.unit} onChange={formHandler}>
-                                    <option value="">-- Choisir --</option>
-                                    <option value="g">g</option>
-                                    <option value="mL">mL</option>
-                                    <option value="unités">unités</option>
-                                </select>
+
+                            <div className="formField">
+                                <span className="fieldTitle">Catégorie</span>
+                                <div className="chipRow chipRowLeft">
+                                    {INGREDIENT_CATEGORIES.map(category => (
+                                        <button
+                                            type="button"
+                                            key={category}
+                                            className={`chip ${formData.category === category ? "active" : ""}`}
+                                            onClick={() => handleFormCategory(category)}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="sousElement">
-                                <label>Prix : </label>
-                                <input
-                                    type="text"
-                                    inputMode="decimal"
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={formHandler}
-                                    placeholder={`Prix (${priceUnitLabel(formData.unit)})`}
-                                />
+
+                            <div className="formField">
+                                <span className="fieldTitle">Unité</span>
+                                <div className="chipRow chipRowLeft">
+                                    {UNITS.map(unit => (
+                                        <button
+                                            type="button"
+                                            key={unit}
+                                            className={`chip ${formData.unit === unit ? "active" : ""}`}
+                                            onClick={() => handleFormUnit(unit)}
+                                        >
+                                            {unit}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="sousElement">
-                                <label>Calories : </label>
-                                <input
-                                    type="text"
-                                    inputMode="decimal"
-                                    name="calories"
-                                    value={formData.calories}
-                                    onChange={formHandler}
-                                    placeholder='kcal'
-                                />
+
+                            <div className="formField">
+                                <label htmlFor="ingredientPrice">Prix</label>
+                                <div className="inputWithSuffix">
+                                    <input
+                                        id="ingredientPrice"
+                                        type="text"
+                                        inputMode="decimal"
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={formHandler}
+                                        placeholder="0,00"
+                                    />
+                                    <span>{priceUnitLabel(formData.unit)}</span>
+                                </div>
                             </div>
-                            <div className="sousElement">
-                                <label>Glucides : </label>
-                                <input
-                                    type="text"
-                                    inputMode="decimal"
-                                    name="carbs"
-                                    value={formData.carbs}
-                                    onChange={formHandler}
-                                    placeholder='g'
-                                />
+
+                            <div className="formField">
+                                <span className="fieldTitle">Valeurs nutritionnelles <small>{macroBase}</small></span>
+                                <div className="macroInputs">
+                                    {([
+                                        { name: "calories", label: "Calories", suffix: "kcal" },
+                                        { name: "carbs", label: "Glucides", suffix: "g" },
+                                        { name: "protein", label: "Protéines", suffix: "g" },
+                                        { name: "fat", label: "Lipides", suffix: "g" },
+                                    ] as const).map(field => (
+                                        <div className="macroInput" key={field.name}>
+                                            <label htmlFor={`ingredient-${field.name}`}>{field.label}</label>
+                                            <div className="inputWithSuffix">
+                                                <input
+                                                    id={`ingredient-${field.name}`}
+                                                    type="text"
+                                                    inputMode="decimal"
+                                                    name={field.name}
+                                                    value={formData[field.name]}
+                                                    onChange={formHandler}
+                                                    placeholder="0"
+                                                />
+                                                <span>{field.suffix}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="sousElement">
-                                <label>Protéines : </label>
-                                <input
-                                    type="text"
-                                    inputMode="decimal"
-                                    name="protein"
-                                    value={formData.protein}
-                                    onChange={formHandler}
-                                    placeholder='g'
-                                />
-                            </div>
-                            <div className="sousElement">
-                                <label>Lipides : </label>
-                                <input
-                                    type="text"
-                                    inputMode="decimal"
-                                    name="fat"
-                                    value={formData.fat}
-                                    onChange={formHandler}
-                                    placeholder='g'
-                                />
-                            </div>
-                            <div className="sousElement">
-                                <label>Catégorie : </label>
-                                <select className="category" name="category" value={formData.category} onChange={handlecategoryChangeBis}>
-                                    <option value="">-- Choisir --</option>
-                                    <option value="Protéine">Protéine</option>
-                                    <option value="Légumes">Légumes</option>
-                                    <option value="Féculent">Féculent</option>
-                                    <option value="Boisson">Boisson</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
-                            </div>
-                            <div className="sousElement">
-                                <label>Suivi dans le stock : </label>
+
+                            <label className="checkField">
                                 <input type="checkbox" name="trackStock" checked={formData.trackStock} onChange={formHandler}/>
-                                <span> (décocher pour les épices, sel... : ils n'apparaîtront pas dans la liste de courses)</span>
-                            </div>
-                            <div className="sousElement">
-                                <label>Image : </label>
-                                <input type="file" onChange={handleImagePath}/>
+                                <span>
+                                    Suivre dans le stock
+                                    <small>Décocher pour les épices, le sel... : ils n'apparaîtront pas dans la liste de courses.</small>
+                                </span>
+                            </label>
+
+                            <div className="formField">
+                                <span className="fieldTitle">Image</span>
+                                <div className="fileRow">
+                                    <label className="fileBtn">
+                                        <Upload size={16}/> Choisir une image
+                                        <input type="file" accept="image/*" onChange={handleImagePath}/>
+                                    </label>
+                                    <span className="fileName">{imageName || "Aucune image"}</span>
+                                </div>
                             </div>
                         </div>
-
-                        <p>{`Les macros sont à saisir ${macroBase}. Le prix est en ${priceUnitLabel(formData.unit)}.`}</p>
 
                         <div className="deleteModalActions">
                             <button className="confirmDeleteBtn" onClick={ajouterIngredient}>Ajouté l'Ingrédient</button>

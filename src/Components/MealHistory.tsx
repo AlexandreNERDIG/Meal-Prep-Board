@@ -2,8 +2,8 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Recipe, Ingredient, recipeInfo, RecipeIngredient, defaultList } from './typeFile';
-import { calcRecipeMacros, formatMacros, findIngredient, isStockTracked } from '../lib/recipeUtils';
+import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
+import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory } from '../lib/recipeUtils';
 
 const MealHistory = () => {
 
@@ -16,15 +16,9 @@ const MealHistory = () => {
     "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
     ];
 
-    const [mealHistory, setmealHistory] = useState<Recipe[][]>(() => {
-        const saved = localStorage.getItem("mealHistoryList");
-        return ((saved) ? JSON.parse(saved) : [])
-    });
+    const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
 
-    const [recipeList, setRecipeList] = useState<Recipe[]>(() => {
-        const saved = localStorage.getItem("globalRecipeList");
-        return ((saved) ? JSON.parse(saved) : recipeInfo)
-    });
+    const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
         const exist = localStorage.getItem("currentStockList");
@@ -172,8 +166,8 @@ const MealHistory = () => {
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                     <h2>{currentModalRecipe.recipeName}</h2>
 
-                    <p><strong>Préparation :</strong> {currentModalRecipe.prepTime}</p>
-                    <p><strong>Cuisson :</strong> {currentModalRecipe.cookTime}</p>
+                    <p><strong>Préparation :</strong> {formatDuration(currentModalRecipe.prepTime)}</p>
+                    <p><strong>Cuisson :</strong> {formatDuration(currentModalRecipe.cookTime)}</p>
                     <p><strong>Ingrédients :</strong> <br /><br />{currentModalRecipe.ingredient.map((element, index) => {
                         const ing = currentStock.find(ele => ele.id == element.ingredientId)
                         return (

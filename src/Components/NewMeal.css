@@ -67,8 +67,7 @@
 }
 
 .Btn,
-.Btn2,
-.Btn3 {
+.Btn2 {
     position: relative;
     text-align: center;
     background: transparent;
@@ -93,10 +92,13 @@
 .centerButton2 {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.Btn2, .Btn3 {
+.Btn2 {
     font-size: 1rem;
     padding: 0.5rem 2rem;
     margin-top: 1rem;
@@ -139,11 +141,6 @@
     width: 70%;
 }
 
-.Btn3 {
-    margin-left: 0.75rem;
-    padding: 0.5rem 0.75rem;
-}
-
 /* Ligne d'ingrédient : menu déroulant + quantité + unité + bouton supprimer */
 
 .textInput select {
@@ -173,7 +170,7 @@
 }
 
 .ingredientRow input {
-    width: 90px;
+    width: 115px;
     margin-bottom: 0;
 }
 
@@ -201,4 +198,41 @@
     color: #fff;
     font-size: 0.9rem;
     margin-bottom: 1rem;
+}
+
+/* Temps de préparation / cuisson : nombre de minutes */
+
+.timeRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.timeRow input {
+    width: 90px;
+    margin-bottom: 0;
+}
+
+.timeHint {
+    color: #78dc7d;
+    font-size: 0.8rem;
+}
+
+/* Boutons de fichier : les styles de ".textInput label" (titres verts soulignés) ne doivent pas s'y appliquer */
+
+.textInput .fileBtn {
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-bottom: 0;
+    color: #78dc7d;
+}
+
+.textInput .fileRow {
+    margin-bottom: 1rem;
+}
+
+.importBtn {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
