@@ -8,6 +8,7 @@ import CurrentStock from './Components/CurrentStock';
 import { recipeInfo, defaultList } from './Components/typeFile'
 import { Toaster } from 'react-hot-toast';
 import './App.css';
+import './responsive.css';
 
 function App() {
 
