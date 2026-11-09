@@ -1,0 +1,350 @@
+/* =====================================================================
+   Affichage adaptatif (téléphone, tablette, ordinateur, grand écran / TV)
+   Chargé EN DERNIER (voir App.tsx) : il complète les CSS de chaque page.
+   Paliers : TV >= 1800px | desktop > 1150px | tablette <= 1150px (1 colonne)
+             <= 900px (barre de nav en haut) | <= 600px (barre de nav en bas)
+   ===================================================================== */
+
+:root {
+    --nav-w: 15.625rem; /* = 250px, mais grandit avec la taille de texte sur grand écran */
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* ---------- Structure générale ---------- */
+
+.ContentDisplay {
+    grid-template-columns: var(--nav-w) minmax(0, 1fr);
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.globalNavSection {
+    width: var(--nav-w);
+}
+
+.globalHomeSection,
+.globalRecipeListSection,
+.globalMealHistorySection,
+.globalCurrentStockSection,
+.globalNewMealSection {
+    width: 100%;
+    max-width: 75rem; /* = 1200px */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.sectionHeader {
+    width: 100%;
+    max-width: 39.375rem; /* = 630px */
+    text-align: center;
+}
+
+.sectionHeader p {
+    font-size: clamp(1.9rem, 6vw, 3rem);
+}
+
+.globalNavSection img { width: 9.375rem; }
+
+.navIcon {
+    display: none; /* les icônes de la nav ne servent que sur téléphone */
+}
+
+/* Fenêtres : plus de décalage de 250px, taille fluide */
+.modalContent,
+.deleteModalContent,
+.deleteModalContent1,
+.deleteModalContent2,
+.deleteModalContent4 {
+    margin-left: var(--nav-w);
+}
+
+.modalContent { max-width: 40.625rem; max-height: min(53rem, 92vh); max-height: min(53rem, 92dvh); }
+.deleteModalContent, .deleteModalContent1 { max-width: 31.25rem; }
+.deleteModalContent2, .deleteModalContent4 { max-width: 46.875rem; max-height: 92vh; max-height: 92dvh; overflow-y: auto; }
+
+/* Cartes : le texte peut se replier au lieu de dépasser de la carte */
+.subDivText, .subTextDiv, .textSubDiv { min-width: 0; overflow-wrap: anywhere; }
+.centeredButton { padding: 0.3rem 2rem; }
+.subDivText h3 { white-space: nowrap; }
+
+/* ---------- Grands écrans / TV ---------- */
+
+@media (min-width: 1800px) {
+    html { font-size: 20px; }
+}
+@media (min-width: 2400px) {
+    html { font-size: 26px; }
+}
+@media (min-width: 3200px) {
+    html { font-size: 34px; }
+}
+
+@media (min-width: 1151px) {
+    .recipe { height: 25rem; }
+    .recipe img { max-height: 25rem; max-width: 28rem; }
+}
+
+/* ---------- Tactile : pas d'effets de survol "zoom" ---------- */
+
+@media (hover: none) {
+    .flashCard:hover,
+    .stockItem:hover,
+    .recipeDisplay:hover,
+    .inputSection:hover,
+    .generateButton p:hover,
+    .replaceButton p:hover,
+    .confirmationButtonSection:hover,
+    .SMSIcon:hover,
+    .confirmDeleteBtn:hover,
+    .cancelDeleteBtn:hover,
+    .chip:hover,
+    .fileBtn:hover,
+    .ShoppingCartIcon:hover {
+        transform: none;
+    }
+    .sectionHeader p:hover,
+    .weekId p:hover {
+        color: inherit;
+    }
+}
+
+@media (pointer: coarse) {
+    .chip { min-height: 2.75rem; }
+    .descBtn, .Btn, .Btn2, .confirmDeleteBtn, .cancelDeleteBtn,
+    .modalContent button, .fileBtn { min-height: 2.75rem; }
+
+    /* petites icônes : zone de toucher agrandie (40px) */
+    .deleteBtn, .deleteIcon, .bookMarkIcon, .removeIngredient, .logo, .icon,
+    .countDiv svg {
+        box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+    }
+    .bookMarkIcon { right: 50px; }
+    .countDiv { gap: 0.5rem; }
+}
+
+/* ---------- <= 1150px : une seule colonne de cartes ---------- */
+
+@media (max-width: 1150px) {
+    .gallery,
+    .currentStockGallery,
+    .recipeContainner,
+    .macroCards {
+        grid-template-columns: 1fr;
+    }
+
+    .centeredButton { padding: 0.3rem 2rem; }
+    .boxInfos { gap: 1rem; }
+    .subDivText h3, .subTextDiv h3 { width: auto; align-self: center; }
+
+    /* Home : recette empilée (image au-dessus, détails dessous) */
+    .recipe {
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+    }
+    .recipe img {
+        order: -1;
+        width: 100%;
+        max-width: 100%;
+        height: 16rem;
+        max-height: none;
+    }
+    .recipeDetails {
+        width: 100%;
+        height: auto;
+    }
+
+    .generateButton p { width: auto; min-width: 16rem; }
+    .confirmationButtonSection { width: auto; min-width: 10rem; padding: 0 1rem; }
+    .centeredButtonDiv { flex-wrap: wrap; align-items: center; }
+
+    /* New Meal : formulaire sur une colonne */
+    .textInput { max-width: 100%; }
+    .imageInput { width: 100%; margin-bottom: 1rem; }
+    .imageInput img { width: 100%; max-width: 20rem; }
+    .textInput input { width: 100%; }
+    .textInput .ingredientRow input { width: 115px; }
+    .textInput .timeRow input { width: 90px; }
+}
+
+/* ---------- <= 900px : barre de navigation en haut ---------- */
+
+@media (max-width: 900px) {
+    .ContentDisplay {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+    }
+
+    .globalNavSection {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        position: sticky;
+        top: 0;
+        padding: 0.5rem 1rem;
+    }
+
+    .sticky {
+        position: static;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .globalNavSection img {
+        margin: 0;
+        width: 5.5rem;
+        flex-shrink: 0;
+    }
+
+    .LinksPart {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .LinksPart::-webkit-scrollbar { display: none; }
+
+    .LinksPart a {
+        width: auto;
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .modalContent,
+    .deleteModalContent,
+    .deleteModalContent1,
+    .deleteModalContent2,
+    .deleteModalContent4 {
+        margin-left: 0;
+        margin-bottom: 0;
+        width: 92%;
+        padding: 1.25rem;
+    }
+
+    .globalHomeSection,
+    .globalRecipeListSection,
+    .globalMealHistorySection,
+    .globalCurrentStockSection,
+    .globalNewMealSection {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* ---------- <= 600px : téléphone, barre de navigation en bas ---------- */
+
+@media (max-width: 600px) {
+    :root { --tabbar-h: 4rem; }
+
+    .ContentDisplay {
+        grid-template-rows: 1fr;
+        padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .globalNavSection {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 0 env(safe-area-inset-bottom, 0px);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .globalNavSection img { display: none; }
+
+    .LinksPart {
+        overflow: visible;
+        gap: 0;
+        justify-content: stretch;
+    }
+
+    .LinksPart a {
+        flex: 1 1 0;
+        min-width: 0;
+        height: var(--tabbar-h);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        padding: 0.25rem;
+        font-size: 0.62rem;
+        white-space: normal;
+        line-height: 1.1;
+        border: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: none;
+    }
+    .LinksPart a:first-child { border-left: none; }
+    .LinksPart a::after { display: none; }
+    .LinksPart a:active { background: #7ac07e; }
+
+    .navIcon { display: block; width: 1.3rem; height: 1.3rem; }
+
+    /* Les notifications ne doivent pas être cachées par la barre */
+    .sectionHeader { margin: 1rem auto; }
+
+    /* Cartes : image au-dessus, texte dessous */
+    .flashCard, .stockItem, .recipeDisplay { flex-direction: column; }
+    .flashCard img, .recipeDisplay img { width: 100%; height: 11rem; object-fit: cover; }
+    .stockItem img { width: 100%; height: 11rem; border-radius: 0.85rem 0.85rem 0 0; }
+    .subDivText, .subTextDiv { margin-top: 0; padding: 0.75rem 0 1rem; }
+    .textSubDiv { width: 100%; padding: 0.75rem 1rem 1rem; margin-top: 0; min-height: 0; gap: 0.9rem; }
+    .textSubDiv h2 { font-size: 1.5rem; min-height: 0; }
+    .centeredLinks { padding: 0 1rem; }
+    .centeredButton { padding: 0.3rem 1rem; }
+    .addItem svg { height: 6rem; }
+    .weekId { font-size: 1.7rem; }
+    .quotePlacement { padding: 0.75rem 1rem; }
+
+    /* Home */
+    .recipe img { height: 12rem; }
+    .recipeDetails { padding: 1rem; }
+    .macroCard { padding: 1rem; }
+    .macroCalories strong { font-size: 2.2rem; }
+    .centeredButtonDiv { gap: 0.75rem; }
+    .confirmationButtonSection { flex: 1 1 40%; margin-bottom: 1.5rem; }
+    .SMSIcon { margin-bottom: 1.5rem; }
+    .generateButton p { width: 100%; }
+
+    /* New Meal / Stock : formulaires */
+    .Inputs { padding: 0.75rem 1rem; }
+    .ingredientRow { flex-wrap: wrap; }
+    .ingredientRow select { flex: 1 1 100%; }
+    .textInput .ingredientRow input { flex: 1 1 6rem; width: auto; min-width: 5rem; }
+    .macroInputs { grid-template-columns: repeat(2, 1fr); }
+    .fileRow { flex-wrap: wrap; }
+    .inputSection { padding: 6px 10px; }
+    .modalContent h2, .deleteModalContent1 h3, .head h3 { font-size: 1.35rem; }
+    .deleteModalActions { gap: 1rem; flex-wrap: wrap; }
+    .searchInput { min-width: 0; }
+}
+
+/* Écrans très étroits (petits téléphones, <= 360px) */
+@media (max-width: 360px) {
+    .LinksPart a { font-size: 0.56rem; }
+    .macroTiles { gap: 0.4rem; }
+    .macroTile strong { font-size: 1rem; }
+}
