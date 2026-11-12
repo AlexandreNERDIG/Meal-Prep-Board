@@ -67,7 +67,7 @@ export const recipeInfo: Recipe[] = [
     prepTime: 15,
     cookTime: 90,
     instructions:
-      "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
+      "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h. Servez avec les pâtes cuites (250g).",
     image: "../img/poulet-basquaise.jpg",
     status: "normal"
   }
@@ -141,6 +141,13 @@ export const defaultList: Ingredient[] = [
   { id: "57", name: "Jus de Citron", macro: { calories: 29, carbs: 9.3, protein: 0.4, fat: 0.1 }, price: 2, quantity: 0, unit: "mL", category: "Autre", image: "/img2/jus-citron.jpg" }, 
   { id: "58", name: "Parmesan", macro: { calories: 431, carbs: 4.1, protein: 38, fat: 29 }, price: 8, quantity: 0, unit: "g", category: "Autre", image: "/img2/parmesan.jpg" }, 
   { id: "59", name: "Tzatziki", macro: { calories: 97, carbs: 5.6, protein: 5.5, fat: 6 }, price: 5, quantity: 0, unit: "g", category: "Autre", image: "/img2/tzatziki.jpg" }, 
-  { id: "60", name: "Sel et Poivre", macro: { calories: 0, carbs: 0, protein: 0, fat: 0 }, price: 0.5, quantity: 0, unit: "", category: "Autre", image: "/img2/sel-poivre.jpg" }, 
+  { id: "60", name: "Sel et Poivre", macro: { calories: 0, carbs: 0, protein: 0, fat: 0 }, price: 0, quantity: 0, unit: "", category: "Autre", image: "/img2/sel-poivre.jpg" }, 
   { id: "61", name: "Bouillon (Cube/Liquide)", macro: { calories: 5, carbs: 0.5, protein: 0.5, fat: 0 }, price: 1.5, quantity: 0, unit: "mL", category: "Autre", image: "/img2/bouillon.jpg" }, 
+  // --- Ajoutés pour les recettes importées ---
+  { id: "62", name: "Agneau", macro: { calories: 294, carbs: 0, protein: 25, fat: 21 }, price: 20, quantity: 0, unit: "g", category: "Protéine", image: "" },
+  { id: "63", name: "Navet", macro: { calories: 28, carbs: 6.4, protein: 0.9, fat: 0.1 }, price: 2, quantity: 0, unit: "g", category: "Légumes", image: "" },
+  { id: "64", name: "Sauce teriyaki", macro: { calories: 89, carbs: 16, protein: 5.9, fat: 0 }, price: 5, quantity: 0, unit: "mL", category: "Autre", image: "" },
+  { id: "65", name: "Graines de sésame", macro: { calories: 573, carbs: 23, protein: 18, fat: 50 }, price: 12, quantity: 0, unit: "g", category: "Autre", image: "" },
+  { id: "66", name: "Tofu", macro: { calories: 144, carbs: 2.8, protein: 17, fat: 8.7 }, price: 7, quantity: 0, unit: "g", category: "Protéine", image: "" },
+  { id: "67", name: "Paprika", macro: { calories: 282, carbs: 54, protein: 14, fat: 13 }, price: 15, quantity: 0, unit: "g", category: "Autre", image: "" },
 ];

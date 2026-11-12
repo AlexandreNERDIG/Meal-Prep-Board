@@ -369,3 +369,39 @@
     text-align: center;
     padding: 1rem 0;
 }
+.backupPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    border: 2px solid #3a3a3e;
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.backupPanel h3 {
+    color: #78dc7d;
+}
+
+.backupPanel p {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    max-width: 38rem;
+}
+
+.backupActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.backupActions button.fileBtn {
+    background: transparent;
+    font-family: inherit;
+}

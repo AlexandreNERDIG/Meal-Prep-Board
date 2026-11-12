@@ -6,6 +6,7 @@ import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from '.
 import axios from 'axios';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
+import BackupPanel from './BackupPanel';
 
 const HomePage = () => {
 
@@ -358,6 +359,8 @@ const HomePage = () => {
                 <div className="confirmationButtonSection" onClick={handleOpenModal7}>Discord Web Hook</div>
                 <div className="SMSIcon" onClick={whichModal}><Smartphone></Smartphone></div>
             </div>
+
+            <BackupPanel />
 
         </div>
 

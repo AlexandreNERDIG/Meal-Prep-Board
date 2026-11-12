@@ -1,5 +1,5 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
-import { recipeInfo } from '../Components/typeFile';
+import { recipeInfo, defaultList } from '../Components/typeFile';
 
 // Image de remplacement quand un ingrédient n'a pas d'image (SVG intégré : aucun service externe)
 export const NO_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(
@@ -155,4 +155,86 @@ export const loadMealHistory = (): Recipe[][] => {
     const saved = localStorage.getItem("mealHistoryList");
     const history: Recipe[][] = saved ? JSON.parse(saved) : [];
     return history.map(week => week.map(normalizeRecipe));
+};
+
+// ---- Tri des recettes (page Recipe List) ----
+
+export type RecipeSortKey = "default" | "name" | "time" | "calories" | "protein" | "cost";
+export type SortDirection = "asc" | "desc";
+
+export const RECIPE_SORTS: { key: RecipeSortKey; label: string; asc: string; desc: string }[] = [
+    { key: "name", label: "Nom", asc: "De A à Z", desc: "De Z à A" },
+    { key: "time", label: "Temps", asc: "Du plus rapide au plus long", desc: "Du plus long au plus rapide" },
+    { key: "calories", label: "Calories", asc: "Du moins au plus calorique", desc: "Du plus au moins calorique" },
+    { key: "protein", label: "Protéines", asc: "Du moins au plus protéiné", desc: "Du plus au moins protéiné" },
+    { key: "cost", label: "Prix", asc: "Du moins cher au plus cher", desc: "Du plus cher au moins cher" },
+];
+
+const sortValue = (recipe: Recipe, key: RecipeSortKey, stock: Ingredient[]): number | string => {
+    switch (key) {
+        case "name": return recipe.recipeName.toLowerCase();
+        case "time": return toMinutes(recipe.prepTime) + toMinutes(recipe.cookTime);
+        case "calories": return calcRecipeMacros(recipe.ingredient, stock).calories;
+        case "protein": return calcRecipeMacros(recipe.ingredient, stock).protein;
+        case "cost": return calcRecipeCost(recipe.ingredient, stock);
+        default: return 0;
+    }
+};
+
+// Renvoie une NOUVELLE liste triée. Tri stable : à valeur égale, l'ordre d'origine est conservé.
+export const sortRecipes = (recipes: Recipe[], key: RecipeSortKey, direction: SortDirection, stock: Ingredient[]): Recipe[] => {
+    if (key === "default") return [...recipes];
+
+    const sign = direction === "asc" ? 1 : -1;
+    return recipes
+        .map((recipe, index) => ({ recipe, index, value: sortValue(recipe, key, stock) }))
+        .sort((a, b) => {
+            const diff = typeof a.value === "string"
+                ? a.value.localeCompare(String(b.value), "fr")
+                : a.value - Number(b.value);
+            return diff !== 0 ? sign * diff : a.index - b.index;
+        })
+        .map(entry => entry.recipe);
+};
+
+// Recherche : le texte (sans accents ni majuscules) doit se trouver dans le nom de la recette ou d'un de ses ingrédients
+const normalizeText = (text: string): string => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
+export const recipeMatchesSearch = (recipe: Recipe, search: string, stock: Ingredient[]): boolean => {
+    const needle = normalizeText(search);
+    if (!needle) return true;
+
+    if (normalizeText(recipe.recipeName).includes(needle)) return true;
+    return recipe.ingredient.some(ingre => {
+        const found = findIngredient(stock, ingre.ingredientId);
+        return found ? normalizeText(found.name).includes(needle) : false;
+    });
+};
+
+// ---- Stock : ajout des nouveaux ingrédients par défaut ----
+// Le stock est enregistré dans le navigateur : quand j'ajoute de nouveaux ingrédients à la liste par défaut
+// (ex : Agneau, Tofu), ils n'apparaissent pas tout seuls. Cette fonction les ajoute UNE fois (par numéro de version)
+// sans toucher à ce que l'utilisateur a déjà modifié. Pour une prochaine mise à jour : augmenter STOCK_DEFAULTS_VERSION.
+const STOCK_DEFAULTS_VERSION = 2;
+
+export const syncDefaultStock = (): void => {
+    try {
+        const saved = localStorage.getItem("currentStockList");
+        if (!saved) return;
+        if (Number(localStorage.getItem("stockDefaultsVersion") ?? 0) >= STOCK_DEFAULTS_VERSION) return;
+
+        const stock: Ingredient[] = JSON.parse(saved);
+        const known = new Set(stock.map(ingredient => String(ingredient.id)));
+        const missing = defaultList.filter(ingredient => !known.has(String(ingredient.id)));
+
+        // "Sel et Poivre" passe de 0,50 € à 0 € (seulement si l'utilisateur ne l'a pas changé lui-même)
+        const updated = stock.map(ingredient =>
+            (String(ingredient.id) === "60" && ingredient.price === 0.5) ? { ...ingredient, price: 0 } : ingredient
+        );
+
+        localStorage.setItem("currentStockList", JSON.stringify([...updated, ...missing]));
+        localStorage.setItem("stockDefaultsVersion", String(STOCK_DEFAULTS_VERSION));
+    } catch {
+        // stock illisible : on ne touche à rien
+    }
 };

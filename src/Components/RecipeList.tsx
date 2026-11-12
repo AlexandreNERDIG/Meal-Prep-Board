@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast"
-import { Trash, Trash2, X, Download} from 'react-feather';
+import { Trash, Trash2, X, Download, Edit2, Aperture, Search, ArrowUp, ArrowDown } from 'react-feather';
 import './RecipeList.css';
 import { Recipe, Ingredient, defaultList } from './typeFile';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS, RECIPE_SORTS, sortRecipes, recipeMatchesSearch } from '../lib/recipeUtils';
+import type { RecipeSortKey, SortDirection } from '../lib/recipeUtils';
+import { toastUndo } from '../lib/undoToast';
 
 const RecipeList = () => {
 
@@ -17,6 +20,29 @@ const RecipeList = () => {
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
+    const navigate = useNavigate();
+
+    const [searchValue, setSearchValue] = useState("");
+    const [sortKey, setSortKey] = useState<RecipeSortKey>("default");
+    const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+    // Un clic sur un critère le sélectionne (du plus petit au plus grand) ; un 2e clic inverse l'ordre.
+    const handleSortClick = (key: RecipeSortKey) => {
+        if (key === sortKey) {
+            setSortDirection(prev => prev === "asc" ? "desc" : "asc");
+        } else {
+            setSortKey(key);
+            setSortDirection("asc");
+        }
+    }
+
+    const visibleRecipes = useMemo(() => {
+        const filtered = recipeList.filter(recipe => recipeMatchesSearch(recipe, searchValue, currentStock));
+        return sortRecipes(filtered, sortKey, sortDirection, currentStock);
+    }, [recipeList, searchValue, sortKey, sortDirection, currentStock]);
+
+    const activeSort = RECIPE_SORTS.find(sort => sort.key === sortKey);
+
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
     const [recipeToDelete, setRecipeToDelete] = useState<Recipe | null>(null);
 
@@ -28,13 +54,32 @@ const RecipeList = () => {
     const handleConfirmDelete = () => {
         if (!recipeToDelete) return;
 
-        const updatedRecipeList = recipeList.filter(element => element.recipeName !== recipeToDelete.recipeName);
+        const deleted = recipeToDelete;
+        const deletedIndex = recipeList.findIndex(element => element.recipeName === deleted.recipeName);
+
+        const updatedRecipeList = recipeList.filter(element => element.recipeName !== deleted.recipeName);
         setRecipeList(updatedRecipeList);
         localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList));
-        toast.error(`${recipeToDelete.recipeName} à bien été supprimer`)
+        toastUndo(`${deleted.recipeName} a bien été supprimée`, () => restoreRecipe(deleted, deletedIndex));
         setRecipeToDelete(null);
         handleCloseModal()
     };
+
+    // Annuler la suppression : on remet la recette à sa place. Le localStorage fait foi (le toast peut rester affiché longtemps).
+    const restoreRecipe = (recipe: Recipe, index: number) => {
+        const current = loadRecipes();
+        if (current.some(element => element.recipeName === recipe.recipeName)) return;
+
+        const restored = [...current];
+        restored.splice(Math.min(Math.max(index, 0), restored.length), 0, recipe);
+        localStorage.setItem(RECIPES_KEY, JSON.stringify(restored));
+        setRecipeList(restored);
+    }
+
+    const handleEdit = () => {
+        if (!selectedRecipe) return;
+        navigate("/NewMeal", { state: { editName: selectedRecipe.recipeName } });
+    }
 
     const handleSingleDownloadRecipe = (recipe : Recipe) => {
         const dataStr = JSON.stringify(recipe, null, 2);
@@ -65,9 +110,46 @@ const RecipeList = () => {
 
             <div className='sectionHeader'><p>Recipe List</p></div>
 
+            <div className="searchBarContainer">
+                <div className="inputSection">
+                    <div className="searchLogoContainer"><Aperture></Aperture></div>
+                    <input type="text" className='searchInput' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Une recette, un ingrédient ?'/>
+                    <div className="searchIconContainer"><Search></Search></div>
+                </div>
+            </div>
+
+            <div className="sortBar">
+                <span className="sortLabel">Trier par</span>
+                <div className="chipRow">
+                    <button
+                        type="button"
+                        className={`chip ${sortKey === "default" ? "active" : ""}`}
+                        onClick={() => { setSortKey("default"); setSortDirection("asc"); }}
+                    >
+                        Ordre d'ajout
+                    </button>
+                    {RECIPE_SORTS.map(sort => (
+                        <button
+                            type="button"
+                            key={sort.key}
+                            className={`chip ${sortKey === sort.key ? "active" : ""}`}
+                            onClick={() => handleSortClick(sort.key)}
+                        >
+                            {sort.label}
+                            {sortKey === sort.key && (sortDirection === "asc" ? <ArrowUp size={14}/> : <ArrowDown size={14}/>)}
+                        </button>
+                    ))}
+                </div>
+                <p className="sortHint">
+                    {visibleRecipes.length} recette{visibleRecipes.length > 1 ? "s" : ""}
+                    {activeSort ? ` · ${sortDirection === "asc" ? activeSort.asc : activeSort.desc}` : ""}
+                </p>
+            </div>
+
             <div className="gallery">
-                {recipeList.map((element, index) => (
-                    <div key={index} className="flashCard">
+                {visibleRecipes.length === 0 && <p className="emptyStock">Aucune recette ne correspond à ta recherche.</p>}
+                {visibleRecipes.map((element) => (
+                    <div key={element.recipeName} className="flashCard">
                         <img src={element.image}/>
                         <div className="subDivText">
                             <h3>{formatDuration(element.prepTime)}</h3>
@@ -92,12 +174,18 @@ const RecipeList = () => {
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="boxInfos">
                         <h2>{selectedRecipe.recipeName}</h2>
-                        <div 
-                          className="icon"
-                          onMouseEnter={() => setIsHovered(true)}
-                          onMouseLeave={() => setIsHovered(false)}
-                        >
-                            {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
+                        <div className="modalIcons">
+                            <div className="icon editIcon" title="Modifier la recette">
+                                <Edit2 onClick={handleEdit}></Edit2>
+                            </div>
+                            <div
+                              className="icon"
+                              title="Supprimer la recette"
+                              onMouseEnter={() => setIsHovered(true)}
+                              onMouseLeave={() => setIsHovered(false)}
+                            >
+                                {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
+                            </div>
                         </div>
                     </div>
                     <p><strong>Préparation :</strong> {formatDuration(selectedRecipe.prepTime)}</p>
@@ -127,7 +215,7 @@ const RecipeList = () => {
                         <h3>Confirmer la suppression</h3>
                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
                     </div>
-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.recipeName}</strong> ?<br/> Cette action est irréversible.</p>
+                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.recipeName}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
                   <div className="deleteModalActions">
                     <button className="confirmDeleteBtn" onClick={handleConfirmDelete}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCancelDelete}>Annuler</button>
