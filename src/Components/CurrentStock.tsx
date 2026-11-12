@@ -5,6 +5,7 @@ import { Ingredient, defaultList } from './typeFile';
 import { useState } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle, Upload } from "react-feather"
 import toast from 'react-hot-toast';
+import { toastUndo } from '../lib/undoToast';
 import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE } from '../lib/recipeUtils';
 
 type IngredientForm = {
@@ -209,13 +210,25 @@ const CurrentStock = () => {
     const deleteIngredient = () => {
         if (!ingredientToDelete) return;
 
-        const updatedList = currentStock.filter(e => e.id !== ingredientToDelete.id);
+        const deleted = ingredientToDelete;
+        const updatedList = currentStock.filter(e => e.id !== deleted.id);
         setCurrentStock(updatedList);
         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
-        toast.error(`${ingredientToDelete.name} a bien été supprimé`);
+        toastUndo(`${deleted.name} a bien été supprimé`, () => restoreIngredient(deleted));
         setIngredientToDelete(null);
         handleCloseModal2();
     };
+
+    // Annuler la suppression : l'ingrédient (avec sa quantité) revient dans le stock, à sa place triée
+    const restoreIngredient = (ingredient: Ingredient) => {
+        const saved = localStorage.getItem("currentStockList");
+        const current: Ingredient[] = saved ? JSON.parse(saved) : [];
+        if (current.some(e => e.id === ingredient.id)) return;
+
+        const restored = triCurrentStockList([...current, ingredient]);
+        localStorage.setItem("currentStockList", JSON.stringify(restored));
+        setCurrentStock(restored);
+    }
 
     const macroBase = (formData.unit === "g" || formData.unit === "mL")
         ? `pour 100 ${formData.unit}`
@@ -423,7 +436,7 @@ const CurrentStock = () => {
                             <h3>Confirmer la suppression</h3>
                             <div><X className='logo' onClick={handleCancelDelete}></X></div>
                         </div>
-                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Cette action est irréversible.</p>
+                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
                       <div className="deleteModalActions">
                         <button className="confirmDeleteBtn" onClick={deleteIngredient}>Confirmer</button>
                         <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>

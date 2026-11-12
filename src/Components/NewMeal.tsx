@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon } from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
@@ -29,13 +30,28 @@ const isRecipeLike = (value: unknown): value is Record<string, unknown> => {
     return typeof candidate.recipeName === "string" && Array.isArray(candidate.ingredient);
 };
 
+// Import de plusieurs fichiers : recettes nouvelles + recettes dont le nom existe déjà (on demande quoi en faire)
+type PendingImport = { fresh: Recipe[]; duplicates: Recipe[] };
+
+const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
+    ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
+    : [emptyRow];
+
 const NewMeal = () => {
 
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const [formData, setFormData] = useState<Recipe>(emptyRecipe);
-    const [rows, setRows] = useState<IngredientRow[]>([emptyRow]);
+    // Mode édition : on arrive depuis "Recipe List" avec le nom de la recette à modifier
+    const navigate = useNavigate();
+    const location = useLocation();
+    const requestedEditName = (location.state as { editName?: string } | null)?.editName ?? null;
+    const [recipeToEdit] = useState<Recipe | undefined>(() => requestedEditName ? loadRecipes().find(element => element.recipeName === requestedEditName) : undefined);
+    const editingName = recipeToEdit ? recipeToEdit.recipeName : null;
+
+    const [formData, setFormData] = useState<Recipe>(recipeToEdit ?? emptyRecipe);
+    const [rows, setRows] = useState<IngredientRow[]>(recipeToEdit ? toRows(recipeToEdit) : [emptyRow]);
+    const [pendingImport, setPendingImport] = useState<PendingImport | null>(null);
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
 
@@ -96,14 +112,6 @@ const NewMeal = () => {
     }
 
     const ajouterRecette = () => {
-        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim())
-
-        if (alreadyExist) {
-            toast.error(`${formData.recipeName} n'a pas pu être ajouté (Existe déjà)`)
-            handleCloseConfirmationModal();
-            return;
-        }
-
         const ingredients = validIngredients();
 
         if (!formData.recipeName.trim() || ingredients.length === 0) {
@@ -111,12 +119,32 @@ const NewMeal = () => {
             handleCloseConfirmationModal();
             return;
         }
+
+        // En mode édition, la recette a le droit de garder son propre nom
+        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim() && element.recipeName !== editingName)
+
+        if (alreadyExist) {
+            toast.error(`${formData.recipeName} n'a pas pu être enregistré (Existe déjà)`)
+            handleCloseConfirmationModal();
+            return;
+        }
+
         if (askConfirmation) {
             const newRecipe : Recipe = {
                 ...formData,
                 recipeName: formData.recipeName.trim(),
                 ingredient: ingredients
             };
+
+            if (editingName) {
+                const updatedRecipeList = recipeList.map(element => element.recipeName === editingName ? newRecipe : element);
+                localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+                toast.success(`${newRecipe.recipeName} modifiée !`);
+                handleCloseConfirmationModal();
+                navigate("/RecipeList");
+                return;
+            }
+
             const updatedRecipeList = [...recipeList, newRecipe];
             setRecipeList(updatedRecipeList)
             resetForm();
@@ -160,15 +188,14 @@ const NewMeal = () => {
             if (!recipe) return;
 
             setFormData({ ...emptyRecipe, ...recipe })
-            setRows(recipe.ingredient.length > 0
-                ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
-                : [emptyRow]
-            )
+            setRows(toRows(recipe))
             toast.success(`${recipe.recipeName} chargée dans le formulaire`)
             return;
         }
 
-        const updatedRecipeList = [...recipeList];
+        const fresh : Recipe[] = [];
+        const duplicates : Recipe[] = [];
+        const existingNames = new Set(recipeList.map(element => element.recipeName));
 
         for (const { name, text } of contents) {
             const recipe = parseRecipe(name, text);
@@ -176,19 +203,42 @@ const NewMeal = () => {
 
             const currentRecipeName = recipe.recipeName.trim();
 
-            if (!currentRecipeName || updatedRecipeList.some(element => element.recipeName === currentRecipeName)) {
-                toast.error(`${currentRecipeName || name} n'a pas pu être ajouté (Existe déjà)`)
+            if (!currentRecipeName) {
+                toast.error(`${name} n'a pas de nom de recette`)
                 continue;
             }
+            // Même recette présente deux fois dans la sélection : on ne garde que la première
+            if (fresh.some(element => element.recipeName === currentRecipeName) || duplicates.some(element => element.recipeName === currentRecipeName)) continue;
 
-            updatedRecipeList.push({ ...recipe, recipeName: currentRecipeName });
-            toast.success(`${currentRecipeName} à bien été ajouté`)
+            (existingNames.has(currentRecipeName) ? duplicates : fresh).push({ ...recipe, recipeName: currentRecipeName });
         }
 
-        if (updatedRecipeList.length !== recipeList.length) {
+        if (duplicates.length > 0) {
+            setPendingImport({ fresh, duplicates });   // on demande : remplacer ou garder les existantes ?
+            return;
+        }
+
+        applyImport(fresh, [], false);
+    }
+
+    // fresh : recettes nouvelles ; duplicates : recettes importées dont le nom existe déjà ; replace : écraser les existantes ou les garder
+    const applyImport = (fresh : Recipe[], duplicates : Recipe[], replace : boolean) => {
+        const replacements = new Map(duplicates.map(element => [element.recipeName, element]));
+        const updatedRecipeList = [
+            ...recipeList.map(element => (replace && replacements.has(element.recipeName)) ? replacements.get(element.recipeName)! : element),
+            ...fresh
+        ];
+
+        if (fresh.length > 0 || replace) {
             setRecipeList(updatedRecipeList);
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
         }
+
+        if (fresh.length > 0) toast.success(`${fresh.length} recette${fresh.length > 1 ? "s" : ""} ajoutée${fresh.length > 1 ? "s" : ""}`)
+        if (replace && duplicates.length > 0) toast.success(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} remplacée${duplicates.length > 1 ? "s" : ""}`)
+        if (!replace && duplicates.length > 0) toast(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} déjà présente${duplicates.length > 1 ? "s" : ""} : conservée${duplicates.length > 1 ? "s" : ""} telle${duplicates.length > 1 ? "s" : ""} quelle${duplicates.length > 1 ? "s" : ""}`)
+
+        setPendingImport(null);
     }
 
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -214,7 +264,7 @@ const NewMeal = () => {
         <>
         <div className="globalNewMealSection">
 
-            <div className='sectionHeader'><p>New Meal</p></div>
+            <div className='sectionHeader'><p>{editingName ? "Edit Meal" : "New Meal"}</p></div>
 
             <div className="Inputs">
                 <div className="textInput">
@@ -328,11 +378,15 @@ const NewMeal = () => {
                 </div>
             </div>
                 <div className="centerButton2">
-                    <button onClick={handleOpenConfirmationModal} className='Btn2'>Ajouter la Recette à la Liste</button>
-                    <label className="fileBtn importBtn">
-                        <Upload size={16}/> Importer des recettes (.json)
-                        <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
-                    </label>
+                    <button onClick={handleOpenConfirmationModal} className='Btn2'>{editingName ? "Enregistrer les modifications" : "Ajouter la Recette à la Liste"}</button>
+                    {editingName
+                        ? <button onClick={() => navigate("/RecipeList")} className='Btn2'>Annuler</button>
+                        : (
+                            <label className="fileBtn importBtn">
+                                <Upload size={16}/> Importer des recettes (.json)
+                                <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
+                            </label>
+                        )}
                 </div>
         </div>
 
@@ -342,7 +396,7 @@ const NewMeal = () => {
                     <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
                         <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                             <div className="head">
-                                <h3>Etes-vous sûre de vouloir ajouté la recette ?</h3>
+                                <h3>{editingName ? "Enregistrer les modifications ?" : "Etes-vous sûre de vouloir ajouté la recette ?"}</h3>
                                 <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
                             </div>
                           <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Recipe List"</strong>.</p>
@@ -352,6 +406,28 @@ const NewMeal = () => {
                           </div>
                         </div>
                     </div>
+        )}
+
+        {/* Modal : certaines recettes importées existent déjà */}
+
+        {pendingImport && (
+            <div className="modalOverlay" onClick={() => setPendingImport(null)}>
+                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                    <div className="head">
+                        <h3>{pendingImport.duplicates.length} recette{pendingImport.duplicates.length > 1 ? "s existent" : " existe"} déjà</h3>
+                        <div><X className='logo' onClick={() => setPendingImport(null)}></X></div>
+                    </div>
+                    <p>
+                        {pendingImport.duplicates.slice(0, 5).map(element => element.recipeName).join(", ")}
+                        {pendingImport.duplicates.length > 5 ? ` et ${pendingImport.duplicates.length - 5} autre${pendingImport.duplicates.length - 5 > 1 ? "s" : ""}` : ""}
+                    </p>
+                    <p>Remplacer par la version du fichier, ou garder les tiennes ?</p>
+                    <div className="deleteModalActions">
+                        <button className="confirmDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, true)}>Remplacer</button>
+                        <button className="cancelDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, false)}>Garder les miennes</button>
+                    </div>
+                </div>
+            </div>
         )}
         </>
     )

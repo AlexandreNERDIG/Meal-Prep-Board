@@ -7,6 +7,7 @@ import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
 import { recipeInfo, defaultList } from './Components/typeFile'
 import { Toaster } from 'react-hot-toast';
+import { syncDefaultStock } from './lib/recipeUtils';
 import './App.css';
 import './responsive.css';
 
@@ -24,6 +25,8 @@ function App() {
         if (!localStorage.getItem("currentStockList")) {
           localStorage.setItem("currentStockList", JSON.stringify(defaultList));
         }
+
+        syncDefaultStock();
     };
 
     initLocalStorage();

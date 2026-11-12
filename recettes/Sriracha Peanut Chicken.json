@@ -1,7 +1,7 @@
 {
   "recipeName": "Sriracha Peanut Chicken",
   "ingredient": [
-    { "ingredientId": "25", "quantity": 900 },
+    { "ingredientId": "1", "quantity": 900 },
     { "ingredientId": "27", "quantity": 15 },
     { "ingredientId": "10", "quantity": 150 },
     { "ingredientId": "33", "quantity": 75 },
@@ -14,7 +14,7 @@
     { "ingredientId": "35", "quantity": 42 },
     { "ingredientId": "36", "quantity": 15 },
     { "ingredientId": "40", "quantity": 10 },
-    { "ingredientId": "60", "quantity": 14 }
+    { "ingredientId": "60", "quantity": 1 }
   ],
   "prepTime": 20,
   "cookTime": 30,

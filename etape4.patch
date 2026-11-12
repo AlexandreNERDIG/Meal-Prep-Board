@@ -1,0 +1,1464 @@
+diff --git a/recettes/Easy Ground Chicken Curry.json b/recettes/Easy Ground Chicken Curry.json
+index 5442601..9d55026 100755
+--- a/recettes/Easy Ground Chicken Curry.json	
++++ b/recettes/Easy Ground Chicken Curry.json	
+@@ -3,8 +3,6 @@
+   "ingredient": [
+     { "ingredientId": "1", "quantity": 900 },
+     { "ingredientId": "12", "quantity": 125 },
+-    { "ingredientId": "30", "quantity": 30 },
+-    { "ingredientId": "15", "quantity": 15 },
+     { "ingredientId": "43", "quantity": 15 },
+     { "ingredientId": "51", "quantity": 425 },
+     { "ingredientId": "13", "quantity": 270 },
+diff --git a/recettes/Hot Honey Pork Stir Fry.json b/recettes/Hot Honey Pork Stir Fry.json
+index ca4951a..f8dff16 100755
+--- a/recettes/Hot Honey Pork Stir Fry.json	
++++ b/recettes/Hot Honey Pork Stir Fry.json	
+@@ -2,7 +2,6 @@
+   "recipeName": "Hot Honey Pork Stir Fry",
+   "ingredient": [
+     { "ingredientId": "30", "quantity": 900 },
+-    { "ingredientId": "30", "quantity": 15 },
+     { "ingredientId": "10", "quantity": 150 },
+     { "ingredientId": "33", "quantity": 75 },
+     { "ingredientId": "50", "quantity": 340 },
+diff --git a/recettes/Pates Feta, Thon et Tomates.json b/recettes/Pates Feta, Thon et Tomates.json
+index 0507319..393c625 100755
+--- a/recettes/Pates Feta, Thon et Tomates.json	
++++ b/recettes/Pates Feta, Thon et Tomates.json	
+@@ -6,9 +6,9 @@
+     { "ingredientId": "8", "quantity": 300 },
+     { "ingredientId": "49", "quantity": 100 },
+     { "ingredientId": "27", "quantity": 15 },
+-    { "ingredientId": "15", "quantity": 15 },
+     { "ingredientId": "11", "quantity": 160 },
+     { "ingredientId": "39", "quantity": 30 },
++    { "ingredientId": "44", "quantity": 10 },
+     { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 20,
+diff --git a/recettes/Poblano Chicken Harvest Bowls.json b/recettes/Poblano Chicken Harvest Bowls.json
+index d80e7b7..7b7e917 100755
+--- a/recettes/Poblano Chicken Harvest Bowls.json	
++++ b/recettes/Poblano Chicken Harvest Bowls.json	
+@@ -2,18 +2,14 @@
+   "recipeName": "Poblano Chicken Harvest Bowls",
+   "ingredient": [
+     { "ingredientId": "1", "quantity": 900 },
+-    { "ingredientId": "15", "quantity": 150 },
++    { "ingredientId": "13", "quantity": 150 },
+     { "ingredientId": "57", "quantity": 15 },
+     { "ingredientId": "10", "quantity": 200 },
+     { "ingredientId": "11", "quantity": 100 },
+-    { "ingredientId": "15", "quantity": 15 },
+-    { "ingredientId": "27", "quantity": 23 },
++    { "ingredientId": "27", "quantity": 46 },
+     { "ingredientId": "46", "quantity": 110 },
+     { "ingredientId": "47", "quantity": 600 },
+     { "ingredientId": "31", "quantity": 230 },
+-    { "ingredientId": "27", "quantity": 23 },
+-    { "ingredientId": "60", "quantity": 6 },
+-    { "ingredientId": "61", "quantity": 6 },
+     { "ingredientId": "48", "quantity": 50 },
+     { "ingredientId": "49", "quantity": 50 },
+     { "ingredientId": "60", "quantity": 1 }
+diff --git a/recettes/Poulet Basquaise.json b/recettes/Poulet Basquaise.json
+index 0e6bbf8..eb607be 100755
+--- a/recettes/Poulet Basquaise.json	
++++ b/recettes/Poulet Basquaise.json	
+@@ -13,7 +13,7 @@
+   ],
+   "prepTime": 15,
+   "cookTime": 90,
+-  "instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
++  "instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h. Servez avec les pâtes cuites (250g).",
+   "image": "../img/poulet-basquaise.jpg",
+   "status": "normal"
+ }
+diff --git a/recettes/Poulet Paprika _ Patate.json b/recettes/Poulet Paprika _ Patate.json
+index 6747050..8036bfb 100755
+--- a/recettes/Poulet Paprika _ Patate.json	
++++ b/recettes/Poulet Paprika _ Patate.json	
+@@ -1,18 +1,18 @@
+ {
+   "recipeName": "Poulet Paprika / Patate",
+   "ingredient": [
+-    { "ingredientId": "1", "quantity": 900 },
++    { "ingredientId": "2", "quantity": 900 },
+     { "ingredientId": "14", "quantity": 500 },
+     { "ingredientId": "11", "quantity": 160 },
+     { "ingredientId": "44", "quantity": 10 },
+     { "ingredientId": "61", "quantity": 250 },
+-    { "ingredientId": "36", "quantity": 10 },
++    { "ingredientId": "67", "quantity": 10 },
+     { "ingredientId": "27", "quantity": 15 },
+     { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 15,
+   "cookTime": 90,
+-  "instructions": "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (300g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
++  "instructions": "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (500g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
+   "image": "../img/pommes-terre-et-poulet-paprika.jpeg",
+   "status": "normal"
+ }
+diff --git a/recettes/Sriracha Peanut Chicken.json b/recettes/Sriracha Peanut Chicken.json
+index 46d1bc8..92568ed 100755
+--- a/recettes/Sriracha Peanut Chicken.json	
++++ b/recettes/Sriracha Peanut Chicken.json	
+@@ -1,7 +1,7 @@
+ {
+   "recipeName": "Sriracha Peanut Chicken",
+   "ingredient": [
+-    { "ingredientId": "25", "quantity": 900 },
++    { "ingredientId": "1", "quantity": 900 },
+     { "ingredientId": "27", "quantity": 15 },
+     { "ingredientId": "10", "quantity": 150 },
+     { "ingredientId": "33", "quantity": 75 },
+@@ -14,7 +14,7 @@
+     { "ingredientId": "35", "quantity": 42 },
+     { "ingredientId": "36", "quantity": 15 },
+     { "ingredientId": "40", "quantity": 10 },
+-    { "ingredientId": "60", "quantity": 14 }
++    { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 20,
+   "cookTime": 30,
+diff --git a/recettes/Tajine d'Agneau.json b/recettes/Tajine d'Agneau.json
+index c3d4f71..62689d9 100755
+--- a/recettes/Tajine d'Agneau.json	
++++ b/recettes/Tajine d'Agneau.json	
+@@ -1,15 +1,16 @@
+ {
+   "recipeName": "Tajine d'Agneau",
+   "ingredient": [
+-    { "ingredientId": "45", "quantity": 1000 },
+-    { "ingredientId": "13", "quantity": 120 },
+-    { "ingredientId": "31", "quantity": 160 },
+-    { "ingredientId": "44", "quantity": 160 },
+-    { "ingredientId": "19", "quantity": 550 },
+-    { "ingredientId": "34", "quantity": 200 },
+-    { "ingredientId": "7", "quantity": 500 },
+-    { "ingredientId": "10", "quantity": 10 },
+-    { "ingredientId": "25", "quantity": 5 }
++    { "ingredientId": "62", "quantity": 1000 },
++    { "ingredientId": "11", "quantity": 160 },
++    { "ingredientId": "44", "quantity": 10 },
++    { "ingredientId": "21", "quantity": 120 },
++    { "ingredientId": "63", "quantity": 160 },
++    { "ingredientId": "14", "quantity": 250 },
++    { "ingredientId": "52", "quantity": 200 },
++    { "ingredientId": "61", "quantity": 500 },
++    { "ingredientId": "27", "quantity": 15 },
++    { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 15,
+   "cookTime": 120,
+diff --git a/recettes/Teriyaki Rotisserie Chicken Bowls.json b/recettes/Teriyaki Rotisserie Chicken Bowls.json
+index a4d46cc..7a05ffd 100755
+--- a/recettes/Teriyaki Rotisserie Chicken Bowls.json	
++++ b/recettes/Teriyaki Rotisserie Chicken Bowls.json	
+@@ -1,17 +1,18 @@
+ {
+   "recipeName": "Teriyaki Rotisserie Chicken Bowls",
+   "ingredient": [
+-    { "ingredientId": "9", "quantity": 900 },
+-    { "ingredientId": "18", "quantity": 135 },
+-    { "ingredientId": "6", "quantity": 10 },
+-    { "ingredientId": "24", "quantity": 10 },
+-    { "ingredientId": "19", "quantity": 290 },
+-    { "ingredientId": "5", "quantity": 15 },
+-    { "ingredientId": "7", "quantity": 15 },
+-    { "ingredientId": "38", "quantity": 15 },
+-    { "ingredientId": "34", "quantity": 340 },
+-    { "ingredientId": "20", "quantity": 100 },
+-    { "ingredientId": "36", "quantity": 21 }
++    { "ingredientId": "1", "quantity": 900 },
++    { "ingredientId": "13", "quantity": 300 },
++    { "ingredientId": "45", "quantity": 300 },
++    { "ingredientId": "21", "quantity": 150 },
++    { "ingredientId": "39", "quantity": 30 },
++    { "ingredientId": "42", "quantity": 10 },
++    { "ingredientId": "35", "quantity": 20 },
++    { "ingredientId": "64", "quantity": 120 },
++    { "ingredientId": "38", "quantity": 30 },
++    { "ingredientId": "65", "quantity": 15 },
++    { "ingredientId": "33", "quantity": 50 },
++    { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 20,
+   "cookTime": 5,
+diff --git a/recettes/Tofu Saute Sauce Sesame.json b/recettes/Tofu Saute Sauce Sesame.json
+index 561c61d..fab14bc 100755
+--- a/recettes/Tofu Saute Sauce Sesame.json	
++++ b/recettes/Tofu Saute Sauce Sesame.json	
+@@ -1,16 +1,17 @@
+ {
+   "recipeName": "Tofu Sauté Sauce Sésame",
+   "ingredient": [
+-    { "ingredientId": "41", "quantity": 500 },
+-    { "ingredientId": "10", "quantity": 15 },
+-    { "ingredientId": "5", "quantity": 45 },
+-    { "ingredientId": "36", "quantity": 30 },
+-    { "ingredientId": "23", "quantity": 300 },
+-    { "ingredientId": "61", "quantity": 300 },
+-    { "ingredientId": "20", "quantity": 160 },
+-    { "ingredientId": "19", "quantity": 250 },
+-    { "ingredientId": "15", "quantity": 15 },
+-    { "ingredientId": "7", "quantity": 15 }
++    { "ingredientId": "66", "quantity": 900 },
++    { "ingredientId": "13", "quantity": 300 },
++    { "ingredientId": "38", "quantity": 60 },
++    { "ingredientId": "40", "quantity": 20 },
++    { "ingredientId": "35", "quantity": 30 },
++    { "ingredientId": "39", "quantity": 30 },
++    { "ingredientId": "43", "quantity": 15 },
++    { "ingredientId": "11", "quantity": 100 },
++    { "ingredientId": "31", "quantity": 300 },
++    { "ingredientId": "10", "quantity": 150 },
++    { "ingredientId": "60", "quantity": 1 }
+   ],
+   "prepTime": 15,
+   "cookTime": 25,
+diff --git a/src/App.css b/src/App.css
+index a6fab42..b4cff66 100644
+--- a/src/App.css
++++ b/src/App.css
+@@ -162,3 +162,131 @@ body {
+     align-items: center;
+     gap: 0.9rem;
+ }
++
++/* Barre de recherche (Current Stock et Recipe List) */
++
++.searchBarContainer {
++    display: flex;
++    justify-content: center;
++    align-items: center;
++    margin-top: 16px;
++    width: 100%;
++}
++
++.inputSection {
++    display: flex;
++    align-items: center;
++    background: linear-gradient(135deg, #3a3a3e, #27272b);
++    border-radius: 12px;
++    padding: 8px 12px;
++    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
++    max-width: 750px;
++    width: 100%;
++    transform: scale(1);
++    transition: all 0.3s ease-in-out;
++}
++
++.inputSection:hover {
++    box-shadow: 0 6px 14px rgba(0,0,0,0.45);
++    transform: scale(1.015);
++}
++
++.searchLogoContainer {
++    color: white;
++    margin-right: 10px;
++    display: flex;
++    align-items: center;
++    font-size: 20px;
++}
++
++.searchInput {
++    flex: 1;
++    background: transparent;
++    border: none;
++    outline: none;
++    color: white;
++    font-size: 16px;
++    padding: 6px;
++}
++
++.searchInput::placeholder {
++    color: #9ca3af; 
++}
++
++.searchIconContainer {
++    background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
++    padding: 8px;
++    border-radius: 50%;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    cursor: pointer;
++    transition: all 0.3s ease;
++}
++
++.searchIconContainer:hover {
++    background: linear-gradient(180deg, #4CAF50, #388E3C); 
++}
++
++.searchIconContainer svg {
++    width: 18px;
++    height: 18px;
++    color: white;
++}
++
++.searchBarContainer {
++    gap: 10px; 
++}
++
++.emptyStock {
++    grid-column: 1 / -1;
++    text-align: center;
++    color: #9ca3af;
++    padding: 2rem 0;
++}
++
++/* Tri des recettes */
++
++.sortBar {
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    gap: 0.6rem;
++    margin: 1rem 0 1.5rem;
++}
++
++.sortLabel {
++    color: #9ca3af;
++    font-size: 0.8rem;
++    font-weight: 600;
++    text-transform: uppercase;
++    letter-spacing: 0.06em;
++}
++
++.sortHint {
++    color: #9ca3af;
++    font-size: 0.85rem;
++    text-align: center;
++}
++
++/* Notification avec bouton "Annuler" */
++
++.undoToast {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.75rem;
++    flex-wrap: wrap;
++}
++
++.undoBtn {
++    padding: 0.3rem 0.8rem;
++    border-radius: 0.4rem;
++    background: #2f8b35;
++    color: #fff;
++    font-weight: 700;
++    cursor: pointer;
++}
++
++.undoBtn:hover {
++    background: #3fb24e;
++}
+diff --git a/src/App.tsx b/src/App.tsx
+index 1e6b236..be5c568 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -7,6 +7,7 @@ import RecipeList from './Components/RecipeList';
+ import CurrentStock from './Components/CurrentStock';
+ import { recipeInfo, defaultList } from './Components/typeFile'
+ import { Toaster } from 'react-hot-toast';
++import { syncDefaultStock } from './lib/recipeUtils';
+ import './App.css';
+ import './responsive.css';
+ 
+@@ -24,6 +25,8 @@ function App() {
+         if (!localStorage.getItem("currentStockList")) {
+           localStorage.setItem("currentStockList", JSON.stringify(defaultList));
+         }
++
++        syncDefaultStock();
+     };
+ 
+     initLocalStorage();
+diff --git a/src/Components/BackupPanel.tsx b/src/Components/BackupPanel.tsx
+new file mode 100644
+index 0000000..fa5183c
+--- /dev/null
++++ b/src/Components/BackupPanel.tsx
+@@ -0,0 +1,114 @@
++import { useState, useEffect } from 'react';
++import { Download, Upload, X } from 'react-feather';
++import toast from 'react-hot-toast';
++import { buildBackup, backupFileName, parseBackup, mergeBackup, readCurrentData, writeData } from '../lib/backup';
++import type { BackupData } from '../lib/backup';
++
++const FLASH_KEY = "backupFlashMessage";
++
++type IncomingBackup = { data: BackupData; fileName: string };
++
++// Exporter / importer toutes les données de l'appli (recettes, stock, historique) dans un seul fichier JSON
++const BackupPanel = () => {
++
++    const [incoming, setIncoming] = useState<IncomingBackup | null>(null);
++
++    // Après un import on recharge la page (pour que chaque écran relise les nouvelles données) : le message est affiché après le rechargement
++    useEffect(() => {
++        try {
++            const message = sessionStorage.getItem(FLASH_KEY);
++            if (message) {
++                sessionStorage.removeItem(FLASH_KEY);
++                toast.success(message);
++            }
++        } catch {
++            // sessionStorage indisponible : tant pis pour le message
++        }
++    }, []);
++
++    const reloadWithMessage = (message: string) => {
++        try {
++            sessionStorage.setItem(FLASH_KEY, message);
++        } catch {
++            // idem
++        }
++        window.location.reload();
++    }
++
++    const handleExport = () => {
++        const backup = buildBackup(readCurrentData());
++        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
++        const url = URL.createObjectURL(blob);
++
++        const a = document.createElement("a");
++        a.href = url;
++        a.download = backupFileName();
++        a.click();
++
++        URL.revokeObjectURL(url);
++        toast.success("Sauvegarde téléchargée");
++    }
++
++    const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
++        const file = e.target.files?.[0];
++        e.target.value = "";
++        if (!file) return;
++
++        const result = parseBackup(await file.text());
++        if (!result.ok) {
++            toast.error(result.error);
++            return;
++        }
++        setIncoming({ data: result.data, fileName: file.name });
++    }
++
++    const handleMerge = () => {
++        if (!incoming) return;
++        const { data, added } = mergeBackup(readCurrentData(), incoming.data);
++        writeData(data);
++        reloadWithMessage(`Fusion terminée : ${added.recipes} recette(s), ${added.ingredients} ingrédient(s), ${added.weeks} semaine(s) ajouté(s)`);
++    }
++
++    const handleReplace = () => {
++        if (!incoming) return;
++        writeData(incoming.data);
++        reloadWithMessage("Sauvegarde restaurée");
++    }
++
++    return (
++        <>
++        <div className="backupPanel">
++            <h3>Mes données</h3>
++            <p>Une sauvegarde contient tes recettes, ton stock et ton historique. Elle te permet de les récupérer si tu changes de navigateur ou d'appareil.</p>
++            <div className="backupActions">
++                <button type="button" className="fileBtn" onClick={handleExport}>
++                    <Download size={16}/> Exporter mes données
++                </button>
++                <label className="fileBtn">
++                    <Upload size={16}/> Importer une sauvegarde
++                    <input type="file" accept=".json,application/json" onChange={handleFile}/>
++                </label>
++            </div>
++        </div>
++
++        {incoming && (
++            <div className="modalOverlay" onClick={() => setIncoming(null)}>
++                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
++                    <div className="head">
++                        <h3>Importer cette sauvegarde ?</h3>
++                        <div><X className='logo' onClick={() => setIncoming(null)}></X></div>
++                    </div>
++                    <p><strong>{incoming.fileName}</strong> contient {incoming.data.recipes.length} recette(s), {incoming.data.stock.length} ingrédient(s) et {incoming.data.history.length} semaine(s) d'historique.</p>
++                    <p><strong>Fusionner</strong> ajoute ce qui te manque sans rien écraser. <strong>Tout remplacer</strong> efface tes données actuelles : exporte-les d'abord si tu veux les garder.</p>
++                    <div className="deleteModalActions">
++                        <button className="confirmDeleteBtn" onClick={handleMerge}>Fusionner</button>
++                        <button className="cancelDeleteBtn" onClick={handleReplace}>Tout remplacer</button>
++                    </div>
++                </div>
++            </div>
++        )}
++        </>
++    )
++}
++
++export default BackupPanel;
+diff --git a/src/Components/CurrentStock.css b/src/Components/CurrentStock.css
+index 0096a3f..c1c78c7 100644
+--- a/src/Components/CurrentStock.css
++++ b/src/Components/CurrentStock.css
+@@ -4,79 +4,6 @@
+     max-width: 1200px;
+ }
+ 
+-.searchBarContainer {
+-    display: flex;
+-    justify-content: center;
+-    align-items: center;
+-    margin-top: 16px;
+-    width: 100%;
+-}
+-
+-.inputSection {
+-    display: flex;
+-    align-items: center;
+-    background: linear-gradient(135deg, #3a3a3e, #27272b);
+-    border-radius: 12px;
+-    padding: 8px 12px;
+-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+-    max-width: 750px;
+-    width: 100%;
+-    transform: scale(1);
+-    transition: all 0.3s ease-in-out;
+-}
+-
+-.inputSection:hover {
+-    box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+-    transform: scale(1.015);
+-}
+-
+-.searchLogoContainer {
+-    color: white;
+-    margin-right: 10px;
+-    display: flex;
+-    align-items: center;
+-    font-size: 20px;
+-}
+-
+-.searchInput {
+-    flex: 1;
+-    background: transparent;
+-    border: none;
+-    outline: none;
+-    color: white;
+-    font-size: 16px;
+-    padding: 6px;
+-}
+-
+-.searchInput::placeholder {
+-    color: #9ca3af; 
+-}
+-
+-.searchIconContainer {
+-    background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
+-    padding: 8px;
+-    border-radius: 50%;
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    cursor: pointer;
+-    transition: all 0.3s ease;
+-}
+-
+-.searchIconContainer:hover {
+-    background: linear-gradient(180deg, #4CAF50, #388E3C); 
+-}
+-
+-.searchIconContainer svg {
+-    width: 18px;
+-    height: 18px;
+-    color: white;
+-}
+-
+-.searchBarContainer {
+-    gap: 10px; 
+-}
+-
+ .currentStockGallery {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+@@ -287,13 +214,6 @@
+     margin-top: 1rem;
+ }
+ 
+-.emptyStock {
+-    grid-column: 1 / -1;
+-    text-align: center;
+-    color: #9ca3af;
+-    padding: 2rem 0;
+-}
+-
+ /* Formulaire d'ajout d'ingrédient */
+ 
+ .ingredientForm {
+diff --git a/src/Components/CurrentStock.tsx b/src/Components/CurrentStock.tsx
+index 7494a6f..a7cc4b3 100755
+--- a/src/Components/CurrentStock.tsx
++++ b/src/Components/CurrentStock.tsx
+@@ -5,6 +5,7 @@ import { Ingredient, defaultList } from './typeFile';
+ import { useState } from 'react';
+ import { Search, Aperture, MinusCircle, PlusCircle, Upload } from "react-feather"
+ import toast from 'react-hot-toast';
++import { toastUndo } from '../lib/undoToast';
+ import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE } from '../lib/recipeUtils';
+ 
+ type IngredientForm = {
+@@ -209,14 +210,26 @@ const CurrentStock = () => {
+     const deleteIngredient = () => {
+         if (!ingredientToDelete) return;
+ 
+-        const updatedList = currentStock.filter(e => e.id !== ingredientToDelete.id);
++        const deleted = ingredientToDelete;
++        const updatedList = currentStock.filter(e => e.id !== deleted.id);
+         setCurrentStock(updatedList);
+         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
+-        toast.error(`${ingredientToDelete.name} a bien été supprimé`);
++        toastUndo(`${deleted.name} a bien été supprimé`, () => restoreIngredient(deleted));
+         setIngredientToDelete(null);
+         handleCloseModal2();
+     };
+ 
++    // Annuler la suppression : l'ingrédient (avec sa quantité) revient dans le stock, à sa place triée
++    const restoreIngredient = (ingredient: Ingredient) => {
++        const saved = localStorage.getItem("currentStockList");
++        const current: Ingredient[] = saved ? JSON.parse(saved) : [];
++        if (current.some(e => e.id === ingredient.id)) return;
++
++        const restored = triCurrentStockList([...current, ingredient]);
++        localStorage.setItem("currentStockList", JSON.stringify(restored));
++        setCurrentStock(restored);
++    }
++
+     const macroBase = (formData.unit === "g" || formData.unit === "mL")
+         ? `pour 100 ${formData.unit}`
+         : (formData.unit === "unités" ? "pour 1 unité" : "choisis d'abord l'unité");
+@@ -423,7 +436,7 @@ const CurrentStock = () => {
+                             <h3>Confirmer la suppression</h3>
+                             <div><X className='logo' onClick={handleCancelDelete}></X></div>
+                         </div>
+-                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Cette action est irréversible.</p>
++                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
+                       <div className="deleteModalActions">
+                         <button className="confirmDeleteBtn" onClick={deleteIngredient}>Confirmer</button>
+                         <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+diff --git a/src/Components/HomePage.css b/src/Components/HomePage.css
+index 734cad1..39208f7 100644
+--- a/src/Components/HomePage.css
++++ b/src/Components/HomePage.css
+@@ -369,3 +369,39 @@
+     text-align: center;
+     padding: 1rem 0;
+ }
++.backupPanel {
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    gap: 0.75rem;
++    padding: 1.25rem 1.5rem;
++    margin-bottom: 2rem;
++    text-align: center;
++    color: #fff;
++    background: linear-gradient(135deg, #3a3a3e, #27272b);
++    border: 2px solid #3a3a3e;
++    border-radius: 16px;
++    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
++}
++
++.backupPanel h3 {
++    color: #78dc7d;
++}
++
++.backupPanel p {
++    color: #9ca3af;
++    font-size: 0.85rem;
++    max-width: 38rem;
++}
++
++.backupActions {
++    display: flex;
++    flex-wrap: wrap;
++    justify-content: center;
++    gap: 0.75rem;
++}
++
++.backupActions button.fileBtn {
++    background: transparent;
++    font-family: inherit;
++}
+diff --git a/src/Components/HomePage.tsx b/src/Components/HomePage.tsx
+index fc29667..c2386f3 100755
+--- a/src/Components/HomePage.tsx
++++ b/src/Components/HomePage.tsx
+@@ -6,6 +6,7 @@ import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from '.
+ import axios from 'axios';
+ import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+ import MacroSummary from './MacroSummary';
++import BackupPanel from './BackupPanel';
+ 
+ const HomePage = () => {
+ 
+@@ -359,6 +360,8 @@ const HomePage = () => {
+                 <div className="SMSIcon" onClick={whichModal}><Smartphone></Smartphone></div>
+             </div>
+ 
++            <BackupPanel />
++
+         </div>
+ 
+         {/* Modal de confirmation d'ajout des recettes à l'historique */}
+diff --git a/src/Components/MealHistory.tsx b/src/Components/MealHistory.tsx
+index 204266b..ca0f8ee 100755
+--- a/src/Components/MealHistory.tsx
++++ b/src/Components/MealHistory.tsx
+@@ -2,6 +2,7 @@ import './MealHistory.css';
+ import { Bookmark, ShoppingCart, X } from 'react-feather';
+ import { useEffect, useState } from 'react';
+ import toast from 'react-hot-toast';
++import { toastUndo } from '../lib/undoToast';
+ import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
+ import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory } from '../lib/recipeUtils';
+ 
+@@ -72,14 +73,27 @@ const MealHistory = () => {
+     const deleteFromHistory = () => {
+         if (!recipesToDelete) return;
+ 
+-        const updatedList = mealHistory.filter(e => e !== recipesToDelete);
++        const deleted = recipesToDelete;
++        const deletedIndex = mealHistory.indexOf(deleted);
++        const updatedList = mealHistory.filter(e => e !== deleted);
+         setmealHistory(updatedList);
+         localStorage.setItem("mealHistoryList", JSON.stringify(updatedList));
+-        toast.success(`${recipesToDelete?.[0].recipeName} et ${recipesToDelete?.[1].recipeName} ont bien été supprimés`)
++        toastUndo(`${deleted[0]?.recipeName} et ${deleted[1]?.recipeName} ont bien été supprimés`, () => restoreWeek(deleted, deletedIndex));
+         setRecipesToDelete(null);
+         handleCloseModal2();
+     };
+ 
++    // Annuler la suppression : la semaine revient à sa place dans l'historique
++    const restoreWeek = (week: Recipe[], index: number) => {
++        const current = loadMealHistory();
++        if (current.some(w => JSON.stringify(w) === JSON.stringify(week))) return;
++
++        const restored = [...current];
++        restored.splice(Math.min(Math.max(index, 0), restored.length), 0, week);
++        localStorage.setItem("mealHistoryList", JSON.stringify(restored));
++        setmealHistory(restored);
++    }
++
+     const stockDeduction = (groceryList: RecipeIngredient[]) => {
+         if (!groceryList || !currentStock) return;
+ 
+@@ -190,7 +204,7 @@ const MealHistory = () => {
+                         <h3>Confirmer la suppression</h3>
+                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
+                     </div>
+-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Cette action est irréversible.</p>
++                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
+                   <div className="deleteModalActions">
+                     <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
+                     <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+diff --git a/src/Components/NewMeal.tsx b/src/Components/NewMeal.tsx
+index 579a4d4..146f415 100755
+--- a/src/Components/NewMeal.tsx
++++ b/src/Components/NewMeal.tsx
+@@ -1,4 +1,5 @@
+ import { useState, useRef } from 'react';
++import { useLocation, useNavigate } from 'react-router-dom';
+ import { X, Upload, Image as ImageIcon } from 'react-feather';
+ import toast from 'react-hot-toast';
+ import './NewMeal.css';
+@@ -29,13 +30,28 @@ const isRecipeLike = (value: unknown): value is Record<string, unknown> => {
+     return typeof candidate.recipeName === "string" && Array.isArray(candidate.ingredient);
+ };
+ 
++// Import de plusieurs fichiers : recettes nouvelles + recettes dont le nom existe déjà (on demande quoi en faire)
++type PendingImport = { fresh: Recipe[]; duplicates: Recipe[] };
++
++const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
++    ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
++    : [emptyRow];
++
+ const NewMeal = () => {
+ 
+     const RECIPES_KEY = "globalRecipeList";
+     const nameRef = useRef<HTMLTextAreaElement | null>(null);
+ 
+-    const [formData, setFormData] = useState<Recipe>(emptyRecipe);
+-    const [rows, setRows] = useState<IngredientRow[]>([emptyRow]);
++    // Mode édition : on arrive depuis "Recipe List" avec le nom de la recette à modifier
++    const navigate = useNavigate();
++    const location = useLocation();
++    const requestedEditName = (location.state as { editName?: string } | null)?.editName ?? null;
++    const [recipeToEdit] = useState<Recipe | undefined>(() => requestedEditName ? loadRecipes().find(element => element.recipeName === requestedEditName) : undefined);
++    const editingName = recipeToEdit ? recipeToEdit.recipeName : null;
++
++    const [formData, setFormData] = useState<Recipe>(recipeToEdit ?? emptyRecipe);
++    const [rows, setRows] = useState<IngredientRow[]>(recipeToEdit ? toRows(recipeToEdit) : [emptyRow]);
++    const [pendingImport, setPendingImport] = useState<PendingImport | null>(null);
+ 
+     const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
+ 
+@@ -96,27 +112,39 @@ const NewMeal = () => {
+     }
+ 
+     const ajouterRecette = () => {
+-        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim())
++        const ingredients = validIngredients();
+ 
+-        if (alreadyExist) {
+-            toast.error(`${formData.recipeName} n'a pas pu être ajouté (Existe déjà)`)
++        if (!formData.recipeName.trim() || ingredients.length === 0) {
++            alert("Merci de remplir au moins le nom de la recette et un ingrédient (avec sa quantité).");
+             handleCloseConfirmationModal();
+             return;
+         }
+ 
+-        const ingredients = validIngredients();
++        // En mode édition, la recette a le droit de garder son propre nom
++        const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim() && element.recipeName !== editingName)
+ 
+-        if (!formData.recipeName.trim() || ingredients.length === 0) {
+-            alert("Merci de remplir au moins le nom de la recette et un ingrédient (avec sa quantité).");
++        if (alreadyExist) {
++            toast.error(`${formData.recipeName} n'a pas pu être enregistré (Existe déjà)`)
+             handleCloseConfirmationModal();
+             return;
+         }
++
+         if (askConfirmation) {
+             const newRecipe : Recipe = {
+                 ...formData,
+                 recipeName: formData.recipeName.trim(),
+                 ingredient: ingredients
+             };
++
++            if (editingName) {
++                const updatedRecipeList = recipeList.map(element => element.recipeName === editingName ? newRecipe : element);
++                localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
++                toast.success(`${newRecipe.recipeName} modifiée !`);
++                handleCloseConfirmationModal();
++                navigate("/RecipeList");
++                return;
++            }
++
+             const updatedRecipeList = [...recipeList, newRecipe];
+             setRecipeList(updatedRecipeList)
+             resetForm();
+@@ -160,15 +188,14 @@ const NewMeal = () => {
+             if (!recipe) return;
+ 
+             setFormData({ ...emptyRecipe, ...recipe })
+-            setRows(recipe.ingredient.length > 0
+-                ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
+-                : [emptyRow]
+-            )
++            setRows(toRows(recipe))
+             toast.success(`${recipe.recipeName} chargée dans le formulaire`)
+             return;
+         }
+ 
+-        const updatedRecipeList = [...recipeList];
++        const fresh : Recipe[] = [];
++        const duplicates : Recipe[] = [];
++        const existingNames = new Set(recipeList.map(element => element.recipeName));
+ 
+         for (const { name, text } of contents) {
+             const recipe = parseRecipe(name, text);
+@@ -176,19 +203,42 @@ const NewMeal = () => {
+ 
+             const currentRecipeName = recipe.recipeName.trim();
+ 
+-            if (!currentRecipeName || updatedRecipeList.some(element => element.recipeName === currentRecipeName)) {
+-                toast.error(`${currentRecipeName || name} n'a pas pu être ajouté (Existe déjà)`)
++            if (!currentRecipeName) {
++                toast.error(`${name} n'a pas de nom de recette`)
+                 continue;
+             }
++            // Même recette présente deux fois dans la sélection : on ne garde que la première
++            if (fresh.some(element => element.recipeName === currentRecipeName) || duplicates.some(element => element.recipeName === currentRecipeName)) continue;
+ 
+-            updatedRecipeList.push({ ...recipe, recipeName: currentRecipeName });
+-            toast.success(`${currentRecipeName} à bien été ajouté`)
++            (existingNames.has(currentRecipeName) ? duplicates : fresh).push({ ...recipe, recipeName: currentRecipeName });
+         }
+ 
+-        if (updatedRecipeList.length !== recipeList.length) {
++        if (duplicates.length > 0) {
++            setPendingImport({ fresh, duplicates });   // on demande : remplacer ou garder les existantes ?
++            return;
++        }
++
++        applyImport(fresh, [], false);
++    }
++
++    // fresh : recettes nouvelles ; duplicates : recettes importées dont le nom existe déjà ; replace : écraser les existantes ou les garder
++    const applyImport = (fresh : Recipe[], duplicates : Recipe[], replace : boolean) => {
++        const replacements = new Map(duplicates.map(element => [element.recipeName, element]));
++        const updatedRecipeList = [
++            ...recipeList.map(element => (replace && replacements.has(element.recipeName)) ? replacements.get(element.recipeName)! : element),
++            ...fresh
++        ];
++
++        if (fresh.length > 0 || replace) {
+             setRecipeList(updatedRecipeList);
+             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+         }
++
++        if (fresh.length > 0) toast.success(`${fresh.length} recette${fresh.length > 1 ? "s" : ""} ajoutée${fresh.length > 1 ? "s" : ""}`)
++        if (replace && duplicates.length > 0) toast.success(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} remplacée${duplicates.length > 1 ? "s" : ""}`)
++        if (!replace && duplicates.length > 0) toast(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} déjà présente${duplicates.length > 1 ? "s" : ""} : conservée${duplicates.length > 1 ? "s" : ""} telle${duplicates.length > 1 ? "s" : ""} quelle${duplicates.length > 1 ? "s" : ""}`)
++
++        setPendingImport(null);
+     }
+ 
+     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
+@@ -214,7 +264,7 @@ const NewMeal = () => {
+         <>
+         <div className="globalNewMealSection">
+ 
+-            <div className='sectionHeader'><p>New Meal</p></div>
++            <div className='sectionHeader'><p>{editingName ? "Edit Meal" : "New Meal"}</p></div>
+ 
+             <div className="Inputs">
+                 <div className="textInput">
+@@ -328,11 +378,15 @@ const NewMeal = () => {
+                 </div>
+             </div>
+                 <div className="centerButton2">
+-                    <button onClick={handleOpenConfirmationModal} className='Btn2'>Ajouter la Recette à la Liste</button>
+-                    <label className="fileBtn importBtn">
+-                        <Upload size={16}/> Importer des recettes (.json)
+-                        <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
+-                    </label>
++                    <button onClick={handleOpenConfirmationModal} className='Btn2'>{editingName ? "Enregistrer les modifications" : "Ajouter la Recette à la Liste"}</button>
++                    {editingName
++                        ? <button onClick={() => navigate("/RecipeList")} className='Btn2'>Annuler</button>
++                        : (
++                            <label className="fileBtn importBtn">
++                                <Upload size={16}/> Importer des recettes (.json)
++                                <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
++                            </label>
++                        )}
+                 </div>
+         </div>
+ 
+@@ -342,7 +396,7 @@ const NewMeal = () => {
+                     <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
+                         <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+                             <div className="head">
+-                                <h3>Etes-vous sûre de vouloir ajouté la recette ?</h3>
++                                <h3>{editingName ? "Enregistrer les modifications ?" : "Etes-vous sûre de vouloir ajouté la recette ?"}</h3>
+                                 <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
+                             </div>
+                           <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Recipe List"</strong>.</p>
+@@ -353,6 +407,28 @@ const NewMeal = () => {
+                         </div>
+                     </div>
+         )}
++
++        {/* Modal : certaines recettes importées existent déjà */}
++
++        {pendingImport && (
++            <div className="modalOverlay" onClick={() => setPendingImport(null)}>
++                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
++                    <div className="head">
++                        <h3>{pendingImport.duplicates.length} recette{pendingImport.duplicates.length > 1 ? "s existent" : " existe"} déjà</h3>
++                        <div><X className='logo' onClick={() => setPendingImport(null)}></X></div>
++                    </div>
++                    <p>
++                        {pendingImport.duplicates.slice(0, 5).map(element => element.recipeName).join(", ")}
++                        {pendingImport.duplicates.length > 5 ? ` et ${pendingImport.duplicates.length - 5} autre${pendingImport.duplicates.length - 5 > 1 ? "s" : ""}` : ""}
++                    </p>
++                    <p>Remplacer par la version du fichier, ou garder les tiennes ?</p>
++                    <div className="deleteModalActions">
++                        <button className="confirmDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, true)}>Remplacer</button>
++                        <button className="cancelDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, false)}>Garder les miennes</button>
++                    </div>
++                </div>
++            </div>
++        )}
+         </>
+     )
+ }
+diff --git a/src/Components/RecipeList.css b/src/Components/RecipeList.css
+index bd14d6c..bf45055 100644
+--- a/src/Components/RecipeList.css
++++ b/src/Components/RecipeList.css
+@@ -302,3 +302,12 @@
+     box-shadow: 2px 6px 12px rgba(0, 1, 2, 0.4);
+     transform: scale(1.035);
+ }
++.modalIcons {
++    display: flex;
++    align-items: flex-start;
++    gap: 0.75rem;
++}
++
++.editIcon:hover {
++    color: #78dc7d;
++}
+diff --git a/src/Components/RecipeList.tsx b/src/Components/RecipeList.tsx
+index e76de52..65f9418 100755
+--- a/src/Components/RecipeList.tsx
++++ b/src/Components/RecipeList.tsx
+@@ -1,9 +1,12 @@
+-import { useState } from 'react';
++import { useState, useMemo } from 'react';
++import { useNavigate } from 'react-router-dom';
+ import toast from "react-hot-toast"
+-import { Trash, Trash2, X, Download} from 'react-feather';
++import { Trash, Trash2, X, Download, Edit2, Aperture, Search, ArrowUp, ArrowDown } from 'react-feather';
+ import './RecipeList.css';
+ import { Recipe, Ingredient, defaultList } from './typeFile';
+-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS } from '../lib/recipeUtils';
++import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS, RECIPE_SORTS, sortRecipes, recipeMatchesSearch } from '../lib/recipeUtils';
++import type { RecipeSortKey, SortDirection } from '../lib/recipeUtils';
++import { toastUndo } from '../lib/undoToast';
+ 
+ const RecipeList = () => {
+ 
+@@ -17,6 +20,29 @@ const RecipeList = () => {
+             return ((exist) ? JSON.parse(exist) : defaultList);
+     });
+ 
++    const navigate = useNavigate();
++
++    const [searchValue, setSearchValue] = useState("");
++    const [sortKey, setSortKey] = useState<RecipeSortKey>("default");
++    const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
++
++    // Un clic sur un critère le sélectionne (du plus petit au plus grand) ; un 2e clic inverse l'ordre.
++    const handleSortClick = (key: RecipeSortKey) => {
++        if (key === sortKey) {
++            setSortDirection(prev => prev === "asc" ? "desc" : "asc");
++        } else {
++            setSortKey(key);
++            setSortDirection("asc");
++        }
++    }
++
++    const visibleRecipes = useMemo(() => {
++        const filtered = recipeList.filter(recipe => recipeMatchesSearch(recipe, searchValue, currentStock));
++        return sortRecipes(filtered, sortKey, sortDirection, currentStock);
++    }, [recipeList, searchValue, sortKey, sortDirection, currentStock]);
++
++    const activeSort = RECIPE_SORTS.find(sort => sort.key === sortKey);
++
+     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+     const [recipeToDelete, setRecipeToDelete] = useState<Recipe | null>(null);
+ 
+@@ -28,14 +54,33 @@ const RecipeList = () => {
+     const handleConfirmDelete = () => {
+         if (!recipeToDelete) return;
+ 
+-        const updatedRecipeList = recipeList.filter(element => element.recipeName !== recipeToDelete.recipeName);
++        const deleted = recipeToDelete;
++        const deletedIndex = recipeList.findIndex(element => element.recipeName === deleted.recipeName);
++
++        const updatedRecipeList = recipeList.filter(element => element.recipeName !== deleted.recipeName);
+         setRecipeList(updatedRecipeList);
+         localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList));
+-        toast.error(`${recipeToDelete.recipeName} à bien été supprimer`)
++        toastUndo(`${deleted.recipeName} a bien été supprimée`, () => restoreRecipe(deleted, deletedIndex));
+         setRecipeToDelete(null);
+         handleCloseModal()
+     };
+ 
++    // Annuler la suppression : on remet la recette à sa place. Le localStorage fait foi (le toast peut rester affiché longtemps).
++    const restoreRecipe = (recipe: Recipe, index: number) => {
++        const current = loadRecipes();
++        if (current.some(element => element.recipeName === recipe.recipeName)) return;
++
++        const restored = [...current];
++        restored.splice(Math.min(Math.max(index, 0), restored.length), 0, recipe);
++        localStorage.setItem(RECIPES_KEY, JSON.stringify(restored));
++        setRecipeList(restored);
++    }
++
++    const handleEdit = () => {
++        if (!selectedRecipe) return;
++        navigate("/NewMeal", { state: { editName: selectedRecipe.recipeName } });
++    }
++
+     const handleSingleDownloadRecipe = (recipe : Recipe) => {
+         const dataStr = JSON.stringify(recipe, null, 2);
+         const blob = new Blob([dataStr], { type : "application/json"});
+@@ -65,9 +110,46 @@ const RecipeList = () => {
+ 
+             <div className='sectionHeader'><p>Recipe List</p></div>
+ 
++            <div className="searchBarContainer">
++                <div className="inputSection">
++                    <div className="searchLogoContainer"><Aperture></Aperture></div>
++                    <input type="text" className='searchInput' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Une recette, un ingrédient ?'/>
++                    <div className="searchIconContainer"><Search></Search></div>
++                </div>
++            </div>
++
++            <div className="sortBar">
++                <span className="sortLabel">Trier par</span>
++                <div className="chipRow">
++                    <button
++                        type="button"
++                        className={`chip ${sortKey === "default" ? "active" : ""}`}
++                        onClick={() => { setSortKey("default"); setSortDirection("asc"); }}
++                    >
++                        Ordre d'ajout
++                    </button>
++                    {RECIPE_SORTS.map(sort => (
++                        <button
++                            type="button"
++                            key={sort.key}
++                            className={`chip ${sortKey === sort.key ? "active" : ""}`}
++                            onClick={() => handleSortClick(sort.key)}
++                        >
++                            {sort.label}
++                            {sortKey === sort.key && (sortDirection === "asc" ? <ArrowUp size={14}/> : <ArrowDown size={14}/>)}
++                        </button>
++                    ))}
++                </div>
++                <p className="sortHint">
++                    {visibleRecipes.length} recette{visibleRecipes.length > 1 ? "s" : ""}
++                    {activeSort ? ` · ${sortDirection === "asc" ? activeSort.asc : activeSort.desc}` : ""}
++                </p>
++            </div>
++
+             <div className="gallery">
+-                {recipeList.map((element, index) => (
+-                    <div key={index} className="flashCard">
++                {visibleRecipes.length === 0 && <p className="emptyStock">Aucune recette ne correspond à ta recherche.</p>}
++                {visibleRecipes.map((element) => (
++                    <div key={element.recipeName} className="flashCard">
+                         <img src={element.image}/>
+                         <div className="subDivText">
+                             <h3>{formatDuration(element.prepTime)}</h3>
+@@ -92,12 +174,18 @@ const RecipeList = () => {
+                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                     <div className="boxInfos">
+                         <h2>{selectedRecipe.recipeName}</h2>
+-                        <div 
+-                          className="icon"
+-                          onMouseEnter={() => setIsHovered(true)}
+-                          onMouseLeave={() => setIsHovered(false)}
+-                        >
+-                            {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
++                        <div className="modalIcons">
++                            <div className="icon editIcon" title="Modifier la recette">
++                                <Edit2 onClick={handleEdit}></Edit2>
++                            </div>
++                            <div
++                              className="icon"
++                              title="Supprimer la recette"
++                              onMouseEnter={() => setIsHovered(true)}
++                              onMouseLeave={() => setIsHovered(false)}
++                            >
++                                {isHovered ? <Trash2 onClick={handleAskDelete}></Trash2> : <Trash onClick={handleAskDelete}></Trash>}
++                            </div>
+                         </div>
+                     </div>
+                     <p><strong>Préparation :</strong> {formatDuration(selectedRecipe.prepTime)}</p>
+@@ -127,7 +215,7 @@ const RecipeList = () => {
+                         <h3>Confirmer la suppression</h3>
+                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
+                     </div>
+-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.recipeName}</strong> ?<br/> Cette action est irréversible.</p>
++                  <p>Es-tu sûr de vouloir supprimer <strong>{recipeToDelete?.recipeName}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
+                   <div className="deleteModalActions">
+                     <button className="confirmDeleteBtn" onClick={handleConfirmDelete}>Confirmer</button>
+                     <button className="cancelDeleteBtn" onClick={handleCancelDelete}>Annuler</button>
+diff --git a/src/Components/typeFile.ts b/src/Components/typeFile.ts
+index 180714c..1ef8ff9 100755
+--- a/src/Components/typeFile.ts
++++ b/src/Components/typeFile.ts
+@@ -67,7 +67,7 @@ export const recipeInfo: Recipe[] = [
+     prepTime: 15,
+     cookTime: 90,
+     instructions:
+-      "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h.",
++      "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h. Servez avec les pâtes cuites (250g).",
+     image: "../img/poulet-basquaise.jpg",
+     status: "normal"
+   }
+@@ -141,6 +141,13 @@ export const defaultList: Ingredient[] = [
+   { id: "57", name: "Jus de Citron", macro: { calories: 29, carbs: 9.3, protein: 0.4, fat: 0.1 }, price: 2, quantity: 0, unit: "mL", category: "Autre", image: "/img2/jus-citron.jpg" }, 
+   { id: "58", name: "Parmesan", macro: { calories: 431, carbs: 4.1, protein: 38, fat: 29 }, price: 8, quantity: 0, unit: "g", category: "Autre", image: "/img2/parmesan.jpg" }, 
+   { id: "59", name: "Tzatziki", macro: { calories: 97, carbs: 5.6, protein: 5.5, fat: 6 }, price: 5, quantity: 0, unit: "g", category: "Autre", image: "/img2/tzatziki.jpg" }, 
+-  { id: "60", name: "Sel et Poivre", macro: { calories: 0, carbs: 0, protein: 0, fat: 0 }, price: 0.5, quantity: 0, unit: "", category: "Autre", image: "/img2/sel-poivre.jpg" }, 
++  { id: "60", name: "Sel et Poivre", macro: { calories: 0, carbs: 0, protein: 0, fat: 0 }, price: 0, quantity: 0, unit: "", category: "Autre", image: "/img2/sel-poivre.jpg" }, 
+   { id: "61", name: "Bouillon (Cube/Liquide)", macro: { calories: 5, carbs: 0.5, protein: 0.5, fat: 0 }, price: 1.5, quantity: 0, unit: "mL", category: "Autre", image: "/img2/bouillon.jpg" }, 
++  // --- Ajoutés pour les recettes importées ---
++  { id: "62", name: "Agneau", macro: { calories: 294, carbs: 0, protein: 25, fat: 21 }, price: 20, quantity: 0, unit: "g", category: "Protéine", image: "" },
++  { id: "63", name: "Navet", macro: { calories: 28, carbs: 6.4, protein: 0.9, fat: 0.1 }, price: 2, quantity: 0, unit: "g", category: "Légumes", image: "" },
++  { id: "64", name: "Sauce teriyaki", macro: { calories: 89, carbs: 16, protein: 5.9, fat: 0 }, price: 5, quantity: 0, unit: "mL", category: "Autre", image: "" },
++  { id: "65", name: "Graines de sésame", macro: { calories: 573, carbs: 23, protein: 18, fat: 50 }, price: 12, quantity: 0, unit: "g", category: "Autre", image: "" },
++  { id: "66", name: "Tofu", macro: { calories: 144, carbs: 2.8, protein: 17, fat: 8.7 }, price: 7, quantity: 0, unit: "g", category: "Protéine", image: "" },
++  { id: "67", name: "Paprika", macro: { calories: 282, carbs: 54, protein: 14, fat: 13 }, price: 15, quantity: 0, unit: "g", category: "Autre", image: "" },
+ ];
+\ No newline at end of file
+diff --git a/src/lib/backup.ts b/src/lib/backup.ts
+new file mode 100644
+index 0000000..4919c59
+--- /dev/null
++++ b/src/lib/backup.ts
+@@ -0,0 +1,133 @@
++import type { Recipe, Ingredient } from '../Components/typeFile';
++import { defaultList } from '../Components/typeFile';
++import { normalizeRecipe, loadRecipes, loadMealHistory } from './recipeUtils';
++
++// Sauvegarde complète de l'appli : un seul fichier JSON lisible, avec les recettes, le stock et l'historique.
++// Le fichier contient "app" et "version" : l'import vérifie que c'est bien un fichier de Meal Prep Board.
++
++export const BACKUP_APP = "meal-prep-board";
++export const BACKUP_VERSION = 1;
++
++export type BackupData = {
++    recipes: Recipe[];
++    stock: Ingredient[];
++    history: Recipe[][];
++};
++
++export type Backup = {
++    app: typeof BACKUP_APP;
++    version: number;
++    exportedAt: string;
++    data: BackupData;
++};
++
++export type ParseResult =
++    | { ok: true; data: BackupData }
++    | { ok: false; error: string };
++
++export type MergeReport = { recipes: number; ingredients: number; weeks: number };
++
++export const buildBackup = (data: BackupData, now: Date = new Date()): Backup => ({
++    app: BACKUP_APP,
++    version: BACKUP_VERSION,
++    exportedAt: now.toISOString(),
++    data,
++});
++
++export const backupFileName = (now: Date = new Date()): string => {
++    const pad = (n: number) => String(n).padStart(2, "0");
++    return `meal-prep-board-sauvegarde-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}.json`;
++};
++
++const isObject = (value: unknown): value is Record<string, unknown> =>
++    typeof value === "object" && value !== null && !Array.isArray(value);
++
++const isRecipeLike = (value: unknown): value is Record<string, unknown> =>
++    isObject(value) && typeof value.recipeName === "string" && Array.isArray(value.ingredient);
++
++const isIngredientLike = (value: unknown): value is Ingredient => {
++    if (!isObject(value)) return false;
++    const macro = value.macro;
++    return (typeof value.id === "string" || typeof value.id === "number")
++        && typeof value.name === "string"
++        && isObject(macro)
++        && ["calories", "carbs", "protein", "fat"].every(key => typeof macro[key] === "number")
++        && typeof value.price === "number"
++        && typeof value.quantity === "number";
++};
++
++// Lit le texte d'un fichier de sauvegarde. Ne modifie rien : renvoie soit les données valides, soit un message d'erreur.
++export const parseBackup = (text: string): ParseResult => {
++    let parsed: unknown;
++    try {
++        parsed = JSON.parse(text);
++    } catch {
++        return { ok: false, error: "Ce fichier n'est pas un JSON valide." };
++    }
++
++    if (!isObject(parsed) || parsed.app !== BACKUP_APP || !isObject(parsed.data)) {
++        return { ok: false, error: "Ce fichier n'est pas une sauvegarde de Meal Prep Board." };
++    }
++    if (typeof parsed.version !== "number" || parsed.version > BACKUP_VERSION) {
++        return { ok: false, error: "Cette sauvegarde vient d'une version plus récente de l'appli." };
++    }
++
++    const { recipes = [], stock = [], history = [] } = parsed.data;
++
++    if (!Array.isArray(recipes) || !recipes.every(isRecipeLike)) {
++        return { ok: false, error: "La liste des recettes de la sauvegarde est invalide." };
++    }
++    if (!Array.isArray(stock) || !stock.every(isIngredientLike)) {
++        return { ok: false, error: "Le stock de la sauvegarde est invalide." };
++    }
++    if (!Array.isArray(history) || !history.every(week => Array.isArray(week) && week.every(isRecipeLike))) {
++        return { ok: false, error: "L'historique de la sauvegarde est invalide." };
++    }
++
++    return {
++        ok: true,
++        data: {
++            recipes: recipes.map(normalizeRecipe),
++            stock: stock.map(ingredient => ({ ...ingredient, id: String(ingredient.id) })),
++            history: history.map(week => week.map(normalizeRecipe)),
++        },
++    };
++};
++
++// Fusion : on AJOUTE ce qui manque (recette de même nom, ingrédient de même numéro, semaine identique), sans rien écraser.
++export const mergeBackup = (current: BackupData, incoming: BackupData): { data: BackupData; added: MergeReport } => {
++    const recipeNames = new Set(current.recipes.map(recipe => recipe.recipeName));
++    const newRecipes = incoming.recipes.filter(recipe => !recipeNames.has(recipe.recipeName));
++
++    const ingredientIds = new Set(current.stock.map(ingredient => String(ingredient.id)));
++    const newIngredients = incoming.stock.filter(ingredient => !ingredientIds.has(String(ingredient.id)));
++
++    const knownWeeks = new Set(current.history.map(week => JSON.stringify(week)));
++    const newWeeks = incoming.history.filter(week => !knownWeeks.has(JSON.stringify(week)));
++
++    return {
++        data: {
++            recipes: [...current.recipes, ...newRecipes],
++            stock: [...current.stock, ...newIngredients],
++            history: [...current.history, ...newWeeks],
++        },
++        added: { recipes: newRecipes.length, ingredients: newIngredients.length, weeks: newWeeks.length },
++    };
++};
++
++// ---- Lecture / écriture dans le navigateur (localStorage) ----
++
++export const readCurrentData = (): BackupData => {
++    const savedStock = localStorage.getItem("currentStockList");
++    return {
++        recipes: loadRecipes(),
++        stock: savedStock ? JSON.parse(savedStock) : defaultList,
++        history: loadMealHistory(),
++    };
++};
++
++export const writeData = (data: BackupData): void => {
++    localStorage.setItem("globalRecipeList", JSON.stringify(data.recipes));
++    localStorage.setItem("currentStockList", JSON.stringify(data.stock));
++    localStorage.setItem("mealHistoryList", JSON.stringify(data.history));
++};
+diff --git a/src/lib/recipeUtils.ts b/src/lib/recipeUtils.ts
+index 86ce7e9..ac08658 100755
+--- a/src/lib/recipeUtils.ts
++++ b/src/lib/recipeUtils.ts
+@@ -1,5 +1,5 @@
+ import type { Recipe, Ingredient } from '../Components/typeFile';
+-import { recipeInfo } from '../Components/typeFile';
++import { recipeInfo, defaultList } from '../Components/typeFile';
+ 
+ // Image de remplacement quand un ingrédient n'a pas d'image (SVG intégré : aucun service externe)
+ export const NO_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(
+@@ -156,3 +156,85 @@ export const loadMealHistory = (): Recipe[][] => {
+     const history: Recipe[][] = saved ? JSON.parse(saved) : [];
+     return history.map(week => week.map(normalizeRecipe));
+ };
++
++// ---- Tri des recettes (page Recipe List) ----
++
++export type RecipeSortKey = "default" | "name" | "time" | "calories" | "protein" | "cost";
++export type SortDirection = "asc" | "desc";
++
++export const RECIPE_SORTS: { key: RecipeSortKey; label: string; asc: string; desc: string }[] = [
++    { key: "name", label: "Nom", asc: "De A à Z", desc: "De Z à A" },
++    { key: "time", label: "Temps", asc: "Du plus rapide au plus long", desc: "Du plus long au plus rapide" },
++    { key: "calories", label: "Calories", asc: "Du moins au plus calorique", desc: "Du plus au moins calorique" },
++    { key: "protein", label: "Protéines", asc: "Du moins au plus protéiné", desc: "Du plus au moins protéiné" },
++    { key: "cost", label: "Prix", asc: "Du moins cher au plus cher", desc: "Du plus cher au moins cher" },
++];
++
++const sortValue = (recipe: Recipe, key: RecipeSortKey, stock: Ingredient[]): number | string => {
++    switch (key) {
++        case "name": return recipe.recipeName.toLowerCase();
++        case "time": return toMinutes(recipe.prepTime) + toMinutes(recipe.cookTime);
++        case "calories": return calcRecipeMacros(recipe.ingredient, stock).calories;
++        case "protein": return calcRecipeMacros(recipe.ingredient, stock).protein;
++        case "cost": return calcRecipeCost(recipe.ingredient, stock);
++        default: return 0;
++    }
++};
++
++// Renvoie une NOUVELLE liste triée. Tri stable : à valeur égale, l'ordre d'origine est conservé.
++export const sortRecipes = (recipes: Recipe[], key: RecipeSortKey, direction: SortDirection, stock: Ingredient[]): Recipe[] => {
++    if (key === "default") return [...recipes];
++
++    const sign = direction === "asc" ? 1 : -1;
++    return recipes
++        .map((recipe, index) => ({ recipe, index, value: sortValue(recipe, key, stock) }))
++        .sort((a, b) => {
++            const diff = typeof a.value === "string"
++                ? a.value.localeCompare(String(b.value), "fr")
++                : a.value - Number(b.value);
++            return diff !== 0 ? sign * diff : a.index - b.index;
++        })
++        .map(entry => entry.recipe);
++};
++
++// Recherche : le texte (sans accents ni majuscules) doit se trouver dans le nom de la recette ou d'un de ses ingrédients
++const normalizeText = (text: string): string => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
++
++export const recipeMatchesSearch = (recipe: Recipe, search: string, stock: Ingredient[]): boolean => {
++    const needle = normalizeText(search);
++    if (!needle) return true;
++
++    if (normalizeText(recipe.recipeName).includes(needle)) return true;
++    return recipe.ingredient.some(ingre => {
++        const found = findIngredient(stock, ingre.ingredientId);
++        return found ? normalizeText(found.name).includes(needle) : false;
++    });
++};
++
++// ---- Stock : ajout des nouveaux ingrédients par défaut ----
++// Le stock est enregistré dans le navigateur : quand j'ajoute de nouveaux ingrédients à la liste par défaut
++// (ex : Agneau, Tofu), ils n'apparaissent pas tout seuls. Cette fonction les ajoute UNE fois (par numéro de version)
++// sans toucher à ce que l'utilisateur a déjà modifié. Pour une prochaine mise à jour : augmenter STOCK_DEFAULTS_VERSION.
++const STOCK_DEFAULTS_VERSION = 2;
++
++export const syncDefaultStock = (): void => {
++    try {
++        const saved = localStorage.getItem("currentStockList");
++        if (!saved) return;
++        if (Number(localStorage.getItem("stockDefaultsVersion") ?? 0) >= STOCK_DEFAULTS_VERSION) return;
++
++        const stock: Ingredient[] = JSON.parse(saved);
++        const known = new Set(stock.map(ingredient => String(ingredient.id)));
++        const missing = defaultList.filter(ingredient => !known.has(String(ingredient.id)));
++
++        // "Sel et Poivre" passe de 0,50 € à 0 € (seulement si l'utilisateur ne l'a pas changé lui-même)
++        const updated = stock.map(ingredient =>
++            (String(ingredient.id) === "60" && ingredient.price === 0.5) ? { ...ingredient, price: 0 } : ingredient
++        );
++
++        localStorage.setItem("currentStockList", JSON.stringify([...updated, ...missing]));
++        localStorage.setItem("stockDefaultsVersion", String(STOCK_DEFAULTS_VERSION));
++    } catch {
++        // stock illisible : on ne touche à rien
++    }
++};
+diff --git a/src/lib/undoToast.tsx b/src/lib/undoToast.tsx
+new file mode 100644
+index 0000000..9cb61f6
+--- /dev/null
++++ b/src/lib/undoToast.tsx
+@@ -0,0 +1,21 @@
++import toast from 'react-hot-toast';
++
++// Notification avec un bouton "Annuler" (suppressions) : onUndo remet l'élément supprimé.
++export const toastUndo = (message: string, onUndo: () => void) => {
++    toast((t) => (
++        <span className="undoToast">
++            {message}
++            <button
++                type="button"
++                className="undoBtn"
++                onClick={() => {
++                    onUndo();
++                    toast.dismiss(t.id);
++                    toast.success("Suppression annulée");
++                }}
++            >
++                Annuler
++            </button>
++        </span>
++    ), { duration: 8000, icon: "🗑️" });
++};

@@ -3,8 +3,6 @@
   "ingredient": [
     { "ingredientId": "1", "quantity": 900 },
     { "ingredientId": "12", "quantity": 125 },
-    { "ingredientId": "30", "quantity": 30 },
-    { "ingredientId": "15", "quantity": 15 },
     { "ingredientId": "43", "quantity": 15 },
     { "ingredientId": "51", "quantity": 425 },
     { "ingredientId": "13", "quantity": 270 },

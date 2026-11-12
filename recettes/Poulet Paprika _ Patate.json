@@ -1,18 +1,18 @@
 {
   "recipeName": "Poulet Paprika / Patate",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 900 },
+    { "ingredientId": "2", "quantity": 900 },
     { "ingredientId": "14", "quantity": 500 },
     { "ingredientId": "11", "quantity": 160 },
     { "ingredientId": "44", "quantity": 10 },
     { "ingredientId": "61", "quantity": 250 },
-    { "ingredientId": "36", "quantity": 10 },
+    { "ingredientId": "67", "quantity": 10 },
     { "ingredientId": "27", "quantity": 15 },
     { "ingredientId": "60", "quantity": 1 }
   ],
   "prepTime": 15,
   "cookTime": 90,
-  "instructions": "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (300g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
+  "instructions": "Faites revenir les cuisses de poulet avec 2 oignons (160g), 2 gousses d'ail (10g), et le paprika (10g). Ajoutez les pommes de terre (500g) et le bouillon. Laissez mijoter jusqu'à cuisson complète.",
   "image": "../img/pommes-terre-et-poulet-paprika.jpeg",
   "status": "normal"
 }

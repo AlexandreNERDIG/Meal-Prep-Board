@@ -2,6 +2,7 @@ import './MealHistory.css';
 import { Bookmark, ShoppingCart, X } from 'react-feather';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { toastUndo } from '../lib/undoToast';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
 import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory } from '../lib/recipeUtils';
 
@@ -72,13 +73,26 @@ const MealHistory = () => {
     const deleteFromHistory = () => {
         if (!recipesToDelete) return;
 
-        const updatedList = mealHistory.filter(e => e !== recipesToDelete);
+        const deleted = recipesToDelete;
+        const deletedIndex = mealHistory.indexOf(deleted);
+        const updatedList = mealHistory.filter(e => e !== deleted);
         setmealHistory(updatedList);
         localStorage.setItem("mealHistoryList", JSON.stringify(updatedList));
-        toast.success(`${recipesToDelete?.[0].recipeName} et ${recipesToDelete?.[1].recipeName} ont bien été supprimés`)
+        toastUndo(`${deleted[0]?.recipeName} et ${deleted[1]?.recipeName} ont bien été supprimés`, () => restoreWeek(deleted, deletedIndex));
         setRecipesToDelete(null);
         handleCloseModal2();
     };
+
+    // Annuler la suppression : la semaine revient à sa place dans l'historique
+    const restoreWeek = (week: Recipe[], index: number) => {
+        const current = loadMealHistory();
+        if (current.some(w => JSON.stringify(w) === JSON.stringify(week))) return;
+
+        const restored = [...current];
+        restored.splice(Math.min(Math.max(index, 0), restored.length), 0, week);
+        localStorage.setItem("mealHistoryList", JSON.stringify(restored));
+        setmealHistory(restored);
+    }
 
     const stockDeduction = (groceryList: RecipeIngredient[]) => {
         if (!groceryList || !currentStock) return;
@@ -190,7 +204,7 @@ const MealHistory = () => {
                         <h3>Confirmer la suppression</h3>
                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
                     </div>
-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Cette action est irréversible.</p>
+                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
                   <div className="deleteModalActions">
                     <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>

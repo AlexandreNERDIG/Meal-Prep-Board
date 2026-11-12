@@ -2,7 +2,6 @@
   "recipeName": "Hot Honey Pork Stir Fry",
   "ingredient": [
     { "ingredientId": "30", "quantity": 900 },
-    { "ingredientId": "30", "quantity": 15 },
     { "ingredientId": "10", "quantity": 150 },
     { "ingredientId": "33", "quantity": 75 },
     { "ingredientId": "50", "quantity": 340 },

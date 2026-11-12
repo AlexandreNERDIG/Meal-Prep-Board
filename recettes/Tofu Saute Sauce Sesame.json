@@ -1,16 +1,17 @@
 {
   "recipeName": "Tofu Sauté Sauce Sésame",
   "ingredient": [
-    { "ingredientId": "41", "quantity": 500 },
-    { "ingredientId": "10", "quantity": 15 },
-    { "ingredientId": "5", "quantity": 45 },
-    { "ingredientId": "36", "quantity": 30 },
-    { "ingredientId": "23", "quantity": 300 },
-    { "ingredientId": "61", "quantity": 300 },
-    { "ingredientId": "20", "quantity": 160 },
-    { "ingredientId": "19", "quantity": 250 },
-    { "ingredientId": "15", "quantity": 15 },
-    { "ingredientId": "7", "quantity": 15 }
+    { "ingredientId": "66", "quantity": 900 },
+    { "ingredientId": "13", "quantity": 300 },
+    { "ingredientId": "38", "quantity": 60 },
+    { "ingredientId": "40", "quantity": 20 },
+    { "ingredientId": "35", "quantity": 30 },
+    { "ingredientId": "39", "quantity": 30 },
+    { "ingredientId": "43", "quantity": 15 },
+    { "ingredientId": "11", "quantity": 100 },
+    { "ingredientId": "31", "quantity": 300 },
+    { "ingredientId": "10", "quantity": 150 },
+    { "ingredientId": "60", "quantity": 1 }
   ],
   "prepTime": 15,
   "cookTime": 25,
