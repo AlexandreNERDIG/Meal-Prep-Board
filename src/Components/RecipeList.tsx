@@ -65,7 +65,6 @@ const RecipeList = () => {
         handleCloseModal()
     };
 
-    // Annuler la suppression : on remet la recette à sa place. Le localStorage fait foi (le toast peut rester affiché longtemps).
     const restoreRecipe = (recipe: Recipe, index: number) => {
         const current = loadRecipes();
         if (current.some(element => element.recipeName === recipe.recipeName)) return;

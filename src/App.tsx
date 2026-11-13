@@ -9,6 +9,8 @@ import { recipeInfo, defaultList } from './Components/typeFile'
 import { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
 import { LanguageProvider } from './i18n/LanguageProvider';
+import Privacy from './Components/Privacy';
+import Footer from './Components/Footer';
 import './App.css';
 import './responsive.css';
 
@@ -44,7 +46,9 @@ function App() {
                     <Route path='/NewMeal' element={<NewMeal />} />
                     <Route path='/MealHistory' element={<MealHistory />} />
                     <Route path='/CurrentStock' element={<CurrentStock />} />
+                    <Route path='/Privacy' element={<Privacy />} />
                 </Routes>
+                <Footer />
             </div>
         </Router>
         </LanguageProvider>

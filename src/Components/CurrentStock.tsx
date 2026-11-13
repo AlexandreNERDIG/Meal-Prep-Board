@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
 import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE, formatMacros, categoryLabel, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
+import { fileToResizedDataUrl } from "../lib/imageUpload";
 
 type IngredientForm = {
     name: string;
@@ -129,20 +130,23 @@ const CurrentStock = () => {
         setFormData((prev) => ({ ...prev, unit }));
     };
 
-    const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
+    const handleImagePath = async (e : React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) {
             toast.error(t("image.errLoad"))
             return;
         }
 
-        const filename = file.name;
-
-        setFormData((prev) => ({
-            ...prev,
-            image : `/img2/${filename}`
-        }))
-        toast.success(t("image.okLoad"))
+        try {
+            const image = await fileToResizedDataUrl(file);
+            setFormData((prev) => ({
+                ...prev,
+                image
+            }))
+            toast.success(t("image.okLoad"))
+        } catch {
+            toast.error(t("image.errLoad"))
+        }
     }
 
     const triCurrentStockList = (currentStockArr : Ingredient[]) => {
@@ -222,7 +226,6 @@ const CurrentStock = () => {
         handleCloseModal2();
     };
 
-    // Annuler la suppression : l'ingrédient (avec sa quantité) revient dans le stock, à sa place triée
     const restoreIngredient = (ingredient: Ingredient) => {
         const saved = localStorage.getItem("currentStockList");
         const current: Ingredient[] = saved ? JSON.parse(saved) : [];
@@ -241,7 +244,7 @@ const CurrentStock = () => {
 
     const countFor = (category: CategoryFilter) => (category === "Tout") ? currentStock.length : currentStock.filter(item => item.category === category).length;
 
-    const imageName = formData.image.split("/").pop() || "";
+    const imageName = formData.image.startsWith("data:") ? t("image.custom") : (formData.image.split("/").pop() || "");
 
     return(
         <>
