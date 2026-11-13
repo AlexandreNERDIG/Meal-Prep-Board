@@ -6,6 +6,7 @@ import './NewMeal.css';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS, NO_IMAGE, categoryLabel, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
+import { fileToResizedDataUrl } from "../lib/imageUpload";
 
 type IngredientRow = {
     ingredientId: string;
@@ -24,14 +25,12 @@ const emptyRecipe: Recipe = {
     status: "normal"
 };
 
-// Un JSON de recette valide a au minimum un nom et une liste d'ingrédients
 const isRecipeLike = (value: unknown): value is Record<string, unknown> => {
     if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
     const candidate = value as Record<string, unknown>;
     return typeof candidate.recipeName === "string" && Array.isArray(candidate.ingredient);
 };
 
-// Import de plusieurs fichiers : recettes nouvelles + recettes dont le nom existe déjà (on demande quoi en faire)
 type PendingImport = { fresh: Recipe[]; duplicates: Recipe[] };
 
 const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
@@ -44,7 +43,6 @@ const NewMeal = () => {
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
-    // Mode édition : on arrive depuis "Recipe List" avec le nom de la recette à modifier
     const navigate = useNavigate();
     const location = useLocation();
     const requestedEditName = (location.state as { editName?: string } | null)?.editName ?? null;
@@ -76,7 +74,6 @@ const NewMeal = () => {
         }))
     }
 
-    // Les temps sont des nombres de minutes : on ne garde que les chiffres (impossible d'oublier "min")
     const handleTimeChange = (field : "prepTime" | "cookTime", value : string) => {
         const minutes = Math.max(0, parseInt(value, 10) || 0);
 
@@ -160,7 +157,6 @@ const NewMeal = () => {
     // Import de fichiers JSON :
     //  - 1 fichier  : la recette est chargée dans le formulaire (on peut la relire / la modifier avant de l'ajouter)
     //  - plusieurs  : elles sont ajoutées directement à la liste
-    // Les anciens JSON (temps en texte, status "mealprep"...) sont remis au bon format par normalizeRecipe.
     const handleJsonImport = async (e : React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files ?? []);
         e.target.value = "";  // permet de réimporter le même fichier juste après
@@ -216,14 +212,13 @@ const NewMeal = () => {
         }
 
         if (duplicates.length > 0) {
-            setPendingImport({ fresh, duplicates });   // on demande : remplacer ou garder les existantes ?
+            setPendingImport({ fresh, duplicates }); 
             return;
         }
 
         applyImport(fresh, [], false);
     }
 
-    // fresh : recettes nouvelles ; duplicates : recettes importées dont le nom existe déjà ; replace : écraser les existantes ou les garder
     const applyImport = (fresh : Recipe[], duplicates : Recipe[], replace : boolean) => {
         const replacements = new Map(duplicates.map(element => [element.recipeName, element]));
         const updatedRecipeList = [
@@ -243,24 +238,27 @@ const NewMeal = () => {
         setPendingImport(null);
     }
 
-    const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
+    const handleImagePath = async (e : React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) {
             toast.error(t("image.errLoad"))
             return;
         }
 
-        const fileName = file.name;
-
-        setFormData((prev) => ({
-            ...prev,
-            image : `../img/${fileName}`
-        }))
-        toast.success(t("image.okLoad"))
+        try {
+            const image = await fileToResizedDataUrl(file);
+            setFormData((prev) => ({
+                ...prev,
+                image
+            }))
+            toast.success(t("image.okLoad"))
+        } catch {
+            toast.error(t("image.errLoad"))
+        }
     }
 
     const placeholder = NO_IMAGE;
-    const imageName = formData.image.split("/").pop() || "";
+    const imageName = formData.image.startsWith("data:") ? t("image.custom") : (formData.image.split("/").pop() || "");
 
     return(
         <>

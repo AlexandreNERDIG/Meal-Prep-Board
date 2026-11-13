@@ -9,13 +9,11 @@ const FLASH_KEY = "backupFlashMessage";
 
 type IncomingBackup = { data: BackupData; fileName: string };
 
-// Exporter / importer toutes les données de l'appli (recettes, stock, historique) dans un seul fichier JSON
 const BackupPanel = () => {
 
     const { t, tb } = useT();
     const [incoming, setIncoming] = useState<IncomingBackup | null>(null);
 
-    // Après un import on recharge la page (pour que chaque écran relise les nouvelles données) : le message est affiché après le rechargement
     useEffect(() => {
         try {
             const message = sessionStorage.getItem(FLASH_KEY);

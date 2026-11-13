@@ -10,7 +10,7 @@ type MacroSummaryProps = {
     costLabel: string;
 };
 
-// Carte de résumé des apports : calories, répartition glucides / protéines / lipides, et coût
+// Carte de résumé des apports
 const MacroSummary = ({ title, subtitle, macros, cost, costLabel }: MacroSummaryProps) => {
     const { t, language } = useT();
     const split = calorieSplit(macros);

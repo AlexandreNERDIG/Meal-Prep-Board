@@ -11,7 +11,6 @@ import type { TranslationKey } from '../i18n/translations';
 const MealHistory = () => {
 
     const { t, tb } = useT();
-    // Les citations sont dans les traductions (quote.0 ... quote.5) : on garde juste le numéro de la citation affichée
     const QUOTE_COUNT = 6;
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
@@ -80,7 +79,6 @@ const MealHistory = () => {
         handleCloseModal2();
     };
 
-    // Annuler la suppression : la semaine revient à sa place dans l'historique
     const restoreWeek = (week: Recipe[], index: number) => {
         const current = loadMealHistory();
         if (current.some(w => JSON.stringify(w) === JSON.stringify(week))) return;
@@ -107,7 +105,6 @@ const MealHistory = () => {
         if (!filteredGroceryList) return;
 
         const updatedStock = currentStock.map(item => {
-            // On retrouve l'ingrédient par son id (plus fiable qu'une comparaison de noms)
             const match = filteredGroceryList.find(e => String(e.ingredientId) === String(item.id));
 
             if (!match) return item;
@@ -127,7 +124,6 @@ const MealHistory = () => {
         handleCloseModal4();
     };
 
-    // Le calcul est maintenant dans src/lib/recipeUtils.ts (partagé avec Home, Recipe List et New Meal)
     const macroCalculator = (recipe : Recipe) => {
         return formatMacros(calcRecipeMacros(recipe.ingredient, currentStock));
     }

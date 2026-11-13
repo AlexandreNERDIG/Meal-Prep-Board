@@ -1,7 +1,7 @@
 import { useT } from '../i18n/LanguageProvider';
 import { LANGUAGES } from '../i18n/core';
 
-// Sélecteur de langue FR | EN (la langue du navigateur sert de valeur par défaut)
+// Sélecteur de langue FR | EN 
 const LanguageSwitch = () => {
     const { language, setLanguage, t } = useT();
 

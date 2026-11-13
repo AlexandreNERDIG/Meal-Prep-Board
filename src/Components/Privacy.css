@@ -1,0 +1,68 @@
+.globalPrivacySection {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 900px;
+    color: white;
+}
+
+.privacyCard {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.85rem;
+    border: 1px solid #3a3a3e;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    box-shadow: 0 6px 12px rgba(0, 1, 2, 0.4);
+}
+
+.privacyCard h3 {
+    color: #78dc7d;
+    margin-bottom: 0.5rem;
+}
+
+.privacyCard p {
+    line-height: 1.5;
+}
+
+.privacyBack {
+    display: inline-block;
+    margin: 0.5rem 0 2rem;
+    color: #78dc7d;
+}
+
+.siteFooter {
+    grid-column: 2;
+    text-align: center;
+    padding: 1rem 0 1.5rem;
+    font-size: 0.8rem;
+}
+
+.siteFooter a {
+    color: #9ca3af;
+}
+
+.siteFooter a:hover {
+    color: #78dc7d;
+}
+
+@media (max-width: 900px) {
+    .siteFooter {
+        grid-column: 1;
+    }
+}
+
+.errorScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    background-color: #1e2122;
+}
+
+.errorScreen h1 {
+    color: #78dc7d;
+}
