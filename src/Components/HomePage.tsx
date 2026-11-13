@@ -4,12 +4,14 @@ import { X, Smartphone} from 'react-feather';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
 import BackupPanel from './BackupPanel';
+import { useT } from '../i18n/LanguageProvider';
 
 const HomePage = () => {
 
+    const { t, tb } = useT();
     const RECIPES_KEY = "globalRecipeList";
 
     useEffect(() => {
@@ -115,11 +117,11 @@ const HomePage = () => {
         const regex = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
 
         if (regex.test(discordWebHook)) {
-            toast.success("Le discord Web Hook est maintenant fonctionnel");
+            toast.success(t("home.toast.webhookOk"));
             localStorage.setItem("discordWebhook", JSON.stringify(discordWebHook));
             handleCloseModal7();
         } else {
-            toast.error("Le discord Web Hook n'est pas valide");
+            toast.error(t("home.toast.webhookBad"));
         }
     };
 
@@ -158,16 +160,16 @@ const HomePage = () => {
             const stockQty = stockItem?.quantity || 0; 
 
             if (stockQty >= data.quantity && data.quantity > 0) {
-                availableGroceryList.push(`${data.quantity}${data.unit} ${name} (en stock: ${stockQty}${data.unit})`); 
+                availableGroceryList.push(t("home.grocery.inStock", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
             } 
             
             else if (stockQty > 0 && data.quantity > stockQty) {
-                availableGroceryList.push(`${stockQty}${data.unit} ${name} (Besoin de: ${data.quantity}${data.unit})`); 
+                availableGroceryList.push(t("home.grocery.partial", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
             };
             
             const qtyToBuy = Math.max(data.quantity - stockQty, 0); 
             if (qtyToBuy > 0) {
-                notAvailableGroceryList.push(`${qtyToBuy}${data.unit} ${name}`);
+                notAvailableGroceryList.push(`${qtyToBuy}${unitLabel(data.unit)} ${name}`);
             } 
         });
 
@@ -178,7 +180,7 @@ const HomePage = () => {
         if (!groceryList || !currentStock) return;
 
         const parseGroceryLine = (line: string) => {
-            const parsed = line.trim().match(/^(\d+(?:\.\d+)?)\s*(?:g|mL|unités)?\s+(.+?)(?:\s+\((?:en stock|Besoin de):.*\))?$/);
+            const parsed = line.trim().match(/^(\d+(?:\.\d+)?)\s*(?:g|mL|unités|units)?\s+(.+?)(?:\s+\((?:en stock|in stock|besoin de|need)\s*:.*\))?$/i);
             if (!parsed) return null;
             return { quantity: parseFloat(parsed[1]), name: parsed[2].trim().toLowerCase() };
         };
@@ -198,7 +200,7 @@ const HomePage = () => {
 
         setCurrentStock(updatedStock);
         localStorage.setItem("currentStockList", JSON.stringify(updatedStock));
-        toast.success("Stocks mis à jour !");
+        toast.success(t("home.toast.stockUpdated"));
         handleCloseConfirmationModal6();
     };
 
@@ -215,7 +217,7 @@ const HomePage = () => {
     const recipeCostText = (recipe : Recipe | undefined) => {
         if (!recipe) return "";
         const total = calcRecipeCost(recipe.ingredient, currentStock);
-        return `${formatPrice(total)} (${formatPrice(total / DEFAULT_PORTIONS)} / portion)`;
+        return `${formatPrice(total)} (${formatPrice(total / DEFAULT_PORTIONS)} ${t("price.perServing")})`;
     }
 
     const weeklyCost = (recipeList[weeklyRecipe1] && recipeList[weeklyRecipe2])
@@ -240,7 +242,7 @@ const HomePage = () => {
         const updatedHistory = [...mealHistory, newRecipes];
         setmealHistory(updatedHistory);
         localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
-        toast.success("Recettes ajoutées à l'historique !");
+        toast.success(t("home.toast.addedHistory"));
         handleCloseConfirmationModal();
     };
 
@@ -251,7 +253,7 @@ const HomePage = () => {
     const sendGroceryList = async (list: string[]) => {
         
         const message = {
-            content: `🛒 **Liste de courses non disponibles :**\n${list.map(item => `• ${item}`).join('\n')}`,
+            content: `${t("home.discordMessage")}\n${list.map(item => `• ${item}`).join('\n')}`,
         };
       
         try {
@@ -261,7 +263,7 @@ const HomePage = () => {
             console.error('❌ Erreur lors de l’envoi :', error);
         }
 
-        toast.success("Liste de course envoyé");
+        toast.success(t("home.toast.listSent"));
         handleCloseConfirmationModal5();
     };
 
@@ -288,26 +290,26 @@ const HomePage = () => {
         <>
         <div className="globalHomeSection">
 
-            <div className='sectionHeader'><p>Home Page</p></div>
-            <div className="generateButton"><p onClick={generateRecipe}>Generate Weekly Recipe</p></div>
+            <div className='sectionHeader'><p>{t("page.home")}</p></div>
+            <div className="generateButton"><p onClick={generateRecipe}>{t("home.generate")}</p></div>
 
            {recipeList.length > 0 && (
                 <div className="RecipeDisplay">
                     <div className="recipe">
-                        <img src={recipeList[weeklyRecipe1]?.image} />
+                        <img src={recipeList[weeklyRecipe1]?.image} alt={recipeList[weeklyRecipe1]?.recipeName}/>
                         <div className="recipeDetails">
                             <h2>{recipeList[weeklyRecipe1]?.recipeName}</h2>
                             <ul>
                                 {recipeList[weeklyRecipe1]?.ingredient.map((element, index) => {
                                     const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
                                     return (
-                                        <li key={index}>{element.quantity}{ing?.unit} {ing?.name}</li>
+                                        <li key={index}>{element.quantity}{ing ? unitLabel(ing.unit) : ""} {ing?.name}</li>
                                     )
                                 })}
                             </ul>
                             <h5>{recipeMacroText(recipeList[weeklyRecipe1])}</h5>
                             <h5>{recipeCostText(recipeList[weeklyRecipe1])}</h5>
-                            <div className="replaceButton"><p onClick={ReplaceRecipe1}>Replace Recipe</p></div>
+                            <div className="replaceButton"><p onClick={ReplaceRecipe1}>{t("home.replace")}</p></div>
                         </div>
                     </div>
                     <div className="recipe">
@@ -317,46 +319,46 @@ const HomePage = () => {
                                 {recipeList[weeklyRecipe2]?.ingredient.map((element, index) => {
                                     const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
                                     return (
-                                        <li key={index}>{element.quantity}{ing?.unit} {ing?.name}</li>
+                                        <li key={index}>{element.quantity}{ing ? unitLabel(ing.unit) : ""} {ing?.name}</li>
                                     )
                                 })}
                             </ul>
                             <h5>{recipeMacroText(recipeList[weeklyRecipe2])}</h5>
                             <h5>{recipeCostText(recipeList[weeklyRecipe2])}</h5>
-                            <div className="replaceButton"><p onClick={ReplaceRecipe2}>Replace Recipe</p></div>
+                            <div className="replaceButton"><p onClick={ReplaceRecipe2}>{t("home.replace")}</p></div>
                         </div>
-                        <img src={recipeList[weeklyRecipe2]?.image}/>
+                        <img src={recipeList[weeklyRecipe2]?.image} alt={recipeList[weeklyRecipe2]?.recipeName}/>
                     </div>
                 </div>
             )}
 
             <div className="NutritionSection">
-                <div className="sectionHeader"><p>Weekly Intakes</p></div>
+                <div className="sectionHeader"><p>{t("home.weeklyIntakes")}</p></div>
                 {dailyMacros && weeklyMacros ? (
                     <div className="macroCards">
                         <MacroSummary
-                            title="Par jour"
-                            subtitle="1 portion de chaque recette"
+                            title={t("home.perDay")}
+                            subtitle={t("home.perDaySub")}
                             macros={dailyMacros}
                             cost={weeklyCost / DEFAULT_PORTIONS}
-                            costLabel="par jour"
+                            costLabel={t("home.perDayCost")}
                         />
                         <MacroSummary
-                            title="Sur la semaine"
-                            subtitle={`${DEFAULT_PORTIONS} jours, 2 repas par jour`}
+                            title={t("home.week")}
+                            subtitle={t("home.weekSub", { days: DEFAULT_PORTIONS })}
                             macros={weeklyMacros}
                             cost={weeklyCost}
-                            costLabel="pour la semaine"
+                            costLabel={t("home.weekCost")}
                         />
                     </div>
                 ) : (
-                    <p className="emptyHint">Génère les recettes de la semaine pour voir tes apports.</p>
+                    <p className="emptyHint">{t("home.emptyHint")}</p>
                 )}
             </div>
 
             <div className="centeredButtonDiv">
-                <div className="confirmationButtonSection" onClick={handleOpenConfirmationModal}>Confirm Meal Choices</div>
-                <div className="confirmationButtonSection" onClick={handleOpenModal7}>Discord Web Hook</div>
+                <div className="confirmationButtonSection" onClick={handleOpenConfirmationModal}>{t("home.confirmMeals")}</div>
+                <div className="confirmationButtonSection" onClick={handleOpenModal7}>{t("home.discord")}</div>
                 <div className="SMSIcon" onClick={whichModal}><Smartphone></Smartphone></div>
             </div>
 
@@ -370,13 +372,13 @@ const HomePage = () => {
             <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Etes-vous sûre de vouloir ajouté la recette ?</h3>
+                        <h3>{t("home.confirmAdd.title")}</h3>
                         <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
                     </div>
-                  <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Meal History"</strong>.</p>
+                  <p>{tb("home.confirmAdd.body", { page: t("page.history") })}</p>
                   <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={confirmedChoices}>Confirmer</button>
-                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>Annuler</button>
+                    <button className="confirmDeleteBtn" onClick={confirmedChoices}>{t("common.confirm")}</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>{t("common.cancel")}</button>
                   </div>
                 </div>
             </div>
@@ -388,18 +390,18 @@ const HomePage = () => {
             <div className="modalOverlay" onClick={handleCloseConfirmationModal5}>
                 <div className="deleteModalContent4" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Etes-vous sûre de vouloir envoyer la liste de course ?</h3>
+                        <h3>{t("home.sendList.title")}</h3>
                         <div><X className='logo' onClick={handleCloseConfirmationModal5}></X></div>
                     </div>
 
-                    <h3 className='titleH3'>Ingrédient Disponible</h3>
+                    <h3 className='titleH3'>{t("home.sendList.available")}</h3>
                     <div className="ingreList">
                         {availableGroceryList.map(element => (
                             <p>{element}</p>
                         ))}
                     </div>
 
-                    <h3 className='titleH3'>Ingrédient Manquant</h3>
+                    <h3 className='titleH3'>{t("home.sendList.missing")}</h3>
                     <div className="ingreList">
                         {notAvailableGroceryList.map(element => (
                             <p>{element}</p>
@@ -407,8 +409,8 @@ const HomePage = () => {
                     </div>
 
                     <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={handleConfirmClick}>Confirmer</button>
-                        <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal5}>Annuler</button>
+                        <button className="confirmDeleteBtn" onClick={handleConfirmClick}>{t("common.confirm")}</button>
+                        <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal5}>{t("common.cancel")}</button>
                     </div>
                 </div>
             </div>
@@ -420,13 +422,13 @@ const HomePage = () => {
             <div className="modalOverlay" onClick={handleCloseConfirmationModal6}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Voulez vous actualiser les stocks Automatiquement ?</h3>
+                        <h3>{t("home.autoStock.title")}</h3>
                         <div><X className='logo' onClick={handleCloseConfirmationModal6}></X></div>
                     </div>
-                  <p>Cette action n'est pas définitive, vous pourrez toujours actualiser les stocks dans <strong>"Meal History"</strong>.</p>
+                  <p>{tb("home.autoStock.body", { page: t("page.history") })}</p>
                   <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(availableGroceryList)}>Confirmer</button>
-                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal6}>Annuler</button>
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(availableGroceryList)}>{t("common.confirm")}</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal6}>{t("common.cancel")}</button>
                   </div>
                 </div>
             </div>
@@ -438,17 +440,17 @@ const HomePage = () => {
             <div className="modalOverlay" onClick={handleCloseModal7}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Veuillez entrer le discord web hook à utiliser ?</h3>
+                        <h3>{t("home.webhook.title")}</h3>
                         <div><X className='logo' onClick={handleCloseModal7}></X></div>
                     </div>
 
-                    <p>Cette action n'est pas définitive, vous pourrez toujours le changer en recliquant sur : <strong className='green'>"Discord Web Hook"</strong></p>
+                    <p>{tb("home.webhook.body", { button: t("home.discord") })}</p>
                     
                     <input type="text" onChange={handleChange} placeholder="https://discord.com/api/webhooks/1234567891234567891/T9fFJvBWwqqNCRHHwNr1GU1ckkgY_fvT1d5FiKindKJuG45_ZK_vMxAd_h5bKxmt9twh"/>
                     
                     <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={handleDiscordWebHook}>Confirmer</button>
-                        <button className="cancelDeleteBtn" onClick={handleCloseModal7}>Annuler</button>
+                        <button className="confirmDeleteBtn" onClick={handleDiscordWebHook}>{t("common.confirm")}</button>
+                        <button className="cancelDeleteBtn" onClick={handleCloseModal7}>{t("common.cancel")}</button>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import type { Macros } from '../lib/recipeUtils';
 import { calorieSplit, formatPrice } from '../lib/recipeUtils';
+import { useT } from '../i18n/LanguageProvider';
 
 type MacroSummaryProps = {
     title: string;
@@ -11,12 +12,13 @@ type MacroSummaryProps = {
 
 // Carte de résumé des apports : calories, répartition glucides / protéines / lipides, et coût
 const MacroSummary = ({ title, subtitle, macros, cost, costLabel }: MacroSummaryProps) => {
+    const { t, language } = useT();
     const split = calorieSplit(macros);
 
     const tiles = [
-        { key: "carbs", label: "Glucides", value: macros.carbs, percent: split.carbs },
-        { key: "protein", label: "Protéines", value: macros.protein, percent: split.protein },
-        { key: "fat", label: "Lipides", value: macros.fat, percent: split.fat },
+        { key: "carbs", label: t("macro.carbs"), value: macros.carbs, percent: split.carbs },
+        { key: "protein", label: t("macro.protein"), value: macros.protein, percent: split.protein },
+        { key: "fat", label: t("macro.fat"), value: macros.fat, percent: split.fat },
     ] as const;
 
     return (
@@ -27,14 +29,14 @@ const MacroSummary = ({ title, subtitle, macros, cost, costLabel }: MacroSummary
             </div>
 
             <div className="macroCalories">
-                <strong>{macros.calories.toLocaleString("fr-FR")}</strong>
+                <strong>{macros.calories.toLocaleString(language === "fr" ? "fr-FR" : "en-US")}</strong>
                 <span>kcal</span>
             </div>
 
             <div
                 className="macroSplitBar"
                 role="img"
-                aria-label={`Répartition des calories : ${split.carbs} % glucides, ${split.protein} % protéines, ${split.fat} % lipides`}
+                aria-label={t("home.splitAria", { carbs: split.carbs, protein: split.protein, fat: split.fat })}
             >
                 {tiles.map(tile => (
                     <div key={tile.key} className={`macroSeg ${tile.key}`} style={{ width: `${tile.percent}%` }} />

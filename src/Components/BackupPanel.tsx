@@ -3,6 +3,7 @@ import { Download, Upload, X } from 'react-feather';
 import toast from 'react-hot-toast';
 import { buildBackup, backupFileName, parseBackup, mergeBackup, readCurrentData, writeData } from '../lib/backup';
 import type { BackupData } from '../lib/backup';
+import { useT } from '../i18n/LanguageProvider';
 
 const FLASH_KEY = "backupFlashMessage";
 
@@ -11,6 +12,7 @@ type IncomingBackup = { data: BackupData; fileName: string };
 // Exporter / importer toutes les données de l'appli (recettes, stock, historique) dans un seul fichier JSON
 const BackupPanel = () => {
 
+    const { t, tb } = useT();
     const [incoming, setIncoming] = useState<IncomingBackup | null>(null);
 
     // Après un import on recharge la page (pour que chaque écran relise les nouvelles données) : le message est affiché après le rechargement
@@ -46,7 +48,7 @@ const BackupPanel = () => {
         a.click();
 
         URL.revokeObjectURL(url);
-        toast.success("Sauvegarde téléchargée");
+        toast.success(t("backup.downloaded"));
     }
 
     const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,26 +68,26 @@ const BackupPanel = () => {
         if (!incoming) return;
         const { data, added } = mergeBackup(readCurrentData(), incoming.data);
         writeData(data);
-        reloadWithMessage(`Fusion terminée : ${added.recipes} recette(s), ${added.ingredients} ingrédient(s), ${added.weeks} semaine(s) ajouté(s)`);
+        reloadWithMessage(t("backup.merged", { recipes: added.recipes, ingredients: added.ingredients, weeks: added.weeks }));
     }
 
     const handleReplace = () => {
         if (!incoming) return;
         writeData(incoming.data);
-        reloadWithMessage("Sauvegarde restaurée");
+        reloadWithMessage(t("backup.restored"));
     }
 
     return (
         <>
         <div className="backupPanel">
-            <h3>Mes données</h3>
-            <p>Une sauvegarde contient tes recettes, ton stock et ton historique. Elle te permet de les récupérer si tu changes de navigateur ou d'appareil.</p>
+            <h3>{t("backup.title")}</h3>
+            <p>{t("backup.hint")}</p>
             <div className="backupActions">
                 <button type="button" className="fileBtn" onClick={handleExport}>
-                    <Download size={16}/> Exporter mes données
+                    <Download size={16}/> {t("backup.export")}
                 </button>
                 <label className="fileBtn">
-                    <Upload size={16}/> Importer une sauvegarde
+                    <Upload size={16}/> {t("backup.import")}
                     <input type="file" accept=".json,application/json" onChange={handleFile}/>
                 </label>
             </div>
@@ -95,14 +97,14 @@ const BackupPanel = () => {
             <div className="modalOverlay" onClick={() => setIncoming(null)}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Importer cette sauvegarde ?</h3>
+                        <h3>{t("backup.modalTitle")}</h3>
                         <div><X className='logo' onClick={() => setIncoming(null)}></X></div>
                     </div>
-                    <p><strong>{incoming.fileName}</strong> contient {incoming.data.recipes.length} recette(s), {incoming.data.stock.length} ingrédient(s) et {incoming.data.history.length} semaine(s) d'historique.</p>
-                    <p><strong>Fusionner</strong> ajoute ce qui te manque sans rien écraser. <strong>Tout remplacer</strong> efface tes données actuelles : exporte-les d'abord si tu veux les garder.</p>
+                    <p>{tb("backup.modalSummary", { file: incoming.fileName, recipes: incoming.data.recipes.length, stock: incoming.data.stock.length, weeks: incoming.data.history.length })}</p>
+                    <p>{tb("backup.modalExplain")}</p>
                     <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={handleMerge}>Fusionner</button>
-                        <button className="cancelDeleteBtn" onClick={handleReplace}>Tout remplacer</button>
+                        <button className="confirmDeleteBtn" onClick={handleMerge}>{t("backup.merge")}</button>
+                        <button className="cancelDeleteBtn" onClick={handleReplace}>{t("backup.replace")}</button>
                     </div>
                 </div>
             </div>

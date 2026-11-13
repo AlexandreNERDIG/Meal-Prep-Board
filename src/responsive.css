@@ -222,6 +222,7 @@ img {
         scrollbar-width: none;
     }
     .LinksPart::-webkit-scrollbar { display: none; }
+    .langSwitch { margin: 0 0 0 auto; flex-shrink: 0; }
 
     .LinksPart a {
         width: auto;
@@ -259,6 +260,8 @@ img {
 
     .ContentDisplay {
         grid-template-rows: 1fr;
+        /* en haut : place pour le sélecteur de langue ; en bas : place pour la barre d'onglets */
+        padding-top: 2.9rem;
         padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
     }
 
@@ -273,6 +276,19 @@ img {
     }
 
     .globalNavSection img { display: none; }
+
+    /* Le sélecteur de langue passe en haut à droite de l'écran (la barre du bas est déjà pleine) */
+    .langSwitch {
+        position: fixed;
+        top: 0.5rem;
+        right: 0.75rem;
+        z-index: 120;
+        margin: 0;
+        padding: 0.2rem;
+        border-radius: 999px;
+        background: rgba(30, 33, 34, 0.85);
+    }
+    .langSwitch button { min-width: 2.4rem; padding: 0.25rem 0.5rem; border-width: 1px; }
 
     .LinksPart {
         overflow: visible;

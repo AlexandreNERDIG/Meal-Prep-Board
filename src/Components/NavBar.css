@@ -74,3 +74,33 @@
     background-color: #2f8b35;
 }
 
+
+/* Sélecteur de langue FR | EN */
+
+.langSwitch {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+}
+
+.langSwitch button {
+    min-width: 2.6rem;
+    padding: 0.35rem 0.6rem;
+    border: 2px solid #ffffff;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s all ease;
+}
+
+.langSwitch button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.langSwitch button.active {
+    background: #2f8b35;
+}

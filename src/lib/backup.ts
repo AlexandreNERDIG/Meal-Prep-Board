@@ -1,6 +1,7 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
 import { defaultList } from '../Components/typeFile';
 import { normalizeRecipe, loadRecipes, loadMealHistory } from './recipeUtils';
+import { translate } from '../i18n/core';
 
 // Sauvegarde complète de l'appli : un seul fichier JSON lisible, avec les recettes, le stock et l'historique.
 // Le fichier contient "app" et "version" : l'import vérifie que c'est bien un fichier de Meal Prep Board.
@@ -62,26 +63,26 @@ export const parseBackup = (text: string): ParseResult => {
     try {
         parsed = JSON.parse(text);
     } catch {
-        return { ok: false, error: "Ce fichier n'est pas un JSON valide." };
+        return { ok: false, error: translate("backup.errJson") };
     }
 
     if (!isObject(parsed) || parsed.app !== BACKUP_APP || !isObject(parsed.data)) {
-        return { ok: false, error: "Ce fichier n'est pas une sauvegarde de Meal Prep Board." };
+        return { ok: false, error: translate("backup.errNotBackup") };
     }
     if (typeof parsed.version !== "number" || parsed.version > BACKUP_VERSION) {
-        return { ok: false, error: "Cette sauvegarde vient d'une version plus récente de l'appli." };
+        return { ok: false, error: translate("backup.errNewer") };
     }
 
     const { recipes = [], stock = [], history = [] } = parsed.data;
 
     if (!Array.isArray(recipes) || !recipes.every(isRecipeLike)) {
-        return { ok: false, error: "La liste des recettes de la sauvegarde est invalide." };
+        return { ok: false, error: translate("backup.errRecipes") };
     }
     if (!Array.isArray(stock) || !stock.every(isIngredientLike)) {
-        return { ok: false, error: "Le stock de la sauvegarde est invalide." };
+        return { ok: false, error: translate("backup.errStock") };
     }
     if (!Array.isArray(history) || !history.every(week => Array.isArray(week) && week.every(isRecipeLike))) {
-        return { ok: false, error: "L'historique de la sauvegarde est invalide." };
+        return { ok: false, error: translate("backup.errHistory") };
     }
 
     return {

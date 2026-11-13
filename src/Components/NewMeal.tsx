@@ -4,7 +4,8 @@ import { X, Upload, Image as ImageIcon } from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS, NO_IMAGE, categoryLabel, unitLabel } from '../lib/recipeUtils';
+import { useT } from '../i18n/LanguageProvider';
 
 type IngredientRow = {
     ingredientId: string;
@@ -39,6 +40,7 @@ const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
 
 const NewMeal = () => {
 
+    const { t, tb } = useT();
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -115,7 +117,7 @@ const NewMeal = () => {
         const ingredients = validIngredients();
 
         if (!formData.recipeName.trim() || ingredients.length === 0) {
-            alert("Merci de remplir au moins le nom de la recette et un ingrédient (avec sa quantité).");
+            alert(t("new.alertRequired"));
             handleCloseConfirmationModal();
             return;
         }
@@ -124,7 +126,7 @@ const NewMeal = () => {
         const alreadyExist = recipeList.some(element => element.recipeName === formData.recipeName.trim() && element.recipeName !== editingName)
 
         if (alreadyExist) {
-            toast.error(`${formData.recipeName} n'a pas pu être enregistré (Existe déjà)`)
+            toast.error(t("new.errExists", { name: formData.recipeName }))
             handleCloseConfirmationModal();
             return;
         }
@@ -139,7 +141,7 @@ const NewMeal = () => {
             if (editingName) {
                 const updatedRecipeList = recipeList.map(element => element.recipeName === editingName ? newRecipe : element);
                 localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-                toast.success(`${newRecipe.recipeName} modifiée !`);
+                toast.success(t("new.updated", { name: newRecipe.recipeName }));
                 handleCloseConfirmationModal();
                 navigate("/RecipeList");
                 return;
@@ -149,7 +151,7 @@ const NewMeal = () => {
             setRecipeList(updatedRecipeList)
             resetForm();
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
-            toast.success(`${newRecipe.recipeName} ajoutée !`);
+            toast.success(t("new.added", { name: newRecipe.recipeName }));
             nameRef.current?.focus();
             handleCloseConfirmationModal();
         }
@@ -171,12 +173,12 @@ const NewMeal = () => {
             try {
                 parsed = JSON.parse(text);
             } catch {
-                toast.error(`${name} n'est pas un fichier JSON valide`)
+                toast.error(t("new.errJson", { name }))
                 return null;
             }
 
             if (!isRecipeLike(parsed)) {
-                toast.error(`${name} n'a pas le format d'une recette`)
+                toast.error(t("new.errFormat", { name }))
                 return null;
             }
 
@@ -189,7 +191,7 @@ const NewMeal = () => {
 
             setFormData({ ...emptyRecipe, ...recipe })
             setRows(toRows(recipe))
-            toast.success(`${recipe.recipeName} chargée dans le formulaire`)
+            toast.success(t("new.loaded", { name: recipe.recipeName }))
             return;
         }
 
@@ -204,7 +206,7 @@ const NewMeal = () => {
             const currentRecipeName = recipe.recipeName.trim();
 
             if (!currentRecipeName) {
-                toast.error(`${name} n'a pas de nom de recette`)
+                toast.error(t("new.errNoName", { name }))
                 continue;
             }
             // Même recette présente deux fois dans la sélection : on ne garde que la première
@@ -234,9 +236,9 @@ const NewMeal = () => {
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
         }
 
-        if (fresh.length > 0) toast.success(`${fresh.length} recette${fresh.length > 1 ? "s" : ""} ajoutée${fresh.length > 1 ? "s" : ""}`)
-        if (replace && duplicates.length > 0) toast.success(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} remplacée${duplicates.length > 1 ? "s" : ""}`)
-        if (!replace && duplicates.length > 0) toast(`${duplicates.length} recette${duplicates.length > 1 ? "s" : ""} déjà présente${duplicates.length > 1 ? "s" : ""} : conservée${duplicates.length > 1 ? "s" : ""} telle${duplicates.length > 1 ? "s" : ""} quelle${duplicates.length > 1 ? "s" : ""}`)
+        if (fresh.length > 0) toast.success(t("new.imp.added", { count: fresh.length }))
+        if (replace && duplicates.length > 0) toast.success(t("new.imp.replaced", { count: duplicates.length }))
+        if (!replace && duplicates.length > 0) toast(t("new.imp.kept", { count: duplicates.length }))
 
         setPendingImport(null);
     }
@@ -244,7 +246,7 @@ const NewMeal = () => {
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) {
-            toast.error("L'image n'a pas pu être chargée")
+            toast.error(t("image.errLoad"))
             return;
         }
 
@@ -254,30 +256,30 @@ const NewMeal = () => {
             ...prev,
             image : `../img/${fileName}`
         }))
-        toast.success("L'image a bien été chargée")
+        toast.success(t("image.okLoad"))
     }
 
-    const placeholder = "https://placehold.co/500x450/2c2c2c/ffffff?text=Pas+d'image&font=montserrat";
+    const placeholder = NO_IMAGE;
     const imageName = formData.image.split("/").pop() || "";
 
     return(
         <>
         <div className="globalNewMealSection">
 
-            <div className='sectionHeader'><p>{editingName ? "Edit Meal" : "New Meal"}</p></div>
+            <div className='sectionHeader'><p>{editingName ? t("page.editMeal") : t("page.newMeal")}</p></div>
 
             <div className="Inputs">
                 <div className="textInput">
-                    <label>Nom de la recette : </label>
+                    <label>{t("new.name")} </label>
                     <textarea
                       name="recipeName"
                       ref={nameRef}
                       value={formData.recipeName}
                       onChange={handleChange}
-                      placeholder='Entrer le nom de la recette'
+                      placeholder={t("new.namePlaceholder")}
                     />
 
-                    <label>Ingredients : </label>
+                    <label>{t("new.ingredients")} </label>
                     {rows.map((row, index) => {
                         const selectedIngredient = findIngredient(currentStock, row.ingredientId);
 
@@ -287,9 +289,9 @@ const NewMeal = () => {
                                     value={row.ingredientId}
                                     onChange={(e) => handleRowChange(index, "ingredientId", e.target.value)}
                                 >
-                                    <option value="">-- Choisir un ingrédient --</option>
+                                    <option value="">{t("new.chooseIngredient")}</option>
                                     {INGREDIENT_CATEGORIES.map(category => (
-                                        <optgroup key={category} label={category}>
+                                        <optgroup key={category} label={categoryLabel(category)}>
                                             {currentStock
                                                 .filter(ing => ing.category === category)
                                                 .map(ing => (
@@ -298,7 +300,7 @@ const NewMeal = () => {
                                                         value={ing.id}
                                                         disabled={rows.some((r, i) => i !== index && r.ingredientId === ing.id)}
                                                     >
-                                                        {ing.name}{ing.unit ? ` (${ing.unit})` : ""}
+                                                        {ing.name}{ing.unit ? ` (${unitLabel(ing.unit)})` : ""}
                                                     </option>
                                                 ))
                                             }
@@ -311,24 +313,24 @@ const NewMeal = () => {
                                     step="any"
                                     value={row.quantity}
                                     onChange={(e) => handleRowChange(index, "quantity", e.target.value)}
-                                    placeholder='Quantité'
+                                    placeholder={t("new.quantity")}
                                 />
-                                <span className="unitLabel">{selectedIngredient?.unit || ""}</span>
+                                <span className="unitLabel">{selectedIngredient ? unitLabel(selectedIngredient.unit) : ""}</span>
                                 <X className="removeIngredient" onClick={() => supprimerIngredient(index)}></X>
                             </div>
                         )
                     })}
                     <div className="centerButton">
-                        <button onClick={ajouterIngredient} className='Btn'>Ajouter un Ingredient</button>
+                        <button onClick={ajouterIngredient} className='Btn'>{t("new.addIngredient")}</button>
                     </div>
 
-                    <label>Macros (par portion, pour {DEFAULT_PORTIONS} portions) : </label>
+                    <label>{t("new.macrosLabel", { n: DEFAULT_PORTIONS })} </label>
                     <p className="previewValue">{previewMacros}</p>
 
-                    <label>Coût : </label>
-                    <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / DEFAULT_PORTIONS)} / portion)`}</p>
+                    <label>{t("new.costLabel")} </label>
+                    <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / DEFAULT_PORTIONS)} ${t("price.perServing")})`}</p>
 
-                    <label>Temps de préparation : </label>
+                    <label>{t("new.prepLabel")} </label>
                     <div className="timeRow">
                         <input
                           type="number"
@@ -342,7 +344,7 @@ const NewMeal = () => {
                         {formData.prepTime >= 60 && <span className="timeHint">{`= ${formatDuration(formData.prepTime)}`}</span>}
                     </div>
 
-                    <label>Temps de cuisson : </label>
+                    <label>{t("new.cookLabel")} </label>
                     <div className="timeRow">
                         <input
                           type="number"
@@ -356,34 +358,34 @@ const NewMeal = () => {
                         {formData.cookTime >= 60 && <span className="timeHint">{`= ${formatDuration(formData.cookTime)}`}</span>}
                     </div>
 
-                    <label>Instructions : </label>
+                    <label>{t("new.instructions")} </label>
                     <textarea
                       name="instructions"
                       value={formData.instructions}
                       onChange={handleChange}
-                      placeholder='Entrer les instructions'
+                      placeholder={t("new.instructionsPlaceholder")}
                     />
 
-                    <label>Image : </label>
+                    <label>{t("new.image")} </label>
                     <div className="fileRow">
                         <label className="fileBtn">
-                            <ImageIcon size={16}/> Choisir une image
+                            <ImageIcon size={16}/> {t("image.choose")}
                             <input type="file" accept="image/*" onChange={handleImagePath}/>
                         </label>
-                        <span className="fileName">{imageName || "Aucune image"}</span>
+                        <span className="fileName">{imageName || t("common.noImage")}</span>
                     </div>
                 </div>
                 <div className="imageInput">
-                    <img src={formData.image || placeholder} alt="Recette"/>
+                    <img src={formData.image || placeholder} alt={t("new.imageAlt")}/>
                 </div>
             </div>
                 <div className="centerButton2">
-                    <button onClick={handleOpenConfirmationModal} className='Btn2'>{editingName ? "Enregistrer les modifications" : "Ajouter la Recette à la Liste"}</button>
+                    <button onClick={handleOpenConfirmationModal} className='Btn2'>{editingName ? t("new.save") : t("new.add")}</button>
                     {editingName
-                        ? <button onClick={() => navigate("/RecipeList")} className='Btn2'>Annuler</button>
+                        ? <button onClick={() => navigate("/RecipeList")} className='Btn2'>{t("common.cancel")}</button>
                         : (
                             <label className="fileBtn importBtn">
-                                <Upload size={16}/> Importer des recettes (.json)
+                                <Upload size={16}/> {t("new.import")}
                                 <input type="file" accept=".json,application/json" multiple onChange={handleJsonImport}/>
                             </label>
                         )}
@@ -396,13 +398,13 @@ const NewMeal = () => {
                     <div className="modalOverlay" onClick={handleCloseConfirmationModal}>
                         <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                             <div className="head">
-                                <h3>{editingName ? "Enregistrer les modifications ?" : "Etes-vous sûre de vouloir ajouté la recette ?"}</h3>
+                                <h3>{editingName ? t("new.confirmEdit") : t("new.confirmAdd")}</h3>
                                 <div><X className='logo' onClick={handleCloseConfirmationModal}></X></div>
                             </div>
-                          <p>Cette action n'est pas définitive et peut être annulé dans la rubrique <strong>"Recipe List"</strong>.</p>
+                          <p>{tb("new.confirmBody", { page: t("page.recipes") })}</p>
                           <div className="deleteModalActions">
-                            <button className="confirmDeleteBtn" onClick={ajouterRecette}>Confirmer</button>
-                            <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>Annuler</button>
+                            <button className="confirmDeleteBtn" onClick={ajouterRecette}>{t("common.confirm")}</button>
+                            <button className="cancelDeleteBtn" onClick={handleCloseConfirmationModal}>{t("common.cancel")}</button>
                           </div>
                         </div>
                     </div>
@@ -414,17 +416,17 @@ const NewMeal = () => {
             <div className="modalOverlay" onClick={() => setPendingImport(null)}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>{pendingImport.duplicates.length} recette{pendingImport.duplicates.length > 1 ? "s existent" : " existe"} déjà</h3>
+                        <h3>{t("new.dup.title", { count: pendingImport.duplicates.length })}</h3>
                         <div><X className='logo' onClick={() => setPendingImport(null)}></X></div>
                     </div>
                     <p>
                         {pendingImport.duplicates.slice(0, 5).map(element => element.recipeName).join(", ")}
-                        {pendingImport.duplicates.length > 5 ? ` et ${pendingImport.duplicates.length - 5} autre${pendingImport.duplicates.length - 5 > 1 ? "s" : ""}` : ""}
+                        {pendingImport.duplicates.length > 5 ? t("new.dup.more", { count: pendingImport.duplicates.length - 5 }) : ""}
                     </p>
-                    <p>Remplacer par la version du fichier, ou garder les tiennes ?</p>
+                    <p>{t("new.dup.question")}</p>
                     <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, true)}>Remplacer</button>
-                        <button className="cancelDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, false)}>Garder les miennes</button>
+                        <button className="confirmDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, true)}>{t("new.dup.replace")}</button>
+                        <button className="cancelDeleteBtn" onClick={() => applyImport(pendingImport.fresh, pendingImport.duplicates, false)}>{t("new.dup.keep")}</button>
                     </div>
                 </div>
             </div>
