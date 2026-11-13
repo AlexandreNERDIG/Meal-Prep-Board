@@ -8,7 +8,7 @@ type LanguageContextValue = {
     language: Language;
     setLanguage: (language: Language) => void;
     t: (key: MessageKey, params?: TranslateParams) => string;
-    // Comme t(), mais les passages entre **doubles étoiles** sont mis en gras
+    // Pour les passages mis en gras
     tb: (key: MessageKey, params?: TranslateParams) => ReactNode;
 };
 
@@ -22,7 +22,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         setLanguageState(next);
     }, []);
 
-    // Sans effet de bord au rendu : on applique juste l'attribut lang de la page au premier rendu
     if (typeof document !== "undefined" && document.documentElement.lang !== language) {
         document.documentElement.lang = language;
     }
@@ -30,7 +29,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const t = useCallback((key: MessageKey, params?: TranslateParams) => translate(key, params, language), [language]);
 
     const tb = useCallback((key: MessageKey, params?: TranslateParams): ReactNode => {
-        // **gras** et retours à la ligne ("\n" -> <br/>)
         return translate(key, params, language)
             .split("**")
             .map((part, index) => {
@@ -46,7 +44,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useT = (): LanguageContextValue => {
     const context = useContext(LanguageContext);
     if (!context) throw new Error("useT() doit être utilisé à l'intérieur de <LanguageProvider>");
