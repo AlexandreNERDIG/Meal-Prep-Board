@@ -11,6 +11,7 @@ import { syncDefaultStock } from './lib/recipeUtils';
 import { LanguageProvider } from './i18n/LanguageProvider';
 import Privacy from './Components/Privacy';
 import Footer from './Components/Footer';
+import Welcome from './Components/Welcome';
 import './App.css';
 import './responsive.css';
 
@@ -38,6 +39,7 @@ function App() {
         <LanguageProvider>
         <Router>
             <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+            <Welcome />
             <div className='ContentDisplay'>
                 <NavBar />
                 <Routes>
