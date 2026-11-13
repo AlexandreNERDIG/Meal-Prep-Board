@@ -92,7 +92,7 @@
 }
 
 .recipeDetails h5 {
-    color: #206024;
+    color: var(--macro-color-text);
     text-align: center;
     font-size: 0.95rem;
 }
@@ -248,8 +248,6 @@
 .green {
     color: #78dc7d; 
 }
-
-/* Résumé des apports (Par jour / Sur la semaine) */
 
 .macroCards {
     display: grid;

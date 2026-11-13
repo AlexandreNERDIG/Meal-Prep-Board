@@ -63,3 +63,14 @@
     width: 85%;
 }
 
+/* Page en cours */
+.LinksPart a.active {
+    background-color: #2f8b35;
+    border-color: #ffffff;
+}
+
+.LinksPart a.active::after {
+    width: 100%;
+    background-color: #2f8b35;
+}
+

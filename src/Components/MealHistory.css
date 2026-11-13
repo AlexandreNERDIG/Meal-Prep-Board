@@ -77,6 +77,8 @@
 
 .recipeDisplay img {
     width: 40%;
+    flex-shrink: 0;
+    object-fit: cover;
 }
 
 .textSubDiv {
