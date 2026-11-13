@@ -1,9 +1,11 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
 import { recipeInfo, defaultList } from '../Components/typeFile';
+import { translate, getLanguage } from '../i18n/core';
+import type { MessageKey } from '../i18n/translations';
 
-// Image de remplacement quand un ingrédient n'a pas d'image (SVG intégré : aucun service externe)
+// Image de remplacement quand une recette / un ingrédient n'a pas d'image (SVG intégré : aucun service externe, aucun texte donc aucune langue)
 export const NO_IMAGE = "data:image/svg+xml;utf8," + encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250"><rect width="300" height="250" fill="#2c2c2c"/><text x="150" y="132" fill="#ffffff" font-family="sans-serif" font-size="18" text-anchor="middle">Pas d'image</text></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250"><rect width="300" height="250" fill="#2c2c2c"/><g fill="none" stroke="#8a8a8a" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><rect x="105" y="85" width="90" height="80" rx="10"/><circle cx="133" cy="113" r="9"/><path d="M110 158l30-28 20 18 14-12 21 22"/></g></svg>`
 );
 
 // Catégories d'ingrédients (filtre de la page Stock, menu déroulant de New Meal, formulaire d'ajout)
@@ -64,7 +66,7 @@ export const calcRecipeMacros = (ingredients: Recipe["ingredient"], stock: Ingre
 
 // Même format d'affichage qu'avant : "450 Calories | 15 g C | 38 g P | 22 g F"
 export const formatMacros = (macros: Macros): string => {
-    return `${macros.calories} Calories | ${macros.carbs} g C | ${macros.protein} g P | ${macros.fat} g F`;
+    return translate("macros.format", { calories: macros.calories, carbs: macros.carbs, protein: macros.protein, fat: macros.fat });
 };
 
 // Coût TOTAL de la recette en euros
@@ -81,8 +83,10 @@ export const calcRecipeCost = (ingredients: Recipe["ingredient"], stock: Ingredi
     return total;
 };
 
+// Français : "9,55 €"   Anglais : "€9.55"
 export const formatPrice = (amount: number): string => {
-    return `${amount.toFixed(2).replace(".", ",")} €`;
+    const fixed = amount.toFixed(2);
+    return getLanguage() === "fr" ? `${fixed.replace(".", ",")} €` : `€${fixed}`;
 };
 
 // Un ingrédient est suivi dans le stock sauf si trackStock vaut false, ou s'il n'a pas d'unité (ex : "Sel et Poivre").
@@ -95,7 +99,19 @@ export const isStockTracked = (ingredient: Ingredient | undefined): boolean => {
 export const priceUnitLabel = (unit: Ingredient["unit"]): string => {
     if (unit === "g") return "€ / kg";
     if (unit === "mL") return "€ / L";
-    return "€ / unité";
+    return translate("price.perUnit");
+};
+
+// Texte affiché pour une unité ("g" et "mL" sont universels, "unités" se traduit)
+export const unitLabel = (unit: Ingredient["unit"] | string): string => {
+    return unit === "unités" ? translate("unit.units") : unit;
+};
+
+// Les catégories sont stockées en français dans les données (filtres, tri) : seul l'affichage est traduit
+export const categoryLabel = (category: string): string => {
+    const key = `cat.${category}`;
+    const label = translate(key as MessageKey);
+    return label === key ? category : label;
 };
 
 // Répartition des calories entre glucides (4 kcal/g), protéines (4 kcal/g) et lipides (9 kcal/g), en %
@@ -162,13 +178,8 @@ export const loadMealHistory = (): Recipe[][] => {
 export type RecipeSortKey = "default" | "name" | "time" | "calories" | "protein" | "cost";
 export type SortDirection = "asc" | "desc";
 
-export const RECIPE_SORTS: { key: RecipeSortKey; label: string; asc: string; desc: string }[] = [
-    { key: "name", label: "Nom", asc: "De A à Z", desc: "De Z à A" },
-    { key: "time", label: "Temps", asc: "Du plus rapide au plus long", desc: "Du plus long au plus rapide" },
-    { key: "calories", label: "Calories", asc: "Du moins au plus calorique", desc: "Du plus au moins calorique" },
-    { key: "protein", label: "Protéines", asc: "Du moins au plus protéiné", desc: "Du plus au moins protéiné" },
-    { key: "cost", label: "Prix", asc: "Du moins cher au plus cher", desc: "Du plus cher au moins cher" },
-];
+// Critères proposés (les textes "Nom", "Du plus rapide au plus long"... sont dans les traductions : sort.<critère>, .asc, .desc)
+export const RECIPE_SORT_KEYS: Exclude<RecipeSortKey, "default">[] = ["name", "time", "calories", "protein", "cost"];
 
 const sortValue = (recipe: Recipe, key: RecipeSortKey, stock: Ingredient[]): number | string => {
     switch (key) {

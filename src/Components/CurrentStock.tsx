@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { Search, Aperture, MinusCircle, PlusCircle, Upload } from "react-feather"
 import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
-import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE } from '../lib/recipeUtils';
+import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE, formatMacros, categoryLabel, unitLabel } from '../lib/recipeUtils';
+import { useT } from '../i18n/LanguageProvider';
 
 type IngredientForm = {
     name: string;
@@ -44,6 +45,8 @@ const toNumber = (value: string): number => {
 };
 
 const CurrentStock = () => {
+
+    const { t, tb } = useT();
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
         const exist = localStorage.getItem("currentStockList");
@@ -129,7 +132,7 @@ const CurrentStock = () => {
     const handleImagePath = (e : React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) {
-            toast.error("L'image n'a pas pu être chargée")
+            toast.error(t("image.errLoad"))
             return;
         }
 
@@ -139,7 +142,7 @@ const CurrentStock = () => {
             ...prev,
             image : `/img2/${filename}`
         }))
-        toast.success("L'image a bien été chargée")
+        toast.success(t("image.okLoad"))
     }
 
     const triCurrentStockList = (currentStockArr : Ingredient[]) => {
@@ -169,7 +172,7 @@ const CurrentStock = () => {
             !formData.category ||
             price <= 0
         ) {
-            toast.error("Veuillez remplir tous les champs obligatoires correctement");
+            toast.error(t("stock.errFields"));
             return;
         }
 
@@ -191,7 +194,7 @@ const CurrentStock = () => {
         }
 
         if (currentStock.some(ingre => ingre.name.trim().toLowerCase() === newIngredient.name.trim().toLowerCase())) {
-            toast.error("Cet ingrédient existe déjà dans le stock");
+            toast.error(t("stock.errExists"));
             return;
         }
 
@@ -202,7 +205,7 @@ const CurrentStock = () => {
             localStorage.setItem("currentStockList", JSON.stringify(updated));
             return updated;
         });
-        toast.success("L'ingrédient a bien été ajouté");
+        toast.success(t("stock.added"));
         setIdCounter(idCounter + 1);
         handleCloseModal1()
     }
@@ -214,7 +217,7 @@ const CurrentStock = () => {
         const updatedList = currentStock.filter(e => e.id !== deleted.id);
         setCurrentStock(updatedList);
         localStorage.setItem("currentStockList", JSON.stringify(updatedList));
-        toastUndo(`${deleted.name} a bien été supprimé`, () => restoreIngredient(deleted));
+        toastUndo(t("stock.deleted", { name: deleted.name }), () => restoreIngredient(deleted));
         setIngredientToDelete(null);
         handleCloseModal2();
     };
@@ -231,8 +234,8 @@ const CurrentStock = () => {
     }
 
     const macroBase = (formData.unit === "g" || formData.unit === "mL")
-        ? `pour 100 ${formData.unit}`
-        : (formData.unit === "unités" ? "pour 1 unité" : "choisis d'abord l'unité");
+        ? t("stock.per100", { unit: formData.unit })
+        : (formData.unit === "unités" ? t("stock.per1") : t("stock.pickUnit"));
 
     const visibleItems = currentStock.filter((item) => (selectedcategory === "Tout" || item.category === selectedcategory) && item.name.toLowerCase().includes(searchValue.toLowerCase()));
 
@@ -244,12 +247,12 @@ const CurrentStock = () => {
         <>
         <div className="globalCurrentStockSection">
 
-            <div className='sectionHeader'><p>Current Stock</p></div>
+            <div className='sectionHeader'><p>{t("page.stock")}</p></div>
 
             <div className="searchBarContainer">
                 <div className="inputSection">
                     <div className="searchLogoContainer"><Aperture></Aperture></div>
-                    <input type="text" className='searchInput' value={searchValue} onChange={handleSearchInput} placeholder='Vous cherchez un aliment en particulier ?'/>
+                    <input type="text" className='searchInput' value={searchValue} onChange={handleSearchInput} placeholder={t("stock.search")}/>
                     <div className="searchIconContainer"><Search></Search></div>
                 </div>
             </div>
@@ -262,14 +265,14 @@ const CurrentStock = () => {
                         className={`chip ${selectedcategory === category ? "active" : ""}`}
                         onClick={() => setSelectedcategory(category)}
                     >
-                        {category}
+                        {category === "Tout" ? t("cat.Tout") : categoryLabel(category)}
                         <span className="chipCount">{countFor(category)}</span>
                     </button>
                 ))}
             </div>
 
             <div className="currentStockGallery">
-                {visibleItems.length === 0 && <p className="emptyStock">Aucun ingrédient trouvé.</p>}
+                {visibleItems.length === 0 && <p className="emptyStock">{t("stock.empty")}</p>}
                 {visibleItems
                     .map((item) => (
                       <div key={item.id} className="stockItem">
@@ -281,13 +284,13 @@ const CurrentStock = () => {
                         <div className="subTextDiv">
                             <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
                             <h2>{item.name}</h2>
-                            <h4>{`${item.macro.calories} Calories | ${item.macro.carbs} g C | ${item.macro.protein} g P | ${item.macro.fat} g F`}</h4>
+                            <h4>{formatMacros(item.macro)}</h4>
                             <p>{`${item.price} ${priceUnitLabel(item.unit)}`}</p>
                             <p><strong>Id : {item.id}</strong></p>
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
                                     <MinusCircle onClick={(e) => handleMinusQuantityChange(item, e)}></MinusCircle>
-                                    <div className="currentCount">{item.quantity} {item.unit}</div>
+                                    <div className="currentCount">{item.quantity} {unitLabel(item.unit)}</div>
                                     <PlusCircle onClick={(e) => handlePlusQuantityChange(item, e)}></PlusCircle>
                                 </div>
                             </div>
@@ -306,25 +309,25 @@ const CurrentStock = () => {
                 <div className="modalOverlay" onClick={handleCloseModal1}>
                     <div className="deleteModalContent2" onClick={(e) => e.stopPropagation()}>
                         <div className="head">
-                            <h3>Formulaire d'Ajout d'Ingrédient</h3>
+                            <h3>{t("stock.formTitle")}</h3>
                             <div><X className='logo' onClick={handleCloseModal1}></X></div>
                         </div>
 
                         <div className="ingredientForm">
                             <div className="formField">
-                                <label htmlFor="ingredientName">Nom</label>
+                                <label htmlFor="ingredientName">{t("stock.name")}</label>
                                 <input
                                     id="ingredientName"
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={formHandler}
-                                    placeholder="Ex : Blanc de poulet"
+                                    placeholder={t("stock.namePlaceholder")}
                                 />
                             </div>
 
                             <div className="formField">
-                                <span className="fieldTitle">Catégorie</span>
+                                <span className="fieldTitle">{t("stock.category")}</span>
                                 <div className="chipRow chipRowLeft">
                                     {INGREDIENT_CATEGORIES.map(category => (
                                         <button
@@ -333,14 +336,14 @@ const CurrentStock = () => {
                                             className={`chip ${formData.category === category ? "active" : ""}`}
                                             onClick={() => handleFormCategory(category)}
                                         >
-                                            {category}
+                                            {categoryLabel(category)}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
                             <div className="formField">
-                                <span className="fieldTitle">Unité</span>
+                                <span className="fieldTitle">{t("stock.unit")}</span>
                                 <div className="chipRow chipRowLeft">
                                     {UNITS.map(unit => (
                                         <button
@@ -349,14 +352,14 @@ const CurrentStock = () => {
                                             className={`chip ${formData.unit === unit ? "active" : ""}`}
                                             onClick={() => handleFormUnit(unit)}
                                         >
-                                            {unit}
+                                            {unitLabel(unit)}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
                             <div className="formField">
-                                <label htmlFor="ingredientPrice">Prix</label>
+                                <label htmlFor="ingredientPrice">{t("stock.price")}</label>
                                 <div className="inputWithSuffix">
                                     <input
                                         id="ingredientPrice"
@@ -365,20 +368,20 @@ const CurrentStock = () => {
                                         name="price"
                                         value={formData.price}
                                         onChange={formHandler}
-                                        placeholder="0,00"
+                                        placeholder={t("stock.pricePlaceholder")}
                                     />
                                     <span>{priceUnitLabel(formData.unit)}</span>
                                 </div>
                             </div>
 
                             <div className="formField">
-                                <span className="fieldTitle">Valeurs nutritionnelles <small>{macroBase}</small></span>
+                                <span className="fieldTitle">{t("stock.nutrition")} <small>{macroBase}</small></span>
                                 <div className="macroInputs">
                                     {([
-                                        { name: "calories", label: "Calories", suffix: "kcal" },
-                                        { name: "carbs", label: "Glucides", suffix: "g" },
-                                        { name: "protein", label: "Protéines", suffix: "g" },
-                                        { name: "fat", label: "Lipides", suffix: "g" },
+                                        { name: "calories", label: t("stock.calories"), suffix: "kcal" },
+                                        { name: "carbs", label: t("macro.carbs"), suffix: "g" },
+                                        { name: "protein", label: t("macro.protein"), suffix: "g" },
+                                        { name: "fat", label: t("macro.fat"), suffix: "g" },
                                     ] as const).map(field => (
                                         <div className="macroInput" key={field.name}>
                                             <label htmlFor={`ingredient-${field.name}`}>{field.label}</label>
@@ -402,26 +405,26 @@ const CurrentStock = () => {
                             <label className="checkField">
                                 <input type="checkbox" name="trackStock" checked={formData.trackStock} onChange={formHandler}/>
                                 <span>
-                                    Suivre dans le stock
-                                    <small>Décocher pour les épices, le sel... : ils n'apparaîtront pas dans la liste de courses.</small>
+                                    {t("stock.track")}
+                                    <small>{t("stock.trackHint")}</small>
                                 </span>
                             </label>
 
                             <div className="formField">
-                                <span className="fieldTitle">Image</span>
+                                <span className="fieldTitle">{t("stock.image")}</span>
                                 <div className="fileRow">
                                     <label className="fileBtn">
-                                        <Upload size={16}/> Choisir une image
+                                        <Upload size={16}/> {t("image.choose")}
                                         <input type="file" accept="image/*" onChange={handleImagePath}/>
                                     </label>
-                                    <span className="fileName">{imageName || "Aucune image"}</span>
+                                    <span className="fileName">{imageName || t("common.noImage")}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="deleteModalActions">
-                            <button className="confirmDeleteBtn" onClick={ajouterIngredient}>Ajouté l'Ingrédient</button>
-                            <button className="cancelDeleteBtn" onClick={handleCloseModal1}>Annuler</button>
+                            <button className="confirmDeleteBtn" onClick={ajouterIngredient}>{t("stock.addButton")}</button>
+                            <button className="cancelDeleteBtn" onClick={handleCloseModal1}>{t("common.cancel")}</button>
                         </div>
                     </div>
                 </div>
@@ -433,13 +436,13 @@ const CurrentStock = () => {
                 <div className="modalOverlay" onClick={handleCloseModal2}>
                     <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>
                         <div className="head1">
-                            <h3>Confirmer la suppression</h3>
+                            <h3>{t("modal.confirmDelete")}</h3>
                             <div><X className='logo' onClick={handleCancelDelete}></X></div>
                         </div>
-                      <p>Es-tu sûr de vouloir supprimer <strong>{ingredientToDelete?.name}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
+                      <p>{tb("modal.sure", { name: ingredientToDelete?.name ?? "" })}</p>
                       <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={deleteIngredient}>Confirmer</button>
-                        <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+                        <button className="confirmDeleteBtn" onClick={deleteIngredient}>{t("common.confirm")}</button>
+                        <button className="cancelDeleteBtn" onClick={handleCloseModal2}>{t("common.cancel")}</button>
                       </div>
                     </div>
                 </div>

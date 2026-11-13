@@ -8,6 +8,7 @@ import CurrentStock from './Components/CurrentStock';
 import { recipeInfo, defaultList } from './Components/typeFile'
 import { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
+import { LanguageProvider } from './i18n/LanguageProvider';
 import './App.css';
 import './responsive.css';
 
@@ -32,6 +33,7 @@ function App() {
     initLocalStorage();
 
     return (
+        <LanguageProvider>
         <Router>
             <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
             <div className='ContentDisplay'>
@@ -45,6 +47,7 @@ function App() {
                 </Routes>
             </div>
         </Router>
+        </LanguageProvider>
     );
 }
 

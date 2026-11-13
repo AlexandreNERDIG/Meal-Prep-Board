@@ -4,18 +4,15 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
-import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory } from '../lib/recipeUtils';
+import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory, unitLabel } from '../lib/recipeUtils';
+import { useT } from '../i18n/LanguageProvider';
+import type { TranslationKey } from '../i18n/translations';
 
 const MealHistory = () => {
 
-    const quotes: string[] = [
-    "« Bien manger, c’est le début du bonheur. » – Julia Child",
-    "« Un repas équilibré, c’est une pizza dans chaque main. »",
-    "« Laisser mijoter, c’est aimer sans précipitation. »",
-    "« Le secret d’une bonne recette, c’est de la faire avec amour. »",
-    "« Manger est un besoin, savoir manger est un art. » – François de La Rochefoucauld",
-    "« La gastronomie est l’art d’utiliser la nourriture pour créer du bonheur. » – Theodore Zeldin"
-    ];
+    const { t, tb } = useT();
+    // Les citations sont dans les traductions (quote.0 ... quote.5) : on garde juste le numéro de la citation affichée
+    const QUOTE_COUNT = 6;
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
 
@@ -31,13 +28,13 @@ const MealHistory = () => {
     }, [mealHistory])
 
     const [currentModalRecipe, setCurrentModalRecipe] = useState<Recipe | null>(null);
-    const [currentQuote, setCurrentQuote] = useState<string>(quotes[Math.floor(Math.random() * quotes.length)]);
+    const [quoteIndex, setQuoteIndex] = useState<number>(() => Math.floor(Math.random() * QUOTE_COUNT));
     const [recipesToDelete, setRecipesToDelete] = useState<Recipe[] | null>(null);
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
     const handleOpenHistoryModal = (currentRecipe : Recipe) => {setCurrentModalRecipe(currentRecipe)};
     const handleCloseHistoryModal = () => {setCurrentModalRecipe(null)};
-    const handleChangeQuote = () => {setCurrentQuote(quotes[Math.floor(Math.random() * quotes.length)])};
+    const handleChangeQuote = () => {setQuoteIndex(previous => (previous + 1 + Math.floor(Math.random() * (QUOTE_COUNT - 1))) % QUOTE_COUNT)};
     const handleOpenModal2 = (ingre : Recipe[]) => {setRecipesToDelete(ingre)};
     const handleCloseModal2 = () => {setRecipesToDelete(null)};
     const handleCancelDelete = () => {setRecipesToDelete(null)};
@@ -48,7 +45,7 @@ const MealHistory = () => {
         const newStatus = targetRecipe.status === "favorite" ? "normal" : "favorite";
 
         toast[newStatus === "favorite" ? "success" : "error"](
-            `${targetRecipe.recipeName} a été ${newStatus === "favorite" ? "ajouté aux favoris" : "supprimé des favoris"}`
+            t(newStatus === "favorite" ? "history.favAdded" : "history.favRemoved", { name: targetRecipe.recipeName })
         );
     
         setmealHistory(prevHistory => prevHistory.map(
@@ -78,7 +75,7 @@ const MealHistory = () => {
         const updatedList = mealHistory.filter(e => e !== deleted);
         setmealHistory(updatedList);
         localStorage.setItem("mealHistoryList", JSON.stringify(updatedList));
-        toastUndo(`${deleted[0]?.recipeName} et ${deleted[1]?.recipeName} ont bien été supprimés`, () => restoreWeek(deleted, deletedIndex));
+        toastUndo(t("history.deleted", { first: deleted[0]?.recipeName ?? "", second: deleted[1]?.recipeName ?? "" }), () => restoreWeek(deleted, deletedIndex));
         setRecipesToDelete(null);
         handleCloseModal2();
     };
@@ -126,7 +123,7 @@ const MealHistory = () => {
 
         setCurrentStock(updatedStock);
         localStorage.setItem("currentStockList", JSON.stringify(updatedStock));
-        toast.success("Stocks mis à jour !");
+        toast.success(t("home.toast.stockUpdated"));
         handleCloseModal4();
     };
 
@@ -139,19 +136,19 @@ const MealHistory = () => {
         <>
         <div className="globalMealHistorySection">
 
-            <div className='sectionHeader'><p>Meal History</p></div>
+            <div className='sectionHeader'><p>{t("page.history")}</p></div>
 
             <div className="quotePlacement">
-                <p className='Quote' onClick={handleChangeQuote}>{currentQuote}</p>
+                <p className='Quote' onClick={handleChangeQuote}>{t(`quote.${quoteIndex}` as TranslationKey)}</p>
             </div>
 
             {mealHistory.map((weeklyMeal, weekIndex) => (
                 <div className="weekDisplay" key={weekIndex}>
-                    <div className="weekId"><p>Week {weekIndex + 1}</p></div>
+                    <div className="weekId"><p>{t("history.week", { n: weekIndex + 1 })}</p></div>
                     <div className="recipeContainner">
                         {weeklyMeal.map((recipe, recipeIndex) => (
                             <div className="recipeDisplay" key={recipeIndex}>
-                                <img src={recipe.image}/>
+                                <img src={recipe.image} alt={recipe.recipeName}/>
                                 <div className="textSubDiv">
                                     <h2>{recipe.recipeName}</h2>
                                     <Bookmark 
@@ -163,7 +160,7 @@ const MealHistory = () => {
                                     <p className='macrosPart'>{macroCalculator(recipe)}</p>
                                     <ShoppingCart className='ShoppingCartIcon' onClick={() => handleOpenModal4(recipe)}></ShoppingCart>
                                     <div className="centeredLinks">
-                                        <button className="descBtn" onClick={() => handleOpenHistoryModal(recipe)}>Description</button>
+                                        <button className="descBtn" onClick={() => handleOpenHistoryModal(recipe)}>{t("common.description")}</button>
                                     </div>
                                 </div>
                             </div> 
@@ -180,17 +177,17 @@ const MealHistory = () => {
                 <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                     <h2>{currentModalRecipe.recipeName}</h2>
 
-                    <p><strong>Préparation :</strong> {formatDuration(currentModalRecipe.prepTime)}</p>
-                    <p><strong>Cuisson :</strong> {formatDuration(currentModalRecipe.cookTime)}</p>
-                    <p><strong>Ingrédients :</strong> <br /><br />{currentModalRecipe.ingredient.map((element, index) => {
+                    <p><strong>{t("modal.prep")}</strong> {formatDuration(currentModalRecipe.prepTime)}</p>
+                    <p><strong>{t("modal.cook")}</strong> {formatDuration(currentModalRecipe.cookTime)}</p>
+                    <p><strong>{t("modal.ingredients")}</strong> <br /><br />{currentModalRecipe.ingredient.map((element, index) => {
                         const ing = currentStock.find(ele => ele.id == element.ingredientId)
                         return (
-                            <li key={index}>{ing?.name} {element.quantity} {ing?.unit}</li>
+                            <li key={index}>{ing?.name} {element.quantity} {ing ? unitLabel(ing.unit) : ""}</li>
                         )
                     })}</p>
-                    <p><strong>Instructions :</strong> <br /><br />{currentModalRecipe.instructions}</p>
-                    <p><strong>Macros :</strong> <br /><br />{macroCalculator(currentModalRecipe)}</p>
-                    <button onClick={handleCloseHistoryModal}>Fermer</button>
+                    <p><strong>{t("modal.instructions")}</strong> <br /><br />{currentModalRecipe.instructions}</p>
+                    <p><strong>{t("modal.macros")}</strong> <br /><br />{macroCalculator(currentModalRecipe)}</p>
+                    <button onClick={handleCloseHistoryModal}>{t("common.close")}</button>
                 </div>
             </div>
         )}
@@ -201,13 +198,13 @@ const MealHistory = () => {
             <div className="modalOverlay" onClick={handleCloseModal2}>
                 <div className="deleteModalContent1" onClick={(e) => e.stopPropagation()}>
                     <div className="head1">
-                        <h3>Confirmer la suppression</h3>
+                        <h3>{t("modal.confirmDelete")}</h3>
                         <div><X className='logo' onClick={handleCancelDelete}></X></div>
                     </div>
-                  <p>Es-tu sûr de vouloir supprimer <strong>{recipesToDelete?.[0].recipeName}</strong> et <strong>{recipesToDelete?.[1].recipeName}</strong> ?<br/> Tu pourras l'annuler juste après.</p>
+                  <p>{tb("history.deleteAsk", { first: recipesToDelete?.[0].recipeName ?? "", second: recipesToDelete?.[1].recipeName ?? "" })}</p>
                   <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={deleteFromHistory}>Confirmer</button>
-                    <button className="cancelDeleteBtn" onClick={handleCloseModal2}>Annuler</button>
+                    <button className="confirmDeleteBtn" onClick={deleteFromHistory}>{t("common.confirm")}</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseModal2}>{t("common.cancel")}</button>
                   </div>
                 </div>
             </div>
@@ -219,10 +216,10 @@ const MealHistory = () => {
             <div className="modalOverlay" onClick={handleCloseModal4}>
                 <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
                     <div className="head">
-                        <h3>Voulez vous déduire cette recette des Stocks ?</h3>
+                        <h3>{t("history.stockTitle")}</h3>
                         <div><X className='logo' onClick={handleCloseModal4}></X></div>
                     </div>
-                <p>Cette action concerne : </p>
+                <p>{t("history.stockConcerns")}</p>
                 {selectedRecipe.ingredient
                     .filter(e => {
                         const quantity = e.quantity ? e.quantity : 0;
@@ -231,13 +228,13 @@ const MealHistory = () => {
                     .map((e, index) => {
                         const ing = currentStock.find(ele => ele.id == e.ingredientId)
                         return(
-                            <li key={index}>{ing?.name}{e.quantity}</li>
+                            <li key={index}>{ing?.name} {e.quantity}</li>
                         )
                     })
                 }
                 <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.ingredient)}>Confirmer</button>
-                    <button className="cancelDeleteBtn" onClick={handleCloseModal4}>Annuler</button>
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.ingredient)}>{t("common.confirm")}</button>
+                    <button className="cancelDeleteBtn" onClick={handleCloseModal4}>{t("common.cancel")}</button>
                   </div>
                 </div>
             </div>
