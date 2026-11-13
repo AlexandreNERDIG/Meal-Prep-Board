@@ -27,6 +27,8 @@
 
 .flashCard img {
     width: 40%;
+    flex-shrink: 0;
+    object-fit: cover; 
 }
 
 .flashCard:hover {
@@ -69,7 +71,12 @@
     margin-top: auto;
     font-size: 1.05rem;
     font-weight: bold;
-    color: #206024;
+    color: var(--macro-color-text);
+}
+
+/* Le prix se colle sous les macros (au lieu de se partager l'espace libre de la carte) */
+.subDivText .macro + .macro {
+    margin-top: -0.5rem;
 }
 
 .centeredButton {

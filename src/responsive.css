@@ -298,6 +298,7 @@ img {
         box-shadow: none;
     }
     .LinksPart a:first-child { border-left: none; }
+    .LinksPart a.active { background: #2f8b35; }
     .LinksPart a::after { display: none; }
     .LinksPart a:active { background: #7ac07e; }
 
