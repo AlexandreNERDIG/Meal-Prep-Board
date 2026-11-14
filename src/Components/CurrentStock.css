@@ -309,3 +309,58 @@
     color: #9ca3af;
     font-weight: 500;
 }
+
+/* Modifier un ingrédient (crayon, à gauche de la croix de suppression) */
+
+.editBtn {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    margin-top: 0.25rem;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: 0.3s all ease;
+}
+
+.editBtn:hover {
+    transform: scale(1.2);
+    color: #78dc7d;
+}
+
+/* Quantité : case de saisie */
+
+.quantityField {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.currentCountInput {
+    width: 5rem;
+    padding: 0.2rem 0.25rem;
+    border: none;
+    border-bottom: 2px solid transparent;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: right;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.currentCountInput:hover {
+    border-bottom-color: #4a4a50;
+}
+
+.currentCountInput:focus {
+    border-bottom-color: #78dc7d;
+    background: #ffffff14;
+}
+
+.currentUnit {
+    min-width: 2rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+}

@@ -127,7 +127,7 @@ img {
     .modalContent button, .fileBtn { min-height: 2.75rem; }
 
     /* petites icônes : zone de toucher agrandie (40px) */
-    .deleteBtn, .deleteIcon, .bookMarkIcon, .removeIngredient, .logo, .icon,
+    .deleteBtn, .editBtn, .deleteIcon, .bookMarkIcon, .removeIngredient, .logo, .icon,
     .countDiv svg {
         box-sizing: border-box;
         width: 40px;
@@ -135,6 +135,7 @@ img {
         padding: 8px;
     }
     .bookMarkIcon { right: 50px; }
+    .editBtn { right: 44px; margin-top: 0; }
     .countDiv { gap: 0.5rem; }
 }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './HomePage.css';
-import { X, Smartphone, MinusCircle, PlusCircle, Heart } from 'react-feather';
+import { X, Smartphone, MinusCircle, PlusCircle } from 'react-feather';
 import toast from 'react-hot-toast';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';

@@ -2,13 +2,14 @@ import './CurrentStock.css';
 import './NewMeal.css';
 import { X } from 'react-feather';
 import { Ingredient, defaultList } from './typeFile';
-import { useState } from 'react';
-import { Search, Aperture, MinusCircle, PlusCircle, Upload } from "react-feather"
+import { useEffect, useState } from 'react';
+import { Search, Aperture, MinusCircle, PlusCircle, Upload, Edit2 } from "react-feather"
 import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
 import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE, formatMacros, categoryLabel, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
 import { fileToResizedDataUrl } from "../lib/imageUpload";
+import { parseQuantityInput } from "../lib/quantity";
 
 type IngredientForm = {
     name: string;
@@ -45,6 +46,40 @@ const toNumber = (value: string): number => {
     return (Number.isFinite(parsed) && parsed >= 0) ? parsed : 0;
 };
 
+// Case de quantité : on tape directement un nombre (ou +250 / -100 pour ajouter / retirer), validé avec Entrée ou en quittant la case
+type QuantityInputProps = { value: number; unit: Ingredient["unit"]; hint: string; onCommit: (quantity: number) => void };
+
+const QuantityInput = ({ value, unit, hint, onCommit }: QuantityInputProps) => {
+    const [draft, setDraft] = useState<string>(String(value));
+
+    // Les boutons - / + (ou une autre action) changent la valeur : la case suit
+    useEffect(() => { setDraft(String(value)); }, [value]);
+
+    const commit = () => {
+        const parsed = parseQuantityInput(draft, value);
+        if (parsed !== null && parsed !== value) onCommit(parsed);
+        else setDraft(String(value));
+    };
+
+    return (
+        <div className="quantityField">
+            <input
+                className="currentCountInput"
+                type="text"
+                inputMode="decimal"
+                value={draft}
+                title={hint}
+                aria-label={hint}
+                onFocus={(e) => e.target.select()}
+                onChange={(e) => setDraft(e.target.value)}
+                onBlur={commit}
+                onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
+            />
+            <span className="currentUnit">{unitLabel(unit)}</span>
+        </div>
+    );
+};
+
 const CurrentStock = () => {
 
     const { t, tb } = useT();
@@ -63,14 +98,39 @@ const CurrentStock = () => {
         return maxId;
     });
     const [modalState, setModalState] = useState<Boolean>(false);
+    const [editingId, setEditingId] = useState<string | null>(null);   // null = on ajoute un nouvel ingrédient, sinon on modifie celui-ci
     const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
     const handleSearchInput = (e : React.ChangeEvent<HTMLInputElement>) => {setSearchValue(e.target.value)};
     const handleOpenModal1 = () => {setModalState(true)};
     const handleCloseModal1 = () => {
         setFormData(emptyIngredientForm)
+        setEditingId(null);
         setModalState(false);
     };
+
+    const handleOpenEdit = (ingre : Ingredient) => {
+        setFormData({
+            name: ingre.name,
+            calories: String(ingre.macro.calories),
+            carbs: String(ingre.macro.carbs),
+            protein: String(ingre.macro.protein),
+            fat: String(ingre.macro.fat),
+            price: String(ingre.price),
+            unit: ingre.unit,
+            category: ingre.category,
+            image: ingre.image === "/img2/" ? "" : ingre.image,
+            trackStock: ingre.trackStock !== false
+        });
+        setEditingId(ingre.id);
+        setModalState(true);
+    };
+
+    const handleSetQuantity = (currentItem : Ingredient, quantity : number) => {
+        const updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity} : element);
+        setCurrentStock(updatedList);
+        localStorage.setItem("currentStockList", JSON.stringify(updatedList));
+    }
     const handleOpenModal2 = (ingre : Ingredient) => {setIngredientToDelete(ingre)};
     const handleCloseModal2 = () => {setIngredientToDelete(null)};
     const handleCancelDelete = () => {setIngredientToDelete(null)};
@@ -180,8 +240,7 @@ const CurrentStock = () => {
             return;
         }
 
-        const newIngredient : Ingredient = {
-            id: `${idCounter + 1}`,
+        const fields = {
             name: formData.name.trim(),
             macro: {
                 calories: toNumber(formData.calories),
@@ -190,18 +249,35 @@ const CurrentStock = () => {
                 fat: toNumber(formData.fat),
             },
             price: price,
-            quantity: 0,
             unit: formData.unit,
             category: formData.category,
             image: formData.image,
             trackStock: formData.trackStock
-        }
+        };
 
-        if (currentStock.some(ingre => ingre.name.trim().toLowerCase() === newIngredient.name.trim().toLowerCase())) {
+        // Le nom doit rester unique (en modification, l'ingrédient ne se compare pas à lui-même)
+        if (currentStock.some(ingre => ingre.id !== editingId && ingre.name.trim().toLowerCase() === fields.name.toLowerCase())) {
             toast.error(t("stock.errExists"));
             return;
         }
 
+        if (editingId) {
+            // Modification : l'id et la quantité ne changent pas (les recettes retrouvent l'ingrédient par son id)
+            const edited = currentStock.map(ingre => ingre.id === editingId ? { ...ingre, ...fields } : ingre);
+            const categoryChanged = currentStock.find(ingre => ingre.id === editingId)?.category !== fields.category;
+            const updated = categoryChanged ? triCurrentStockList(edited) : edited;   // la carte ne bouge que si elle change de catégorie
+            setCurrentStock(updated);
+            localStorage.setItem("currentStockList", JSON.stringify(updated));
+            toast.success(t("stock.updated"));
+            handleCloseModal1();
+            return;
+        }
+
+        const newIngredient : Ingredient = {
+            id: `${idCounter + 1}`,
+            quantity: 0,
+            ...fields
+        }
 
         setCurrentStock((prev) => {
             let updated = [...prev, newIngredient];
@@ -243,6 +319,8 @@ const CurrentStock = () => {
     const visibleItems = currentStock.filter((item) => (selectedcategory === "Tout" || item.category === selectedcategory) && item.name.toLowerCase().includes(searchValue.toLowerCase()));
 
     const countFor = (category: CategoryFilter) => (category === "Tout") ? currentStock.length : currentStock.filter(item => item.category === category).length;
+
+    const originalUnit = editingId ? currentStock.find(ingre => ingre.id === editingId)?.unit : undefined;
 
     const imageName = formData.image.startsWith("data:") ? t("image.custom") : (formData.image.split("/").pop() || "");
 
@@ -286,6 +364,7 @@ const CurrentStock = () => {
                         />
                         <div className="subTextDiv">
                             <X className='deleteBtn' onClick={() => handleOpenModal2(item)}></X>
+                            <Edit2 className='editBtn' aria-label={t("stock.edit")} onClick={() => handleOpenEdit(item)}></Edit2>
                             <h2>{item.name}</h2>
                             <h4>{formatMacros(item.macro)}</h4>
                             <p>{`${item.price} ${priceUnitLabel(item.unit)}`}</p>
@@ -293,7 +372,7 @@ const CurrentStock = () => {
                             <div className="centeredCountDiv">
                                 <div className="countDiv">
                                     <MinusCircle onClick={(e) => handleMinusQuantityChange(item, e)}></MinusCircle>
-                                    <div className="currentCount">{item.quantity} {unitLabel(item.unit)}</div>
+                                    <QuantityInput value={item.quantity} unit={item.unit} hint={t("stock.qtyHint")} onCommit={(quantity) => handleSetQuantity(item, quantity)} />
                                     <PlusCircle onClick={(e) => handlePlusQuantityChange(item, e)}></PlusCircle>
                                 </div>
                             </div>
@@ -306,13 +385,13 @@ const CurrentStock = () => {
                 </div>
             </div>
 
-            {/* Modal d'ajout d'ingrédient */}
+            {/* Modal d'ajout / de modification d'ingrédient */}
 
            {modalState && (
                 <div className="modalOverlay" onClick={handleCloseModal1}>
                     <div className="deleteModalContent2" onClick={(e) => e.stopPropagation()}>
                         <div className="head">
-                            <h3>{t("stock.formTitle")}</h3>
+                            <h3>{editingId ? t("stock.editTitle") : t("stock.formTitle")}</h3>
                             <div><X className='logo' onClick={handleCloseModal1}></X></div>
                         </div>
 
@@ -359,6 +438,7 @@ const CurrentStock = () => {
                                         </button>
                                     ))}
                                 </div>
+                                {editingId && originalUnit && formData.unit !== originalUnit && <small>{t("stock.unitChangeHint")}</small>}
                             </div>
 
                             <div className="formField">
@@ -426,7 +506,7 @@ const CurrentStock = () => {
                         </div>
 
                         <div className="deleteModalActions">
-                            <button className="confirmDeleteBtn" onClick={ajouterIngredient}>{t("stock.addButton")}</button>
+                            <button className="confirmDeleteBtn" onClick={ajouterIngredient}>{editingId ? t("stock.saveButton") : t("stock.addButton")}</button>
                             <button className="cancelDeleteBtn" onClick={handleCloseModal1}>{t("common.cancel")}</button>
                         </div>
                     </div>
