@@ -1,0 +1,58 @@
+{
+  "recipeName": "Teriyaki Rotisserie Chicken Bowls",
+  "ingredient": [
+    {
+      "ingredientId": "1",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "45",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 50
+    },
+    {
+      "ingredientId": "39",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "38",
+      "quantity": 70
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "33",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "65",
+      "quantity": 25
+    },
+    {
+      "ingredientId": "40",
+      "quantity": 15
+    }
+  ],
+  "prepTime": 20,
+  "cookTime": 15,
+  "instructions": "Cuisez le riz. Mélangez le chou, carotte, vinaigre, huile de chili et miel pour la slaw. Ajoutez le poulet, sauce teriyaki, riz, sauce soja et vinaigre de riz. Servez chaud avec graines de sésame et ciboule.",
+  "image": "../img/Teriyaki-Rotisserie-Chicken-Bowls-WP-807x1024.jpg",
+  "status": "normal"
+}

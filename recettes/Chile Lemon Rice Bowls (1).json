@@ -1,0 +1,62 @@
+{
+  "recipeName": "Chile Lemon Rice Bowls",
+  "ingredient": [
+    {
+      "ingredientId": "2",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "46",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "34",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 125
+    },
+    {
+      "ingredientId": "45",
+      "quantity": 340
+    },
+    {
+      "ingredientId": "42",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "51",
+      "quantity": 227
+    },
+    {
+      "ingredientId": "22",
+      "quantity": 50
+    },
+    {
+      "ingredientId": "54",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    }
+  ],
+  "prepTime": 20,
+  "cookTime": 40,
+  "instructions": "Faites mariner le poulet avec le yaourt, le citron vert et les épices, puis faites-le rôtir au four. Faites revenir les poivrons, l'oignon, le chou et l'ail avec l'huile et le piment. Ajoutez la sauce tomate et les tomates, puis incorporez le riz cuit et le poulet découpé. Servez avec la coriandre fraîche.",
+  "image": "../img/Chili-Lemon-Rice-Bowls-819x1024.jpg",
+  "status": "normal"
+}

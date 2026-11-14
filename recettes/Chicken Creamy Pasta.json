@@ -1,20 +1,46 @@
 {
   "recipeName": "Chicken Creamy Pasta",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 900 },
-    { "ingredientId": "15", "quantity": 400 },
-    { "ingredientId": "28", "quantity": 150 },
-    { "ingredientId": "58", "quantity": 100 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "29", "quantity": 30 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "61", "quantity": 500 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "1",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "15",
+      "quantity": 400
+    },
+    {
+      "ingredientId": "28",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "58",
+      "quantity": 100
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "29",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 250
+    }
   ],
   "prepTime": 10,
   "cookTime": 25,
-  "instructions": "Faites cuire les pâtes. Faites dorer le poulet dans l'huile et le beurre. Ajoutez l'oignon et l'ail. Versez le bouillon, la crème et le parmesan. Laissez mijoter jusqu'à épaississement. Incorporez les pâtes, assaisonnez et servez.",
+  "instructions": "Faites cuire les pâtes al dente. Faites dorer le poulet dans l'huile et le beurre, puis ajoutez l'oignon et l'ail. Versez le bouillon, la crème et le parmesan, puis laissez épaissir à feu doux. Incorporez les pâtes, assaisonnez et servez.",
   "image": "../img/creamy-chicken-pasta.jpg",
   "status": "normal"
 }

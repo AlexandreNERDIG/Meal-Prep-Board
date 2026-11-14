@@ -1,16 +1,42 @@
 {
   "recipeName": "Sriracha Lime Chicken Bowls",
   "ingredient": [
-    { "ingredientId": "2", "quantity": 900 },
-    { "ingredientId": "31", "quantity": 450 },
-    { "ingredientId": "47", "quantity": 300 },
-    { "ingredientId": "33", "quantity": 150 },
-    { "ingredientId": "13", "quantity": 300 },
-    { "ingredientId": "27", "quantity": 30 },
-    { "ingredientId": "36", "quantity": 45 },
-    { "ingredientId": "34", "quantity": 45 },
-    { "ingredientId": "35", "quantity": 37 },
-    { "ingredientId": "60", "quantity": 0 }
+    {
+      "ingredientId": "2",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "31",
+      "quantity": 450
+    },
+    {
+      "ingredientId": "47",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "33",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "36",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "34",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 40
+    }
   ],
   "prepTime": 20,
   "cookTime": 40,

@@ -1,0 +1,50 @@
+{
+  "recipeName": "Bœuf Bourguignon",
+  "ingredient": [
+    {
+      "ingredientId": "7",
+      "quantity": 1000
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 500
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "26",
+      "quantity": 750
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "55",
+      "quantity": 40
+    },
+    {
+      "ingredientId": "23",
+      "quantity": 400
+    },
+    {
+      "ingredientId": "29",
+      "quantity": 50
+    },
+    {
+      "ingredientId": "14",
+      "quantity": 500
+    }
+  ],
+  "prepTime": 20,
+  "cookTime": 180,
+  "instructions": "Faites dorer le bœuf dans l'huile, puis ajoutez les oignons, carottes et l'ail. Saupoudrez de farine, versez le vin et le bouillon, puis laissez mijoter 2h30 à feu doux. Faites revenir les champignons dans le beurre et ajoutez-les 20 minutes avant la fin. Servez avec les pommes de terre cuites à part.",
+  "image": "../img/boeuf-bourgignon.jpg",
+  "status": "normal"
+}

@@ -1,16 +1,42 @@
 {
   "recipeName": "Poulet Tikka Masala",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 900 },
-    { "ingredientId": "51", "quantity": 425 },
-    { "ingredientId": "28", "quantity": 150 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "44", "quantity": 15 },
-    { "ingredientId": "13", "quantity": 270 },
-    { "ingredientId": "43", "quantity": 15 },
-    { "ingredientId": "27", "quantity": 30 },
-    { "ingredientId": "10", "quantity": 10 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "1",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "51",
+      "quantity": 425
+    },
+    {
+      "ingredientId": "28",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 270
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 10
+    }
   ],
   "prepTime": 15,
   "cookTime": 35,

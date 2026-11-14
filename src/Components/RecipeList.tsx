@@ -153,7 +153,7 @@ const RecipeList = () => {
                         <div className="subDivText">
                             <h3>{formatDuration(element.prepTime)}</h3>
                             <h2>{element.recipeName}</h2>
-                            <p>{element.instructions}</p>
+                            <p className='InstructionFlashCard'>{element.instructions}</p>
                             <p className="macro">{macroCalculator(element)}</p>
                             <p className="macro">{costCalculator(element)}</p>
                             <div className="centeredButton">

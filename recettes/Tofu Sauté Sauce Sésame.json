@@ -1,0 +1,62 @@
+{
+  "recipeName": "Tofu Sauté Sauce Sésame",
+  "ingredient": [
+    {
+      "ingredientId": "66",
+      "quantity": 600
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "31",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "23",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 120
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "38",
+      "quantity": 60
+    },
+    {
+      "ingredientId": "40",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 40
+    },
+    {
+      "ingredientId": "39",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "65",
+      "quantity": 15
+    }
+  ],
+  "prepTime": 15,
+  "cookTime": 25,
+  "instructions": "Faites cuire le riz. Coupez le tofu en cubes et faites-le dorer à la poêle. Faites revenir les légumes avec l'ail et le gingembre. Mélangez la sauce soja, le miel, le vinaigre, l'huile de sésame et la maïzena avec un peu d'eau. Versez sur les légumes et le tofu, laissez épaissir et servez avec le riz et les graines de sésame.",
+  "image": "../img/tofu-sesame-stirfry.jpg",
+  "status": "normal"
+}

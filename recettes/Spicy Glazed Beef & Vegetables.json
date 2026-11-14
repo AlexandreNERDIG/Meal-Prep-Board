@@ -1,23 +1,58 @@
 {
   "recipeName": "Spicy Glazed Beef & Vegetables",
   "ingredient": [
-    { "ingredientId": "7", "quantity": 900 },
-    { "ingredientId": "10", "quantity": 60 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "45", "quantity": 250 },
-    { "ingredientId": "21", "quantity": 200 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "38", "quantity": 45 },
-    { "ingredientId": "42", "quantity": 45 },
-    { "ingredientId": "35", "quantity": 15 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "43", "quantity": 10 },
-    { "ingredientId": "13", "quantity": 250 },
-    { "ingredientId": "60", "quantity": 0 }
+    {
+      "ingredientId": "7",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "45",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "38",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "42",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    }
   ],
   "prepTime": 20,
   "cookTime": 30,
-  "instructions": "Cuire le riz. Faire revenir le boeuf et les légumes, puis ajouter la sauce épicée et laisser épaissir. Servir le tout chaud avec le riz.",
+  "instructions": "Faites cuire le riz. Faites revenir le bœuf émincé dans l'huile, puis ajoutez les légumes, l'ail et le gingembre. Mélangez la sauce soja, le miel et la purée de piment, versez sur la viande et laissez épaissir quelques minutes. Servez avec le riz.",
   "image": "../img/High-Volume-Korean-Beef-Bowls-807x1024.jpg",
   "status": "normal"
 }

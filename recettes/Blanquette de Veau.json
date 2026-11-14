@@ -1,17 +1,46 @@
 {
   "recipeName": "Blanquette de Veau",
   "ingredient": [
-    { "ingredientId": "25", "quantity": 1000 },
-    { "ingredientId": "21", "quantity": 180 },
-    { "ingredientId": "24", "quantity": 180 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "23", "quantity": 250 },
-    { "ingredientId": "28", "quantity": 150 },
-    { "ingredientId": "57", "quantity": 50 },
-    { "ingredientId": "13", "quantity": 250 },
-    { "ingredientId": "29", "quantity": 75 },
-    { "ingredientId": "55", "quantity": 10 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "25",
+      "quantity": 1000
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 180
+    },
+    {
+      "ingredientId": "24",
+      "quantity": 180
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "23",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "28",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "57",
+      "quantity": 50
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "29",
+      "quantity": 75
+    },
+    {
+      "ingredientId": "55",
+      "quantity": 10
+    }
   ],
   "prepTime": 20,
   "cookTime": 120,

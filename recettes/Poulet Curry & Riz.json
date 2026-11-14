@@ -1,18 +1,45 @@
 {
   "recipeName": "Poulet Curry & Riz",
   "ingredient": [
-    { "ingredientId": "2", "quantity": 900 },
-    { "ingredientId": "14", "quantity": 300 },
-    { "ingredientId": "21", "quantity": 200 },
-    { "ingredientId": "11", "quantity": 150 },
-    { "ingredientId": "44", "quantity": 15 },
-    { "ingredientId": "61", "quantity": 500 },
-    { "ingredientId": "27", "quantity": 30 },
-    { "ingredientId": "13", "quantity": 200 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "2",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "14",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 400
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "60",
+      "quantity": 1
+    }
   ],
   "prepTime": 20,
-  "cookTime": 40,
+  "cookTime": 45,
   "instructions": "Faire revenir l’oignon et l’ail dans l’huile. Ajouter le poulet en morceaux et faire dorer. Ajouter les carottes et pommes de terre en dés, puis verser le bouillon de poule. Laisser mijoter jusqu’à cuisson des légumes, puis incorporer les cubes de Golden Curry pour épaissir et assaisonner. Servir avec le riz cuit.",
   "image": "../img/poulet-curry.jpg",
   "status": "normal"

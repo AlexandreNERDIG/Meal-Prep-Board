@@ -1,15 +1,42 @@
 {
   "recipeName": "Salsa Verde Beef Bowls",
   "ingredient": [
-    { "ingredientId": "7", "quantity": 900 },
-    { "ingredientId": "10", "quantity": 150 },
-    { "ingredientId": "11", "quantity": 200 },
-    { "ingredientId": "45", "quantity": 227 },
-    { "ingredientId": "13", "quantity": 250 },
-    { "ingredientId": "27", "quantity": 30 },
-    { "ingredientId": "34", "quantity": 30 },
-    { "ingredientId": "61", "quantity": 30 },
-    { "ingredientId": "54", "quantity": 11 }
+    {
+      "ingredientId": "7",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "45",
+      "quantity": 227
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "34",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "54",
+      "quantity": 11
+    }
   ],
   "prepTime": 10,
   "cookTime": 35,

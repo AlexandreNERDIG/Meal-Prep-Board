@@ -1,22 +1,62 @@
 {
   "recipeName": "Poblano Chicken Harvest Bowls",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 900 },
-    { "ingredientId": "13", "quantity": 150 },
-    { "ingredientId": "57", "quantity": 15 },
-    { "ingredientId": "10", "quantity": 200 },
-    { "ingredientId": "11", "quantity": 100 },
-    { "ingredientId": "27", "quantity": 46 },
-    { "ingredientId": "46", "quantity": 110 },
-    { "ingredientId": "47", "quantity": 600 },
-    { "ingredientId": "31", "quantity": 230 },
-    { "ingredientId": "48", "quantity": 50 },
-    { "ingredientId": "49", "quantity": 50 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "1",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "57",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 100
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "46",
+      "quantity": 110
+    },
+    {
+      "ingredientId": "47",
+      "quantity": 600
+    },
+    {
+      "ingredientId": "31",
+      "quantity": 230
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "48",
+      "quantity": 50
+    },
+    {
+      "ingredientId": "49",
+      "quantity": 50
+    }
   ],
   "prepTime": 30,
   "cookTime": 35,
-  "instructions": "Cuire le riz et préparer la sauce poblano en mixant les poivrons, oignon et ail avec le yaourt. Rôtir les légumes et faire revenir le poulet assaisonné. Assembler le tout avec les graines de courge et la feta avant de servir.",
+  "instructions": "Faites cuire le riz. Rôtissez les patates douces et le brocoli avec l'huile d'olive, le sel et le poivre. Faites revenir le poulet avec le jus de citron et les épices. Mixez les poivrons, l'oignon, l'ail et le yaourt pour préparer la sauce. Assemblez les bols avec le riz, les légumes, le poulet, la sauce, les graines de courge et la feta.",
   "image": "../img/Poblano-Chicken-Harvest-Bowls-807x1024.jpg",
   "status": "normal"
 }

@@ -1,0 +1,50 @@
+{
+  "recipeName": "Peanut Turkey Stir Fry",
+  "ingredient": [
+    {
+      "ingredientId": "53",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "41",
+      "quantity": 680
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "38",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 84
+    },
+    {
+      "ingredientId": "37",
+      "quantity": 56
+    },
+    {
+      "ingredientId": "39",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "40",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "60",
+      "quantity": 1
+    }
+  ],
+  "prepTime": 10,
+  "cookTime": 25,
+  "instructions": "Faites cuire le riz. Faites revenir la dinde et les légumes dans l'huile d'olive. Mélangez le beurre de cacahuète, la sauce soja, le miel, le vinaigre de riz et l'huile de sésame. Versez la sauce dans la poêle, mélangez jusqu'à épaississement et servez avec le riz.",
+  "image": "../img/Peanut-Turkey-Stir-Fry.jpg",
+  "status": "normal"
+}

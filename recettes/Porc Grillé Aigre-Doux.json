@@ -1,20 +1,46 @@
 {
   "recipeName": "Porc Grillé Aigre-Doux",
   "ingredient": [
-    { "ingredientId": "30", "quantity": 900 },
-    { "ingredientId": "35", "quantity": 30 },
-    { "ingredientId": "38", "quantity": 45 },
-    { "ingredientId": "39", "quantity": 15 },
-    { "ingredientId": "15", "quantity": 300 },
-    { "ingredientId": "31", "quantity": 450 },
-    { "ingredientId": "40", "quantity": 15 },
-    { "ingredientId": "43", "quantity": 15 },
-    { "ingredientId": "44", "quantity": 15 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "30",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "35",
+      "quantity": 30
+    },
+    {
+      "ingredientId": "38",
+      "quantity": 45
+    },
+    {
+      "ingredientId": "39",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "31",
+      "quantity": 450
+    },
+    {
+      "ingredientId": "40",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    }
   ],
   "prepTime": 15,
   "cookTime": 30,
-  "instructions": "Faites cuire le riz. Mélangez miel, sauce soja, vinaigre de riz et huile de sésame pour la sauce. Faites griller le porc coupé en cubes. Faites sauter le brocoli avec l'ail et le gingembre. Mélangez le porc et les légumes avec la sauce. Portionnez avec le riz.",
+  "instructions": "Faites cuire les pâtes. Mélangez le miel, la sauce soja, le vinaigre de riz et l'huile de sésame. Faites dorer le porc coupé en cubes, puis réservez. Faites sauter le brocoli avec l'ail et le gingembre. Remettez le porc, ajoutez la sauce et laissez épaissir quelques minutes. Servez avec les pâtes.",
   "image": "../img/pork-sweet-sour-brocoli.jpg",
   "status": "normal"
 }

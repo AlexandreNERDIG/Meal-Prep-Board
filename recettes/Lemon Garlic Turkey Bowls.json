@@ -1,14 +1,38 @@
 {
   "recipeName": "Lemon Garlic Turkey Bowls",
   "ingredient": [
-    { "ingredientId": "53", "quantity": 900 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "14", "quantity": 700 },
-    { "ingredientId": "31", "quantity": 450 },
-    { "ingredientId": "13", "quantity": 300 },
-    { "ingredientId": "44", "quantity": 20 },
-    { "ingredientId": "34", "quantity": 65 },
-    { "ingredientId": "59", "quantity": 150 }
+    {
+      "ingredientId": "53",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "14",
+      "quantity": 700
+    },
+    {
+      "ingredientId": "31",
+      "quantity": 450
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "34",
+      "quantity": 65
+    },
+    {
+      "ingredientId": "59",
+      "quantity": 150
+    }
   ],
   "prepTime": 10,
   "cookTime": 35,

@@ -25,6 +25,14 @@
     transition: 0.3s all ease;
 }
 
+.InstructionFlashCard {
+    overflow: auto;
+    max-height: 125px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .flashCard img {
     width: 40%;
     flex-shrink: 0;
@@ -41,9 +49,9 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    gap: 1rem;
+    gap: 0.5rem;
     text-align: center;
-    margin-top: 1rem;
+    margin: 0.75rem 0;
 }
 
 .subDivText h3 {
@@ -68,15 +76,14 @@
 }
 
 .subDivText .macro {
-    margin-top: auto;
+    margin-top: 0.25rem;
     font-size: 1.05rem;
     font-weight: bold;
     color: var(--macro-color-text);
 }
 
-/* Le prix se colle sous les macros (au lieu de se partager l'espace libre de la carte) */
 .subDivText .macro + .macro {
-    margin-top: -0.5rem;
+    margin-top: -0.35rem;
 }
 
 .centeredButton {

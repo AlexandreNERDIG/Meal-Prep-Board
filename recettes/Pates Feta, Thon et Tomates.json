@@ -1,19 +1,42 @@
 {
   "recipeName": "Pates Feta, Thon et Tomates",
   "ingredient": [
-    { "ingredientId": "4", "quantity": 600 },
-    { "ingredientId": "15", "quantity": 400 },
-    { "ingredientId": "8", "quantity": 300 },
-    { "ingredientId": "49", "quantity": 100 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "39", "quantity": 30 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "4",
+      "quantity": 600
+    },
+    {
+      "ingredientId": "15",
+      "quantity": 400
+    },
+    {
+      "ingredientId": "8",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "49",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 20
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "39",
+      "quantity": 30
+    }
   ],
   "prepTime": 20,
   "cookTime": 15,
-  "instructions": "Cuire les pâtes 'al dente'. Égouttez et émiettez le thon. Mélangez l'huile d'olive, l'ail, le vinaigre et l'oignon haché pour la vinaigrette. Dans un grand saladier, mélangez les pâtes refroidies, le thon, les tomates cerise coupées et la feta. Incorporez la vinaigrette et assaisonnez.",
+  "instructions": "Faites cuire les pâtes al dente, puis laissez-les refroidir. Égouttez le thon et émiettez-le. Mélangez l'huile d'olive, l'ail, le vinaigre et l'oignon haché. Ajoutez les tomates cerises et la feta aux pâtes, incorporez le thon et la vinaigrette, puis assaisonnez.",
   "image": "../img/pasta-feta-tuna-salad.jpg",
   "status": "normal"
 }

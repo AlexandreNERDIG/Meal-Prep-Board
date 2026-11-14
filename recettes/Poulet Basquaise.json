@@ -1,19 +1,42 @@
 {
   "recipeName": "Poulet Basquaise",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 750 },
-    { "ingredientId": "10", "quantity": 240 },
-    { "ingredientId": "22", "quantity": 240 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "61", "quantity": 200 },
-    { "ingredientId": "15", "quantity": 250 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "1",
+      "quantity": 850
+    },
+    {
+      "ingredientId": "10",
+      "quantity": 240
+    },
+    {
+      "ingredientId": "22",
+      "quantity": 240
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    }
   ],
   "prepTime": 15,
   "cookTime": 90,
-  "instructions": "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h. Servez avec les pâtes cuites (250g).",
+  "instructions": "Faites dorer le poulet dans l'huile d'olive. Ajoutez les oignons, poivrons, tomates et l'ail, puis versez le bouillon. Assaisonnez et laissez mijoter à feu doux pendant environ 1 heure. Servez avec le riz cuit séparément.",
   "image": "../img/poulet-basquaise.jpg",
   "status": "normal"
 }

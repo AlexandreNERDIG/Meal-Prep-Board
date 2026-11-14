@@ -1,16 +1,42 @@
 {
   "recipeName": "Easy Ground Chicken Curry",
   "ingredient": [
-    { "ingredientId": "1", "quantity": 900 },
-    { "ingredientId": "12", "quantity": 125 },
-    { "ingredientId": "43", "quantity": 15 },
-    { "ingredientId": "51", "quantity": 425 },
-    { "ingredientId": "13", "quantity": 270 },
-    { "ingredientId": "52", "quantity": 450 }
+    {
+      "ingredientId": "1",
+      "quantity": 900
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "43",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "51",
+      "quantity": 425
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "52",
+      "quantity": 450
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "33",
+      "quantity": 125
+    }
   ],
   "prepTime": 10,
   "cookTime": 30,
-  "instructions": "Faites cuire le riz avec un peu d'huile, cumin et ail. Pendant ce temps, faites revenir l'oignon, l'ail, le gingembre et les épices, puis ajoutez le poulet et faites-le dorer. Ajoutez la sauce tomate et l'eau, laissez mijoter pour épaissir. Mélangez avec le riz et les pois, assaisonnez, servez chaud.",
+  "instructions": "Faites cuire le riz. Faites revenir l'oignon, l'ail et le gingembre avec les épices, puis ajoutez le poulet haché. Incorporez la sauce tomate et un peu d'eau, puis laissez mijoter 20 minutes. Ajoutez les pois et servez avec le riz.",
   "image": "../img/Ground-Chicken-Curry-807x1024.jpg",
   "status": "normal"
 }

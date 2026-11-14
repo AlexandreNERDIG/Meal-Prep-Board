@@ -1,20 +1,42 @@
 {
   "recipeName": "Tajine d'Agneau",
   "ingredient": [
-    { "ingredientId": "62", "quantity": 1000 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "21", "quantity": 120 },
-    { "ingredientId": "63", "quantity": 160 },
-    { "ingredientId": "14", "quantity": 250 },
-    { "ingredientId": "52", "quantity": 200 },
-    { "ingredientId": "61", "quantity": 500 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "62",
+      "quantity": 1000
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "63",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "14",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "52",
+      "quantity": 200
+    },
+    {
+      "ingredientId": "61",
+      "quantity": 400
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    }
   ],
   "prepTime": 15,
   "cookTime": 120,
-  "instructions": "Faites revenir l'agneau, puis ajoutez 2 oignons (160g), 2 gousses d'ail (10g), 2 carottes (120g) et 2 navets (160g). Versez le bouillon et laissez mijoter 1h30. Ajoutez les pommes de terre (250g) et les petits pois (200g) 30 minutes avant la fin.",
+  "instructions": "Faites dorer les morceaux d'agneau dans une cocotte avec l'huile d'olive. Ajoutez les oignons, l'ail et les épices, puis mélangez quelques minutes. Incorporez les carottes, les navets et le bouillon, puis laissez mijoter à couvert pendant 1h30 à feu doux. Ajoutez les pommes de terre et les petits pois, puis poursuivez la cuisson 30 minutes jusqu'à ce que la viande soit bien tendre. ",
   "image": "../img/Tagine-agneau.jpg",
   "status": "normal"
 }

@@ -1,20 +1,46 @@
 {
   "recipeName": "Daube Provençale",
   "ingredient": [
-    { "ingredientId": "7", "quantity": 1000 },
-    { "ingredientId": "26", "quantity": 250 },
-    { "ingredientId": "14", "quantity": 550 },
-    { "ingredientId": "21", "quantity": 300 },
-    { "ingredientId": "11", "quantity": 300 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "22", "quantity": 240 },
-    { "ingredientId": "55", "quantity": 10 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "7",
+      "quantity": 1000
+    },
+    {
+      "ingredientId": "26",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "14",
+      "quantity": 550
+    },
+    {
+      "ingredientId": "21",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 300
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "22",
+      "quantity": 240
+    },
+    {
+      "ingredientId": "55",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    }
   ],
   "prepTime": 15,
   "cookTime": 150,
-  "instructions": "Faites dorer la viande, ajoutez 2 oignons (160g), 2 gousses d'ail (10g) et 2 carottes (120g). Versez le vin (250mL) et les tomates (240g), laissez mijoter 2h30.",
+  "instructions": "Faites dorer le bœuf dans l'huile, puis ajoutez les oignons, les carottes et l'ail. Saupoudrez de farine, versez le vin rouge et les tomates, puis laissez mijoter à feu doux pendant 2h30. Servez avec les pommes de terre cuites séparément.",
   "image": "../img/daube-provencale.jpg",
   "status": "normal"
 }

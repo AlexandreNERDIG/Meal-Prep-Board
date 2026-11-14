@@ -1,20 +1,46 @@
 {
   "recipeName": "Bœuf Stroganoff",
   "ingredient": [
-    { "ingredientId": "7", "quantity": 1000 },
-    { "ingredientId": "23", "quantity": 250 },
-    { "ingredientId": "11", "quantity": 160 },
-    { "ingredientId": "13", "quantity": 250 },
-    { "ingredientId": "44", "quantity": 10 },
-    { "ingredientId": "28", "quantity": 150 },
-    { "ingredientId": "56", "quantity": 15 },
-    { "ingredientId": "55", "quantity": 10 },
-    { "ingredientId": "27", "quantity": 15 },
-    { "ingredientId": "60", "quantity": 1 }
+    {
+      "ingredientId": "7",
+      "quantity": 1000
+    },
+    {
+      "ingredientId": "23",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "11",
+      "quantity": 160
+    },
+    {
+      "ingredientId": "13",
+      "quantity": 250
+    },
+    {
+      "ingredientId": "44",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "28",
+      "quantity": 150
+    },
+    {
+      "ingredientId": "56",
+      "quantity": 15
+    },
+    {
+      "ingredientId": "55",
+      "quantity": 10
+    },
+    {
+      "ingredientId": "27",
+      "quantity": 15
+    }
   ],
   "prepTime": 20,
   "cookTime": 90,
-  "instructions": "Faites revenir le bœuf, 2 oignons (160g) et 2 gousses d'ail (10g) dans l'huile. Ajoutez les champignons (250g). Mélangez la crème et la moutarde, incorporez et laissez mijoter 1h.",
+  "instructions": "Faites dorer le bœuf dans l'huile, puis ajoutez les oignons, l'ail et les champignons. Saupoudrez de farine, mélangez et laissez cuire quelques minutes. Ajoutez un peu d'eau, puis laissez mijoter 1h à feu doux. Incorporez la crème et la moutarde en fin de cuisson. Servez avec le riz cuit séparément.",
   "image": "../img/Boeuf-Stroganoff.png",
   "status": "normal"
 }
