@@ -403,3 +403,149 @@
     background: transparent;
     font-family: inherit;
 }
+
+.generatorPanel {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    max-width: 950px;
+    width: 100%;
+    margin: 1rem auto 0;
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3a3a3e, #27272b);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.generatorPanel:hover {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+.genGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.genGroup + .genGroup {
+    padding-left: 1.5rem;
+    border-left: 1px solid #4a4a50;
+}
+
+.genLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #78dc7d;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.genLabel svg {
+    width: 16px;
+    height: 16px;
+}
+
+.genStepper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #4a4a50;
+    background: #27272b;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.genStepper svg {
+    width: 22px;
+    height: 22px;
+    color: #78dc7d;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.genStepper svg:hover {
+    transform: scale(1.2);
+    color: #2f8b35;
+}
+
+.genCount {
+    min-width: 1.25rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.genSegment {
+    display: flex;
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid #4a4a50;
+    background: #27272b;
+}
+
+.genSegment button {
+    padding: 0.35rem 0.9rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.genSegment button:hover {
+    background: #ffffff18;
+}
+
+.genSegment button.active {
+    background: linear-gradient(135deg, #388E3C, #66BB6A, #388E3C);
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .genGroup + .genGroup {
+        padding-left: 0;
+        border-left: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .generatorPanel {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem;
+    }
+
+    .genGroup {
+        justify-content: space-between;
+    }
+
+    .genGroup.genGroupGrow {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .genSegment button {
+        flex: 1;
+        padding: 0.45rem 0.25rem;
+        font-size: 0.75rem;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+.generateButton p {
+    text-align: center;
+}

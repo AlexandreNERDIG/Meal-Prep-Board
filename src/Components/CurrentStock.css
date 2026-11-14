@@ -26,9 +26,11 @@
 }
 
 .stockItem img {
-    width: 40%;    
-    height: 250px;     
-    object-fit: cover; 
+    width: 40%;
+    flex-shrink: 0;
+    align-self: stretch;
+    min-height: 250px;
+    object-fit: cover;
     border-radius: 0.85rem 0 0 0.85rem;
 }
 
