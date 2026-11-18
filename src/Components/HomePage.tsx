@@ -7,6 +7,7 @@ import axios from 'axios';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
 import BackupPanel from './BackupPanel';
+import AccountPanel from '../auth/AccountPanel';
 import { useT } from '../i18n/LanguageProvider';
 import {
     loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES,
@@ -327,6 +328,7 @@ const HomePage = () => {
             </div>
 
             <BackupPanel />
+            <AccountPanel />
 
         </div>
 
@@ -423,4 +425,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage;
+export default HomePage;

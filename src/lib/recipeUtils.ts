@@ -226,7 +226,7 @@ export const recipeMatchesSearch = (recipe: Recipe, search: string, stock: Ingre
 // Le stock est enregistré dans le navigateur : quand j'ajoute de nouveaux ingrédients à la liste par défaut
 // (ex : Agneau, Tofu), ils n'apparaissent pas tout seuls. Cette fonction les ajoute UNE fois (par numéro de version)
 // sans toucher à ce que l'utilisateur a déjà modifié. Pour une prochaine mise à jour : augmenter STOCK_DEFAULTS_VERSION.
-const STOCK_DEFAULTS_VERSION = 2;
+export const STOCK_DEFAULTS_VERSION = 2;
 
 export const syncDefaultStock = (): void => {
     try {
