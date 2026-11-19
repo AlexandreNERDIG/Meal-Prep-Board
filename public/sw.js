@@ -3,7 +3,7 @@
 // - Fichiers de l'appli/images : cache d'abord, puis mise à jour en arrière-plan
 // Pour forcer une mise à jour du cache après un changement important, incrémente CACHE_VERSION.
 const CACHE_VERSION = "v1";
-const CACHE = `mealprep-${CACHE_VERSION}`;
+const CACHE = `MyPrepBoard-${CACHE_VERSION}`;
 const PRECACHE = ["/", "/manifest.webmanifest", "/meal_prep_logo_v2.svg", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
@@ -13,7 +13,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
     event.waitUntil(
         caches.keys()
-            .then((keys) => Promise.all(keys.filter((k) => k.startsWith("mealprep-") && k !== CACHE).map((k) => caches.delete(k))))
+            .then((keys) => Promise.all(keys.filter((k) => k.startsWith("MyPrepBoard-") && k !== CACHE).map((k) => caches.delete(k))))
             .then(() => self.clients.claim())
     );
 });

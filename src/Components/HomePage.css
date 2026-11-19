@@ -548,4 +548,7 @@
 
 .generateButton p {
     text-align: center;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 500;
 }

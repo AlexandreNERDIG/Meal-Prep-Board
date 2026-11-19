@@ -8,7 +8,6 @@ type LanguageContextValue = {
     language: Language;
     setLanguage: (language: Language) => void;
     t: (key: MessageKey, params?: TranslateParams) => string;
-    // Pour les passages mis en gras
     tb: (key: MessageKey, params?: TranslateParams) => ReactNode;
 };
 

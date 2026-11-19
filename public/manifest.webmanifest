@@ -1,6 +1,6 @@
 {
   "name": "Meal Prep Board",
-  "short_name": "MealPrep",
+  "short_name": "MyPrepBoard",
   "description": "Plan your weekly meals, track your stock and your macros.",
   "start_url": "/",
   "scope": "/",
