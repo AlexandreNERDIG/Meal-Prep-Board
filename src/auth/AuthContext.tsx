@@ -4,10 +4,12 @@ import { supabase } from '../lib/supabase';
 
 export type AuthStatus = "disabled" | "loading" | "signedOut" | "signedIn" | "recovery";
 
-export type AuthUser = { id: string; email: string };
+export type AuthUser = { id: string; email: string; name: string };
+
+export type ProfileChanges = { name?: string; email?: string; password?: string };
 
 export type AuthErrorKind = "credentials" | "notConfirmed" | "weakPassword" | "rateLimit" | "network" | "other";
-export type AuthResult = { ok: true; needsConfirmation?: boolean } | { ok: false; kind: AuthErrorKind; message: string };
+export type AuthResult = { ok: true; needsConfirmation?: boolean } | { ok: false; kind: AuthErrorKind; message: string; code: string };
 
 type AuthContextValue = {
     status: AuthStatus;
@@ -16,6 +18,7 @@ type AuthContextValue = {
     signUp: (email: string, password: string) => Promise<AuthResult>;
     sendReset: (email: string) => Promise<AuthResult>;
     setNewPassword: (password: string) => Promise<AuthResult>;
+    updateProfile: (changes: ProfileChanges) => Promise<AuthResult>;
     signOutNow: () => Promise<void>;
     deleteAccount: () => Promise<AuthResult>;
 };
@@ -35,7 +38,14 @@ export const classifyAuthError = (error: RawError): AuthErrorKind => {
     return "other";
 };
 
-const fail = (error: RawError): AuthResult => ({ ok: false, kind: classifyAuthError(error), message: error.message ?? "" });
+const fail = (error: RawError): AuthResult => ({ ok: false, kind: classifyAuthError(error), message: error.message ?? "", code: error.code ?? "" });
+
+// Le nom affiché est rangé dans les métadonnées du compte (user_metadata.display_name)
+const toUser = (user: { id: string; email?: string; user_metadata?: Record<string, unknown> }): AuthUser => ({
+    id: user.id,
+    email: user.email ?? "",
+    name: typeof user.user_metadata?.display_name === "string" ? user.user_metadata.display_name : "",
+});
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [status, setStatus] = useState<AuthStatus>(supabase ? "loading" : "disabled");
@@ -48,13 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         supabase.auth.getSession().then(({ data }) => {
             if (!active) return;
             const session = data.session;
-            setUser(session ? { id: session.user.id, email: session.user.email ?? "" } : null);
+            setUser(session ? toUser(session.user) : null);
             setStatus(prev => prev === "recovery" ? prev : session ? "signedIn" : "signedOut");
         });
 
         const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
             if (!active) return;
-            setUser(session ? { id: session.user.id, email: session.user.email ?? "" } : null);
+            setUser(session ? toUser(session.user) : null);
             if (event === "PASSWORD_RECOVERY") setStatus("recovery");
             else if (event === "SIGNED_OUT") setStatus("signedOut");
             else if (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
@@ -66,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const signIn = useCallback(async (email: string, password: string): Promise<AuthResult> => {
-        if (!supabase) return { ok: false, kind: "other", message: "" };
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
         try {
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             return error ? fail(error) : { ok: true };
@@ -76,7 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const signUp = useCallback(async (email: string, password: string): Promise<AuthResult> => {
-        if (!supabase) return { ok: false, kind: "other", message: "" };
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
         try {
             const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin } });
             if (error) return fail(error);
@@ -87,7 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const sendReset = useCallback(async (email: string): Promise<AuthResult> => {
-        if (!supabase) return { ok: false, kind: "other", message: "" };
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
             return error ? fail(error) : { ok: true };
@@ -97,12 +107,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const setNewPassword = useCallback(async (password: string): Promise<AuthResult> => {
-        if (!supabase) return { ok: false, kind: "other", message: "" };
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
         try {
             const { error } = await supabase.auth.updateUser({ password });
             if (error) return fail(error);
             setStatus("signedIn");
             return { ok: true };
+        } catch (error) {
+            return fail({ message: String(error), name: "AuthRetryableFetchError" });
+        }
+    }, []);
+
+    // Modifie le nom affiché, l'adresse e-mail et/ou le mot de passe du compte connecté.
+    // Un changement d'adresse n'est effectif qu'après le clic sur le lien envoyé par e-mail.
+    const updateProfile = useCallback(async (changes: ProfileChanges): Promise<AuthResult> => {
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
+        const attributes: { email?: string; password?: string; data?: { display_name: string } } = {};
+        if (changes.name !== undefined) attributes.data = { display_name: changes.name };
+        if (changes.email !== undefined) attributes.email = changes.email;
+        if (changes.password !== undefined) attributes.password = changes.password;
+        try {
+            const { error } = await supabase.auth.updateUser(attributes, changes.email !== undefined ? { emailRedirectTo: window.location.origin } : undefined);
+            return error ? fail(error) : { ok: true, needsConfirmation: changes.email !== undefined };
         } catch (error) {
             return fail({ message: String(error), name: "AuthRetryableFetchError" });
         }
@@ -114,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const deleteAccount = useCallback(async (): Promise<AuthResult> => {
-        if (!supabase) return { ok: false, kind: "other", message: "" };
+        if (!supabase) return { ok: false, kind: "other", message: "", code: "" };
         try {
             const { error } = await supabase.rpc("delete_my_account");
             if (error) return fail(error);
@@ -126,7 +152,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ status, user, signIn, signUp, sendReset, setNewPassword, signOutNow, deleteAccount }}>
+        <AuthContext.Provider value={{ status, user, signIn, signUp, sendReset, setNewPassword, updateProfile, signOutNow, deleteAccount }}>
             {children}
         </AuthContext.Provider>
     );

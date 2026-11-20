@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, PlusCircle, Clock, Package, Settings } from 'react-feather';
+import { Home, BookOpen, Clock, Package } from 'react-feather';
 import './NavBar.css';
 import LanguageSwitch from './LanguageSwitch';
+import NavAccount from './NavAccount';
 import { useT } from '../i18n/LanguageProvider';
 
 const NavBar = () => {
@@ -16,12 +17,11 @@ const NavBar = () => {
                 <div className="LinksPart">
                     <NavLink to={"/"} end><Home className="navIcon"/>{t("page.home")}</NavLink>
                     <NavLink to={"/RecipeList"}><BookOpen className="navIcon"/>{t("page.recipes")}</NavLink>
-                    <NavLink to={"/NewMeal"}><PlusCircle className="navIcon"/>{t("page.newMeal")}</NavLink>
                     <NavLink to={"/MealHistory"}><Clock className="navIcon"/>{t("page.history")}</NavLink>
                     <NavLink to={"/CurrentStock"}><Package className="navIcon"/>{t("page.stock")}</NavLink>
-                    <NavLink to={"/Settings"}><Settings className="navIcon"/>{t("page.settings")}</NavLink>
                 </div>
                 <LanguageSwitch />
+                <NavAccount />
             </div>
         </div>
         </>

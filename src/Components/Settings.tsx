@@ -1,4 +1,5 @@
 import AccountPanel from '../auth/AccountPanel';
+import ProfilePanel from '../auth/ProfilePanel';
 import BackupPanel from './BackupPanel';
 import WebhookPanel from './WebhookPanel';
 import { useT } from '../i18n/LanguageProvider';
@@ -12,6 +13,7 @@ const Settings = () => {
         <div className="globalSettingsSection">
             <div className="sectionHeader"><p>{t("page.settings")}</p></div>
             <AccountPanel />
+            <ProfilePanel />
             <WebhookPanel />
             <BackupPanel />
         </div>

@@ -2,6 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import ErrorBoundary from './Components/ErrorBoundary.tsx'
+// Polices hébergées avec l'appli (plus de requête vers Google Fonts)
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/600.css'
+import '@fontsource/poppins/700.css'
+import '@fontsource/lato/400.css'
+import '@fontsource/lato/700.css'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(

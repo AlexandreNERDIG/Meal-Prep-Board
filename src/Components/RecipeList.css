@@ -13,6 +13,7 @@
 }
 
 .flashCard {
+    position: relative;
     display: flex;
     overflow: hidden;
     color: white;
@@ -324,4 +325,38 @@
 
 .editIcon:hover {
     color: #78dc7d;
+}
+
+.newRecipeRow {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* Modifier / supprimer : en haut à droite de la carte */
+.cardCorner {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.7rem;
+    z-index: 2;
+    display: flex;
+    gap: 0.6rem;
+}
+
+.cornerIcon {
+    cursor: pointer;
+    opacity: 0.75;
+    transition: 0.3s all ease;
+}
+
+.cornerIcon:hover {
+    opacity: 1;
+}
+
+.editIconCard:hover {
+    color: #78dc7d;
+}
+
+.deleteIconCard:hover {
+    color: #ff5f5f;
 }

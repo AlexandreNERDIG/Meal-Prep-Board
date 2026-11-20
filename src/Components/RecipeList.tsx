@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast"
-import { Trash, Trash2, X, Download, Edit2, Aperture, Search, ArrowUp, ArrowDown } from 'react-feather';
+import { Trash, Trash2, X, Download, Edit2, Aperture, Search, ArrowUp, ArrowDown, Plus } from 'react-feather';
 import './RecipeList.css';
+import RecipeFormModal from './RecipeFormModal';
 import { Recipe, Ingredient, defaultList } from './typeFile';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS, RECIPE_SORT_KEYS, sortRecipes, recipeMatchesSearch, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
@@ -21,8 +21,6 @@ const RecipeList = () => {
             const exist = localStorage.getItem("currentStockList");
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
-
-    const navigate = useNavigate();
 
     const [searchValue, setSearchValue] = useState("");
     const [sortKey, setSortKey] = useState<RecipeSortKey>("default");
@@ -45,6 +43,8 @@ const RecipeList = () => {
 
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
     const [recipeToDelete, setRecipeToDelete] = useState<Recipe | null>(null);
+    // Formulaire de recette : null = fermé ; editName = recette à modifier (null = nouvelle recette)
+    const [formState, setFormState] = useState<{ editName: string | null } | null>(null);
 
     const handleOpenModal = (recipe: Recipe) => {setSelectedRecipe(recipe)};
     const handleCloseModal = () => {setSelectedRecipe(null)};
@@ -77,7 +77,9 @@ const RecipeList = () => {
 
     const handleEdit = () => {
         if (!selectedRecipe) return;
-        navigate("/NewMeal", { state: { editName: selectedRecipe.recipeName } });
+        const editName = selectedRecipe.recipeName;
+        handleCloseModal();
+        setFormState({ editName });
     }
 
     const handleSingleDownloadRecipe = (recipe : Recipe) => {
@@ -117,6 +119,12 @@ const RecipeList = () => {
                 </div>
             </div>
 
+            <div className="newRecipeRow">
+                <button type="button" className="fileBtn" onClick={() => setFormState({ editName: null })}>
+                    <Plus size={16}/> {t("page.newMeal")}
+                </button>
+            </div>
+
             <div className="sortBar">
                 <span className="sortLabel">{t("sort.by")}</span>
                 <div className="chipRow">
@@ -149,6 +157,10 @@ const RecipeList = () => {
                 {visibleRecipes.length === 0 && <p className="emptyStock">{t("recipes.empty")}</p>}
                 {visibleRecipes.map((element) => (
                     <div key={element.recipeName} className="flashCard">
+                        <div className="cardCorner">
+                            <Edit2 className="cornerIcon editIconCard" size={18} aria-label={t("recipes.edit")} onClick={() => setFormState({ editName: element.recipeName })}></Edit2>
+                            <Trash className="cornerIcon deleteIconCard" size={18} aria-label={t("recipes.delete")} onClick={() => setRecipeToDelete(element)}></Trash>
+                        </div>
                         <img src={element.image} alt={element.recipeName}/>
                         <div className="subDivText">
                             <h3>{formatDuration(element.prepTime)}</h3>
@@ -165,6 +177,17 @@ const RecipeList = () => {
                 ))}
             </div>
         </div>
+
+        {/* Formulaire de recette (nouvelle recette ou modification) */}
+
+        {formState && (
+            <RecipeFormModal
+                key={formState.editName ?? "new"}
+                editName={formState.editName}
+                onClose={() => setFormState(null)}
+                onChange={setRecipeList}
+            />
+        )}
 
         {/* Modal d'affichage de recette */}
 

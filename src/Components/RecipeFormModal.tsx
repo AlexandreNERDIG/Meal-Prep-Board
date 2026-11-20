@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon } from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
@@ -37,15 +36,18 @@ const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
     ? recipe.ingredient.map(ing => ({ ingredientId: String(ing.ingredientId), quantity: String(ing.quantity) }))
     : [emptyRow];
 
-const NewMeal = () => {
+type Props = {
+    editName: string | null;                 // nom de la recette à modifier, ou null pour une nouvelle recette
+    onClose: () => void;
+    onChange: (recipes: Recipe[]) => void;   // prévient la liste que les recettes ont changé
+};
+
+const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Props) => {
 
     const { t, tb } = useT();
     const RECIPES_KEY = "globalRecipeList";
     const nameRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const requestedEditName = (location.state as { editName?: string } | null)?.editName ?? null;
     const [recipeToEdit] = useState<Recipe | undefined>(() => requestedEditName ? loadRecipes().find(element => element.recipeName === requestedEditName) : undefined);
     const editingName = recipeToEdit ? recipeToEdit.recipeName : null;
 
@@ -140,7 +142,8 @@ const NewMeal = () => {
                 localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
                 toast.success(t("new.updated", { name: newRecipe.recipeName }));
                 handleCloseConfirmationModal();
-                navigate("/RecipeList");
+                onChange(updatedRecipeList);
+                onClose();
                 return;
             }
 
@@ -148,6 +151,7 @@ const NewMeal = () => {
             setRecipeList(updatedRecipeList)
             resetForm();
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+            onChange(updatedRecipeList);
             toast.success(t("new.added", { name: newRecipe.recipeName }));
             nameRef.current?.focus();
             handleCloseConfirmationModal();
@@ -229,6 +233,7 @@ const NewMeal = () => {
         if (fresh.length > 0 || replace) {
             setRecipeList(updatedRecipeList);
             localStorage.setItem(RECIPES_KEY, JSON.stringify(updatedRecipeList))
+            onChange(updatedRecipeList);
         }
 
         if (fresh.length > 0) toast.success(t("new.imp.added", { count: fresh.length }))
@@ -262,9 +267,13 @@ const NewMeal = () => {
 
     return(
         <>
-        <div className="globalNewMealSection">
-
-            <div className='sectionHeader'><p>{editingName ? t("page.editMeal") : t("page.newMeal")}</p></div>
+        <div className="modalOverlay recipeFormOverlay" onClick={onClose}>
+        <div className="recipeFormModal" onClick={(e) => e.stopPropagation()}>
+            <div className="recipeFormHead">
+                <h2>{editingName ? t("page.editMeal") : t("page.newMeal")}</h2>
+                <X className="logo" aria-label={t("common.close")} onClick={onClose}></X>
+            </div>
+        <div className="globalNewMealSection" onClick={(e) => e.stopPropagation()}>
 
             <div className="Inputs">
                 <div className="textInput">
@@ -380,7 +389,7 @@ const NewMeal = () => {
                 <div className="centerButton2">
                     <button onClick={handleOpenConfirmationModal} className='Btn2'>{editingName ? t("new.save") : t("new.add")}</button>
                     {editingName
-                        ? <button onClick={() => navigate("/RecipeList")} className='Btn2'>{t("common.cancel")}</button>
+                        ? <button onClick={onClose} className='Btn2'>{t("common.cancel")}</button>
                         : (
                             <label className="fileBtn importBtn">
                                 <Upload size={16}/> {t("new.import")}
@@ -388,6 +397,8 @@ const NewMeal = () => {
                             </label>
                         )}
                 </div>
+        </div>
+        </div>
         </div>
 
         {/* Modal de confirmation d'ajout de la recette */}
@@ -433,4 +444,4 @@ const NewMeal = () => {
     )
 }
 
-export default NewMeal;
+export default RecipeFormModal;

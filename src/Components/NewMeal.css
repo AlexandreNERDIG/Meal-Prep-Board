@@ -236,3 +236,41 @@
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
+
+/* Le formulaire s'ouvre dans une fenêtre au-dessus de la liste des recettes */
+/* Deux classes (.modalOverlay.recipeFormOverlay) : la règle gagne quel que soit l'ordre de chargement des fichiers CSS,
+   sinon .modalOverlay recentre verticalement la fenêtre et le haut du formulaire devient inaccessible. */
+.modalOverlay.recipeFormOverlay {
+    align-items: flex-start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 2rem 1rem 2rem calc(250px + 1rem);
+}
+
+.recipeFormModal {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1rem 0.25rem;
+    border-radius: 1rem;
+    background: #1e2122;
+    box-shadow: 0 12px 20px rgba(0, 1, 2, 0.6);
+}
+
+.recipeFormHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem 1rem;
+    color: #fff;
+}
+
+.recipeFormHead h2 {
+    color: #78dc7d;
+    font-size: 1.7rem;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .modalOverlay.recipeFormOverlay { padding: 1rem 0.5rem; }
+}

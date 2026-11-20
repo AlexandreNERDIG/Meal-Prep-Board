@@ -97,7 +97,7 @@ const CurrentStock = () => {
         const maxId = list.reduce((max: number, ing: Ingredient) => Math.max(max, parseInt(ing.id, 10)), 0);
         return maxId;
     });
-    const [modalState, setModalState] = useState<Boolean>(false);
+    const [modalState, setModalState] = useState<boolean>(false);
     const [editingId, setEditingId] = useState<string | null>(null);   // null = on ajoute un nouvel ingrédient, sinon on modifie celui-ci
     const [ingredientToDelete, setIngredientToDelete] = useState<Ingredient | null>(null);
 
@@ -140,13 +140,13 @@ const CurrentStock = () => {
 
         if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (10 * multiplier))} : element)
+            const updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (1 * multiplier))} : element)
+            const updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity - (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
@@ -157,13 +157,13 @@ const CurrentStock = () => {
 
         if (currentItem.unit !== 'unités') {
             const multiplier = event.shiftKey ? 10 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (10 * multiplier))} : element)
+            const updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (10 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }
         else {
             const multiplier = event.shiftKey ? 6 : 1
-            let updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (1 * multiplier))} : element)
+            const updatedList = currentStock.map(element => (element.id === currentItem.id) ? {...element, quantity : Math.max(0, element.quantity + (1 * multiplier))} : element)
             setCurrentStock(updatedList);
             localStorage.setItem("currentStockList", JSON.stringify(updatedList));
         }

@@ -34,7 +34,7 @@ const WebhookPanel = () => {
             <p>{t("settings.discord.hint")}</p>
             <input
                 type="text"
-                className="webhookInput"
+                className="settingsInput"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="https://discord.com/api/webhooks/1234567891234567891/AbCdEf..."

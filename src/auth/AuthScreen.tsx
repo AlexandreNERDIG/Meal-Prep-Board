@@ -13,7 +13,7 @@ type Mode = "signIn" | "signUp" | "forgot";
 const MIN_PASSWORD = 8;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const ERROR_KEYS: Record<AuthErrorKind, MessageKey> = {
+export const ERROR_KEYS: Record<AuthErrorKind, MessageKey> = {
     credentials: "auth.errCredentials",
     notConfirmed: "auth.errNotConfirmed",
     weakPassword: "auth.errWeak",

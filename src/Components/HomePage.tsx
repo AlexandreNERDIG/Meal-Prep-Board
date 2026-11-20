@@ -39,7 +39,7 @@ const HomePage = () => {
 
     const [discordWebHook] = useState<string>(loadWebhook);
 
-    const [modalState6, setModalState6] = useState<Boolean>(false);
+    const [modalState6, setModalState6] = useState<boolean>(false);
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
     const [askConfirmation5, setAskConfirmation5] = useState<boolean>(false);
     

@@ -104,3 +104,61 @@
 .langSwitch button.active {
     background: #2f8b35;
 }
+
+/* Barre de navigation sur toute la hauteur de l'écran : le bloc compte reste toujours visible en bas */
+@media (min-width: 901px) {
+    .sticky {
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        padding: 1.2rem 0 1rem;
+    }
+}
+
+/* Bloc compte : nom, pastille d'état, écrou des Réglages */
+.navAccount {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #ffffff;
+    border-radius: 0.8rem;
+    background: rgba(0, 0, 0, 0.12);
+    color: #fff;
+}
+
+.statusDot {
+    flex-shrink: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.statusDot.ok { background: #1f9d2b; }
+.statusDot.busy { background: #f5a623; }
+.statusDot.error { background: #e53935; }
+
+.navAccountName {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.navGear {
+    display: flex;
+    padding: 0.3rem;
+    border-radius: 50%;
+    color: #fff;
+    transition: 0.25s all ease;
+}
+
+.navGear:hover { background: rgba(255, 255, 255, 0.25); }
+.navGear.active { background: #2f8b35; }

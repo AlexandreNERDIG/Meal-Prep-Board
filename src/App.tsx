@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from './Components/HomePage';
 import MealHistory from './Components/MealHistory';
 import NavBar from './Components/NavBar';
-import NewMeal from './Components/NewMeal';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
 import Settings from './Components/Settings';
@@ -48,7 +47,7 @@ const Shell = () => (
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/RecipeList' element={<RecipeList />} />
-                <Route path='/NewMeal' element={<NewMeal />} />
+                <Route path='/NewMeal' element={<Navigate to="/RecipeList" replace />} />
                 <Route path='/MealHistory' element={<MealHistory />} />
                 <Route path='/CurrentStock' element={<CurrentStock />} />
                 <Route path='/Settings' element={<Settings />} />
