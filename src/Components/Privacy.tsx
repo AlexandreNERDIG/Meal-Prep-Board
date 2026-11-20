@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useT } from '../i18n/LanguageProvider';
 import './Privacy.css';
 
-const SECTIONS = ["data", "discord", "fonts", "tracking", "offline"] as const;
+const SECTIONS = ["data", "account", "hosting", "discord", "fonts", "tracking", "offline", "rights"] as const;
 
 const Privacy = () => {
     const { t } = useT();
@@ -17,6 +17,8 @@ const Privacy = () => {
                     <p>{t(`privacy.${section}.text`)}</p>
                 </div>
             ))}
+
+            <p className="privacyUpdated">{t("privacy.updated")}</p>
 
             <Link className="privacyBack" to="/">{t("privacy.back")}</Link>
         </div>

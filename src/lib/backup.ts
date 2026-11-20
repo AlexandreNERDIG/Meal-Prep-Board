@@ -4,7 +4,8 @@ import { normalizeRecipe, loadRecipes, loadMealHistory } from './recipeUtils';
 import { translate } from '../i18n/core';
 
 // Sauvegarde complète de l'appli : un seul fichier JSON lisible, avec les recettes, le stock et l'historique.
-// Le fichier contient "app" et "version" : l'import vérifie que c'est bien un fichier de Meal Prep Board.
+// Le fichier contient "app" et "version" : l'import vérifie que c'est bien un fichier de MyPrepBoard.
+// L'identifiant "meal-prep-board" ne change pas : il garde lisibles les sauvegardes déjà exportées.
 
 export const BACKUP_APP = "meal-prep-board";
 export const BACKUP_VERSION = 1;
@@ -37,7 +38,7 @@ export const buildBackup = (data: BackupData, now: Date = new Date()): Backup =>
 
 export const backupFileName = (now: Date = new Date()): string => {
     const pad = (n: number) => String(n).padStart(2, "0");
-    return `meal-prep-board-sauvegarde-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}.json`;
+    return `myprepboard-sauvegarde-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}.json`;
 };
 
 const isObject = (value: unknown): value is Record<string, unknown> =>

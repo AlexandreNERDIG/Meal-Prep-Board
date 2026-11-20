@@ -23,6 +23,11 @@
     line-height: 1.5;
 }
 
+.privacyUpdated {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
 .privacyBack {
     display: inline-block;
     margin: 0.5rem 0 2rem;
