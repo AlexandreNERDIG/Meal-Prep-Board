@@ -1,0 +1,26 @@
+.globalSettingsSection {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 0.5rem 2rem;
+}
+
+.webhookInput {
+    width: 100%;
+    margin: 0.75rem 0 0.25rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #4a4a50;
+    border-radius: 0.6rem;
+    background: #1e2122;
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+.webhookInput:focus {
+    border-color: #78dc7d;
+}
+
+.fileBtn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, PlusCircle, Clock, Package } from 'react-feather';
+import { Home, BookOpen, PlusCircle, Clock, Package, Settings } from 'react-feather';
 import './NavBar.css';
 import LanguageSwitch from './LanguageSwitch';
 import { useT } from '../i18n/LanguageProvider';
@@ -19,6 +19,7 @@ const NavBar = () => {
                     <NavLink to={"/NewMeal"}><PlusCircle className="navIcon"/>{t("page.newMeal")}</NavLink>
                     <NavLink to={"/MealHistory"}><Clock className="navIcon"/>{t("page.history")}</NavLink>
                     <NavLink to={"/CurrentStock"}><Package className="navIcon"/>{t("page.stock")}</NavLink>
+                    <NavLink to={"/Settings"}><Settings className="navIcon"/>{t("page.settings")}</NavLink>
                 </div>
                 <LanguageSwitch />
             </div>

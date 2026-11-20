@@ -6,6 +6,7 @@ import NavBar from './Components/NavBar';
 import NewMeal from './Components/NewMeal';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
+import Settings from './Components/Settings';
 import { recipeInfo, defaultList } from './Components/typeFile'
 import toast, { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
@@ -50,6 +51,7 @@ const Shell = () => (
                 <Route path='/NewMeal' element={<NewMeal />} />
                 <Route path='/MealHistory' element={<MealHistory />} />
                 <Route path='/CurrentStock' element={<CurrentStock />} />
+                <Route path='/Settings' element={<Settings />} />
                 <Route path='/Privacy' element={<Privacy />} />
             </Routes>
             <Footer />

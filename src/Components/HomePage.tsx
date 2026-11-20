@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import './HomePage.css';
 import { X, Smartphone, MinusCircle, PlusCircle } from 'react-feather';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
-import BackupPanel from './BackupPanel';
-import AccountPanel from '../auth/AccountPanel';
 import { useT } from '../i18n/LanguageProvider';
+import { loadWebhook, isValidWebhook } from '../lib/discord';
 import {
     loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES,
     type GeneratorOptions, type FavoritesMode,
@@ -17,6 +17,7 @@ import {
 const HomePage = () => {
 
     const { t, tb } = useT();
+    const navigate = useNavigate();
     const RECIPES_KEY = "globalRecipeList";
 
     useEffect(() => {
@@ -36,15 +37,11 @@ const HomePage = () => {
             return ((exist) ? JSON.parse(exist) : defaultList);
     });
 
-    const [discordWebHook, setDiscordWebHook] = useState<string>(() => {
-        const saved = localStorage.getItem("discordWebhook");
-        return ((saved) ? JSON.parse(saved) : "")
-    });
+    const [discordWebHook] = useState<string>(loadWebhook);
 
     const [modalState6, setModalState6] = useState<Boolean>(false);
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
     const [askConfirmation5, setAskConfirmation5] = useState<boolean>(false);
-    const [modalState7, setModalState7] = useState<boolean>(false);
     
     const updateOptions = (patch: Partial<GeneratorOptions>) => {
         const next = { ...options, ...patch };
@@ -76,22 +73,6 @@ const HomePage = () => {
     const handleCloseConfirmationModal5 = () => {setAskConfirmation5(false)};
     const handleOpenConfirmationModal6 = () => {setModalState6(true)};
     const handleCloseConfirmationModal6 = () => {setModalState6(false)};
-    const handleOpenModal7 = () => {setModalState7(true)};
-    const handleCloseModal7 = () => {setModalState7(false)};
-    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {setDiscordWebHook(e.target.value)};
-
-    const handleDiscordWebHook = () => {
-        const regex = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
-
-        if (regex.test(discordWebHook)) {
-            toast.success(t("home.toast.webhookOk"));
-            localStorage.setItem("discordWebhook", JSON.stringify(discordWebHook));
-            handleCloseModal7();
-        } else {
-            toast.error(t("home.toast.webhookBad"));
-        }
-    };
-
     const WeeklyGroceries = (recipeList: Recipe[], weekly: number[], currentStock: Ingredient[]): [string[], string[]] => {
         const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
 
@@ -232,13 +213,13 @@ const HomePage = () => {
         handleOpenConfirmationModal6(); 
     };
 
+    // Sans webhook valide, on envoie la personne le configurer dans les Réglages
     const whichModal = () => {
-        const regex = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
-
-        if (regex.test(discordWebHook)) {
+        if (isValidWebhook(discordWebHook)) {
             handleOpenConfirmationModal5();
         } else {
-            handleOpenModal7();
+            toast.error(t("home.toast.webhookMissing"));
+            navigate("/Settings");
         }
     }
 
@@ -323,12 +304,8 @@ const HomePage = () => {
 
             <div className="centeredButtonDiv">
                 <div className="confirmationButtonSection" onClick={handleOpenConfirmationModal}>{t("home.confirmMeals")}</div>
-                <div className="confirmationButtonSection" onClick={handleOpenModal7}>{t("home.discord")}</div>
                 <div className="SMSIcon" onClick={whichModal}><Smartphone></Smartphone></div>
             </div>
-
-            <BackupPanel />
-            <AccountPanel />
 
         </div>
 
@@ -400,27 +377,6 @@ const HomePage = () => {
             </div>
         )}
 
-        {/* Modal d'initialisation du WebHook */}
-
-        {modalState7 && (
-            <div className="modalOverlay" onClick={handleCloseModal7}>
-                <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
-                    <div className="head">
-                        <h3>{t("home.webhook.title")}</h3>
-                        <div><X className='logo' onClick={handleCloseModal7}></X></div>
-                    </div>
-
-                    <p>{tb("home.webhook.body", { button: t("home.discord") })}</p>
-                    
-                    <input type="text" onChange={handleChange} placeholder="https://discord.com/api/webhooks/1234567891234567891/REMOVED"/>
-                    
-                    <div className="deleteModalActions">
-                        <button className="confirmDeleteBtn" onClick={handleDiscordWebHook}>{t("common.confirm")}</button>
-                        <button className="cancelDeleteBtn" onClick={handleCloseModal7}>{t("common.cancel")}</button>
-                    </div>
-                </div>
-            </div>
-        )}
         </>
     )
 }
