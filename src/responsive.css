@@ -92,11 +92,6 @@ img {
     html { font-size: 34px; }
 }
 
-@media (min-width: 1151px) {
-    .recipe { height: 25rem; }
-    .recipe img { max-height: 25rem; max-width: 28rem; }
-}
-
 /* ---------- Tactile : pas d'effets de survol "zoom" ---------- */
 
 @media (hover: none) {
@@ -156,15 +151,14 @@ img {
     /* Home : recette empilée (image au-dessus, détails dessous) */
     .recipe {
         flex-direction: column;
-        height: auto;
         gap: 1rem;
     }
-    .recipe img {
+    .recipe .recipeImage {
         order: -1;
         width: 100%;
         max-width: 100%;
         height: 16rem;
-        max-height: none;
+        min-height: 0;
     }
     .recipeDetails {
         width: 100%;
@@ -360,7 +354,7 @@ img {
     .quotePlacement { padding: 0.75rem 1rem; }
 
     /* Home */
-    .recipe img { height: 12rem; }
+    .recipe .recipeImage { height: 12rem; }
     .recipeDetails { padding: 1rem; }
     .macroCard { padding: 1rem; }
     .macroCalories strong { font-size: 2.2rem; }

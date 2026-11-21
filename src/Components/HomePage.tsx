@@ -38,6 +38,7 @@ const HomePage = () => {
     });
 
     const [discordWebHook] = useState<string>(loadWebhook);
+    const [pinnedNames, setPinnedNames] = useState<string[]>([]);
 
     const [modalState6, setModalState6] = useState<boolean>(false);
     const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
@@ -49,8 +50,23 @@ const HomePage = () => {
         saveGeneratorOptions(next);
     };
 
+    const pinnedRecipes = pinnedNames
+        .map(name => recipeList.find(recipe => recipe.recipeName === name))
+        .filter((recipe): recipe is Recipe => recipe !== undefined);
+
+    const pinRecipe = (name: string) => {
+        if (!name || pinnedNames.includes(name)) return;
+        if (pinnedNames.length >= options.count) {
+            toast.error(t("gen.pinFull"));
+            return;
+        }
+        setPinnedNames(current => [...current, name]);
+    };
+
+    const unpinRecipe = (name: string) => setPinnedNames(current => current.filter(item => item !== name));
+
     const generateRecipe = () => {
-        const picked = pickRecipes(recipeList, options, currentStock, mealHistory);
+        const picked = pickRecipes(recipeList, options, currentStock, mealHistory, Math.random, pinnedRecipes);
 
         if (picked.length === 0) {
             toast.error(t("gen.none"));
@@ -248,12 +264,33 @@ const HomePage = () => {
                 </div>
             </div>
 
+            <div className="pinnedRow">
+                <span className="genLabel">{t("gen.pin")}</span>
+                <select
+                    className="pinSelect"
+                    value=""
+                    aria-label={t("gen.pin")}
+                    onChange={(e) => pinRecipe(e.target.value)}
+                >
+                    <option value="">{t("gen.pinPlaceholder")}</option>
+                    {recipeList
+                        .filter(recipe => !pinnedNames.includes(recipe.recipeName))
+                        .map(recipe => <option key={recipe.recipeName} value={recipe.recipeName}>{recipe.recipeName}</option>)}
+                </select>
+                {pinnedRecipes.map(recipe => (
+                    <span className="pinChip" key={recipe.recipeName}>
+                        {recipe.recipeName}
+                        <X size={14} aria-label={t("gen.unpin")} onClick={() => unpinRecipe(recipe.recipeName)} />
+                    </span>
+                ))}
+            </div>
+
             <div className="generateButton"><p onClick={generateRecipe}>{t("home.generate")}</p></div>
 
            {recipeList.length > 0 && (
                 <div className="RecipeDisplay">
                     {weeklyRecipes.map((recipe, position) => {
-                        const image = <img src={recipe.image} alt={recipe.recipeName}/>;
+                        const image = <div className="recipeImage"><img src={recipe.image} alt={recipe.recipeName}/></div>;
                         return (
                             <div className="recipe" key={`${position}-${weekly[position]}`}>
                                 {position % 2 === 0 && image}

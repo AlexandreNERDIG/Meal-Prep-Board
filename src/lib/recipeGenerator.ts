@@ -99,13 +99,18 @@ export const pickRecipes = (
     stock: Ingredient[],
     history: Recipe[][],
     random: () => number = Math.random,
+    pinned: Recipe[] = [],
 ): Recipe[] => {
-    const candidates = filterCandidates(recipes, options);
-    if (candidates.length === 0) return [];
+    const forced = pinned.slice(0, options.count);
+    const missing = options.count - forced.length;
+    if (missing === 0) return forced;
+
+    const candidates = filterCandidates(recipes, options).filter(recipe => !forced.includes(recipe));
+    if (candidates.length === 0) return forced;
 
     const ranked = rankRecipes(candidates, options, stock, history, random);
     const pool = ranked.slice(0, Math.max(6, options.count * 3));
-    return shuffle(pool, random).slice(0, options.count);
+    return [...forced, ...shuffle(pool, random).slice(0, missing)];
 };
 
 // Une autre recette pour remplacer celle à l'écran : on respecte "favoris uniquement" et on évite celles déjà affichées
