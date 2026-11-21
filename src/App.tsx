@@ -6,11 +6,12 @@ import NavBar from './Components/NavBar';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
 import Settings from './Components/Settings';
-import { recipeInfo, defaultList } from './Components/typeFile'
+import { recipeInfo } from './Components/typeFile'
 import toast, { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
 import { LanguageProvider, useT } from './i18n/LanguageProvider';
-import { isLanguage } from './i18n/core';
+import { isLanguage, getLanguage } from './i18n/core';
+import { starterStock } from './i18n/starterIngredients';
 import Privacy from './Components/Privacy';
 import Footer from './Components/Footer';
 import Welcome from './Components/Welcome';
@@ -34,7 +35,7 @@ const seedLocalStorage = () => {
     }
 
     if (!localStorage.getItem("currentStockList")) {
-      localStorage.setItem("currentStockList", JSON.stringify(defaultList));
+      localStorage.setItem("currentStockList", JSON.stringify(starterStock(getLanguage())));
     }
 
     syncDefaultStock();
