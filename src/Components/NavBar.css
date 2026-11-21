@@ -75,34 +75,18 @@
 }
 
 
-/* Sélecteur de langue FR | EN */
+/* Language dropdown (login screen) */
 
-.langSwitch {
-    display: flex;
-    justify-content: center;
-    gap: 0.4rem;
+.langSelect {
     margin-top: 1.5rem;
-}
-
-.langSwitch button {
-    min-width: 2.6rem;
-    padding: 0.35rem 0.6rem;
+    padding: 0.4rem 0.8rem;
     border: 2px solid #ffffff;
     border-radius: 999px;
-    background: transparent;
+    background: #27272b;
     color: #fff;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.25s all ease;
-}
-
-.langSwitch button:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.langSwitch button.active {
-    background: #2f8b35;
 }
 
 /* Barre de navigation sur toute la hauteur de l'écran : le bloc compte reste toujours visible en bas */

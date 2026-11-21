@@ -1,5 +1,7 @@
 export const fr = {
     "lang.label": "Langue",
+    "settings.language.title": "Langue",
+    "settings.language.hint": "La langue de l'application. Elle est enregistrée sur ton compte et retrouvée sur tes autres appareils.",
     "common.confirm": "Confirmer",
     "common.cancel": "Annuler",
     "common.close": "Fermer",
@@ -316,6 +318,8 @@ export type MessageKey = TranslationKey | PluralBase<TranslationKey>;
 
 export const en: Record<TranslationKey, string> = {
     "lang.label": "Language",
+    "settings.language.title": "Language",
+    "settings.language.hint": "The language of the app. It is saved on your account and follows you to your other devices.",
     "common.confirm": "Confirm",
     "common.cancel": "Cancel",
     "common.close": "Close",

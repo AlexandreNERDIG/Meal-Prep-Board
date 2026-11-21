@@ -1,24 +1,21 @@
 import { useT } from '../i18n/LanguageProvider';
-import { LANGUAGES } from '../i18n/core';
+import { LANGUAGE_OPTIONS, isLanguage } from '../i18n/core';
 
-// Sélecteur de langue FR | EN 
-const LanguageSwitch = () => {
+// Language dropdown: reads LANGUAGE_OPTIONS, so adding a language never requires changing this component
+const LanguageSwitch = ({ className = "langSelect" }: { className?: string }) => {
     const { language, setLanguage, t } = useT();
 
     return (
-        <div className="langSwitch" role="group" aria-label={t("lang.label")}>
-            {LANGUAGES.map(code => (
-                <button
-                    key={code}
-                    type="button"
-                    className={language === code ? "active" : ""}
-                    aria-pressed={language === code}
-                    onClick={() => setLanguage(code)}
-                >
-                    {code.toUpperCase()}
-                </button>
+        <select
+            className={className}
+            value={language}
+            aria-label={t("lang.label")}
+            onChange={(e) => { if (isLanguage(e.target.value)) setLanguage(e.target.value); }}
+        >
+            {LANGUAGE_OPTIONS.map(option => (
+                <option key={option.code} value={option.code}>{option.label}</option>
             ))}
-        </div>
+        </select>
     );
 };
 

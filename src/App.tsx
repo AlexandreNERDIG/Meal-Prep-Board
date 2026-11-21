@@ -10,6 +10,7 @@ import { recipeInfo, defaultList } from './Components/typeFile'
 import toast, { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
 import { LanguageProvider, useT } from './i18n/LanguageProvider';
+import { isLanguage } from './i18n/core';
 import Privacy from './Components/Privacy';
 import Footer from './Components/Footer';
 import Welcome from './Components/Welcome';
@@ -96,7 +97,7 @@ const Gate = () => {
             .then(() => {
                 if (cancelled) return;
                 const saved = localStorage.getItem("language");
-                if ((saved === "fr" || saved === "en") && saved !== languageRef.current) setLanguage(saved);
+                if (isLanguage(saved) && saved !== languageRef.current) setLanguage(saved);
                 setPhase("ready");
             })
             .catch((error) => {

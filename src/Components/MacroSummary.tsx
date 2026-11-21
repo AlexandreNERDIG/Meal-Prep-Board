@@ -1,6 +1,7 @@
 import type { Macros } from '../lib/recipeUtils';
 import { calorieSplit, formatPrice } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
+import { localeOf } from '../i18n/core';
 
 type MacroSummaryProps = {
     title: string;
@@ -29,7 +30,7 @@ const MacroSummary = ({ title, subtitle, macros, cost, costLabel }: MacroSummary
             </div>
 
             <div className="macroCalories">
-                <strong>{macros.calories.toLocaleString(language === "fr" ? "fr-FR" : "en-US")}</strong>
+                <strong>{macros.calories.toLocaleString(localeOf(language))}</strong>
                 <span>kcal</span>
             </div>
 

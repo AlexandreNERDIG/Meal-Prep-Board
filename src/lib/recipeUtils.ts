@@ -1,6 +1,6 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
 import { recipeInfo, defaultList } from '../Components/typeFile';
-import { translate, getLanguage } from '../i18n/core';
+import { translate, getLanguage, localeOf } from '../i18n/core';
 import type { MessageKey } from '../i18n/translations';
 
 // Image de remplacement quand une recette / un ingrédient n'a pas d'image (SVG intégré : aucun service externe, aucun texte donc aucune langue)
@@ -86,7 +86,10 @@ export const calcRecipeCost = (ingredients: Recipe["ingredient"], stock: Ingredi
 // Français : "9,55 €"   Anglais : "€9.55"
 export const formatPrice = (amount: number): string => {
     const fixed = amount.toFixed(2);
-    return getLanguage() === "fr" ? `${fixed.replace(".", ",")} €` : `€${fixed}`;
+    const language = getLanguage();
+    if (language === "fr") return `${fixed.replace(".", ",")} €`;
+    if (language === "en") return `€${fixed}`;
+    return new Intl.NumberFormat(localeOf(language), { style: "currency", currency: "EUR" }).format(amount);
 };
 
 // Un ingrédient est suivi dans le stock sauf si trackStock vaut false, ou s'il n'a pas d'unité (ex : "Sel et Poivre").
@@ -201,7 +204,7 @@ export const sortRecipes = (recipes: Recipe[], key: RecipeSortKey, direction: So
         .map((recipe, index) => ({ recipe, index, value: sortValue(recipe, key, stock) }))
         .sort((a, b) => {
             const diff = typeof a.value === "string"
-                ? a.value.localeCompare(String(b.value), "fr")
+                ? a.value.localeCompare(String(b.value), localeOf(getLanguage()))
                 : a.value - Number(b.value);
             return diff !== 0 ? sign * diff : a.index - b.index;
         })

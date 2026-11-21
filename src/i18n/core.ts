@@ -1,13 +1,22 @@
 import { fr, en } from './translations';
+import { es } from './es';
 import type { TranslationKey, MessageKey } from './translations';
 
-export type Language = "fr" | "en";
-export const LANGUAGES: Language[] = ["fr", "en"];
+// To add a language: add it here, create its dictionary in translations.ts and register it in `dictionaries` below
+export const LANGUAGE_OPTIONS = [
+    { code: "fr", label: "Français", locale: "fr-FR" },
+    { code: "en", label: "English", locale: "en-US" },
+    { code: "es", label: "Español", locale: "es-ES" },
+] as const;
+
+export type Language = typeof LANGUAGE_OPTIONS[number]["code"];
+export const LANGUAGES: Language[] = LANGUAGE_OPTIONS.map(option => option.code);
+export const localeOf = (language: Language): string => LANGUAGE_OPTIONS.find(option => option.code === language)?.locale ?? "en-US";
 
 const STORAGE_KEY = "language";
-const dictionaries: Record<Language, Record<TranslationKey, string>> = { fr, en };
+const dictionaries: Record<Language, Record<TranslationKey, string>> = { fr, en, es };
 
-const isLanguage = (value: unknown): value is Language => value === "fr" || value === "en";
+export const isLanguage = (value: unknown): value is Language => LANGUAGES.some(code => code === value);
 
 export const detectLanguage = (): Language => {
     try {
@@ -48,7 +57,7 @@ export const translate = (key: MessageKey, params?: TranslateParams, language: L
 
     if (params && typeof params.count === "number") {
         const count = params.count;
-        const isOne = language === "fr" ? (count === 0 || count === 1) : count === 1;
+        const isOne = new Intl.PluralRules(localeOf(language)).select(count) === "one";
         const pluralKey = `${key}_${isOne ? "one" : "other"}`;
         if (pluralKey in dictionary) resolvedKey = pluralKey;
     }

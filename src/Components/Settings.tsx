@@ -1,11 +1,12 @@
 import AccountPanel from '../auth/AccountPanel';
 import ProfilePanel from '../auth/ProfilePanel';
 import BackupPanel from './BackupPanel';
+import LanguagePanel from './LanguagePanel';
 import WebhookPanel from './WebhookPanel';
 import { useT } from '../i18n/LanguageProvider';
 import './Settings.css';
 
-// Page « Réglages » : le compte, le webhook Discord et les sauvegardes
+// Settings page: account, language, Discord webhook and backups
 const Settings = () => {
     const { t } = useT();
 
@@ -14,6 +15,7 @@ const Settings = () => {
             <div className="sectionHeader"><p>{t("page.settings")}</p></div>
             <AccountPanel />
             <ProfilePanel />
+            <LanguagePanel />
             <WebhookPanel />
             <BackupPanel />
         </div>
