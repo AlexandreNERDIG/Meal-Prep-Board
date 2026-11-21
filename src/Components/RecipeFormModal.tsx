@@ -37,9 +37,9 @@ const toRows = (recipe: Recipe): IngredientRow[] => recipe.ingredient.length > 0
     : [emptyRow];
 
 type Props = {
-    editName: string | null;                 // nom de la recette à modifier, ou null pour une nouvelle recette
+    editName: string | null;                 
     onClose: () => void;
-    onChange: (recipes: Recipe[]) => void;   // prévient la liste que les recettes ont changé
+    onChange: (recipes: Recipe[]) => void;
 };
 
 const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Props) => {
@@ -163,7 +163,7 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
     //  - plusieurs  : elles sont ajoutées directement à la liste
     const handleJsonImport = async (e : React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files ?? []);
-        e.target.value = "";  // permet de réimporter le même fichier juste après
+        e.target.value = "";
         if (files.length === 0) return;
 
         const contents = await Promise.all(files.map(async file => ({ name: file.name, text: await file.text() })));

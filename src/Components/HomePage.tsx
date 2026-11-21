@@ -19,6 +19,7 @@ const HomePage = () => {
     const { t, tb } = useT();
     const navigate = useNavigate();
     const RECIPES_KEY = "globalRecipeList";
+    const WEEK_KEY = "currentWeek";
 
     useEffect(() => {
         if (!localStorage.getItem(RECIPES_KEY)) {
@@ -28,8 +29,26 @@ const HomePage = () => {
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
     const [recipeList] = useState<Recipe[]>(loadRecipes);
-    const [weekly, setWeekly] = useState<number[]>(() => recipeList.slice(0, 2).map((_, index) => index));
+    const [weekly, setWeekly] = useState<number[]>(() => {
+        // The generated week is stored by recipe name, so it survives page changes and recipe list edits
+        try {
+            const saved: unknown = JSON.parse(localStorage.getItem(WEEK_KEY) ?? "null");
+            if (Array.isArray(saved)) {
+                const indexes = saved
+                    .map(name => recipeList.findIndex(recipe => recipe.recipeName === name))
+                    .filter(index => index !== -1);
+                if (indexes.length > 0) return indexes;
+            }
+        } catch { /* corrupted value: fall back to the default week */ }
+        return recipeList.slice(0, 2).map((_, index) => index);
+    });
     const weeklyRecipes = weekly.map(index => recipeList[index]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(WEEK_KEY, JSON.stringify(weekly.map(index => recipeList[index]?.recipeName)));
+        } catch { /* storage unavailable: the week is only kept in memory */ }
+    }, [weekly, recipeList]);
     const [options, setOptions] = useState<GeneratorOptions>(loadGeneratorOptions);
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
