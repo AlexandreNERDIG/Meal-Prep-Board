@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
-import { calcRecipeMacros, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory, unitLabel } from '../lib/recipeUtils';
+import { calcRecipeMacros, cookedIngredients, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
 import type { TranslationKey } from '../i18n/translations';
 
@@ -175,12 +175,16 @@ const MealHistory = () => {
 
                     <p><strong>{t("modal.prep")}</strong> {formatDuration(currentModalRecipe.prepTime)}</p>
                     <p><strong>{t("modal.cook")}</strong> {formatDuration(currentModalRecipe.cookTime)}</p>
-                    <p><strong>{t("modal.ingredients")}</strong> <br /><br />{currentModalRecipe.ingredient.map((element, index) => {
-                        const ing = currentStock.find(ele => ele.id == element.ingredientId)
-                        return (
-                            <li key={index}>{ing?.name} {element.quantity} {ing ? unitLabel(ing.unit) : ""}</li>
-                        )
-                    })}</p>
+                    {currentModalRecipe.portions && <p><strong>{t("modal.portions")}</strong> {currentModalRecipe.portions}</p>}
+                    <p><strong>{t("modal.ingredients")}</strong></p>
+                    <ul>
+                        {cookedIngredients(currentModalRecipe).map((element, index) => {
+                            const ing = currentStock.find(ele => ele.id == element.ingredientId)
+                            return (
+                                <li key={index}>{ing?.name} {element.quantity} {ing ? unitLabel(ing.unit) : ""}</li>
+                            )
+                        })}
+                    </ul>
                     <p><strong>{t("modal.instructions")}</strong> <br /><br />{currentModalRecipe.instructions}</p>
                     <p><strong>{t("modal.macros")}</strong> <br /><br />{macroCalculator(currentModalRecipe)}</p>
                     <button onClick={handleCloseHistoryModal}>{t("common.close")}</button>
@@ -216,7 +220,8 @@ const MealHistory = () => {
                         <div><X className='logo' onClick={handleCloseModal4}></X></div>
                     </div>
                 <p>{t("history.stockConcerns")}</p>
-                {selectedRecipe.ingredient
+                <ul>
+                {cookedIngredients(selectedRecipe)
                     .filter(e => {
                         const quantity = e.quantity ? e.quantity : 0;
                         return quantity > 0 && isStockTracked(findIngredient(currentStock, e.ingredientId));
@@ -228,8 +233,9 @@ const MealHistory = () => {
                         )
                     })
                 }
+                </ul>
                 <div className="deleteModalActions">
-                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(selectedRecipe.ingredient)}>{t("common.confirm")}</button>
+                    <button className="confirmDeleteBtn" onClick={() => stockDeduction(cookedIngredients(selectedRecipe))}>{t("common.confirm")}</button>
                     <button className="cancelDeleteBtn" onClick={handleCloseModal4}>{t("common.cancel")}</button>
                   </div>
                 </div>

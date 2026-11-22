@@ -12,6 +12,7 @@ export type Recipe = {
     image: string;
     status: 'favorite' | 'normal';
     macro?: string;
+    portions?: number; // servings cooked that week: only set on recipes stored in the meal history
 };
 
 export type Ingredient = {

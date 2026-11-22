@@ -158,6 +158,15 @@ export const formatDuration = (value: number | string): string => {
 // Remet une recette (ancien JSON, localStorage, fichier importé) au format actuel :
 // temps en minutes, et status uniquement "favorite" ou "normal".
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Quantities of a recipe are written for DEFAULT_PORTIONS servings: cooking N servings multiplies them by N / DEFAULT_PORTIONS
+export const scaleQuantity = (quantity: number, factor: number): number => Math.round(quantity * factor * 10) / 10;
+
+// Ingredients of a history entry, scaled to the number of servings that was cooked (old entries have none: factor 1)
+export const cookedIngredients = (recipe: Recipe): Recipe["ingredient"] => {
+    const factor = (recipe.portions ?? DEFAULT_PORTIONS) / DEFAULT_PORTIONS;
+    return recipe.ingredient.map(ingredient => ({ ...ingredient, quantity: scaleQuantity(ingredient.quantity, factor) }));
+};
+
 export const normalizeRecipe = (raw: Record<string, any>): Recipe => ({
     ...raw,
     prepTime: toMinutes(raw.prepTime),

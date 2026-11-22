@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
 import axios from 'axios';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel, scaleQuantity } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
 import { useT } from '../i18n/LanguageProvider';
 import { loadWebhook, isValidWebhook } from '../lib/discord';
@@ -13,6 +13,61 @@ import {
     loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES,
     type GeneratorOptions, type FavoritesMode,
 } from '../lib/recipeGenerator';
+
+type Translate = ReturnType<typeof useT>["t"];
+
+const MIN_PORTIONS = 1;
+const MAX_PORTIONS = 24;
+
+const buildGroceryLists = (recipeList: Recipe[], weekly: number[], portions: number[], currentStock: Ingredient[], t: Translate): [string[], string[]] => {
+    const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
+
+    const addIngredients = (ingredients: RecipeIngredient[], factor: number) => {
+        for (const ingre of ingredients) {
+            const ing = currentStock.find(ele => ele.id == ingre.ingredientId);
+            if (!ing || !isStockTracked(ing)) continue;
+            const name = ing.name;
+
+            const numMatch = ingre.quantity;
+            const quantity = numMatch ? scaleQuantity(numMatch, factor) : 0;
+
+            const unitMatch = ing?.unit;
+            const unit = unitMatch ? unitMatch : "g";
+
+            const existing = mergedGroceryMap.get(name);
+            if (existing) {
+                mergedGroceryMap.set(name, { quantity: existing.quantity + quantity, unit });
+            } else {
+                mergedGroceryMap.set(name, { quantity, unit });
+            }
+        }
+    };
+
+    weekly.forEach((index, position) => addIngredients(recipeList[index]?.ingredient || [], (portions[position] ?? DEFAULT_PORTIONS) / DEFAULT_PORTIONS));
+
+    const availableGroceryList: string[] = [];
+    const notAvailableGroceryList: string[] = [];
+
+    mergedGroceryMap.forEach((data, name) => {
+        const stockItem = currentStock.find(item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
+        const stockQty = stockItem?.quantity || 0; 
+
+        if (stockQty >= data.quantity && data.quantity > 0) {
+            availableGroceryList.push(t("home.grocery.inStock", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
+        } 
+        
+        else if (stockQty > 0 && data.quantity > stockQty) {
+            availableGroceryList.push(t("home.grocery.partial", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
+        };
+        
+        const qtyToBuy = Math.round(Math.max(data.quantity - stockQty, 0) * 10) / 10;
+        if (qtyToBuy > 0) {
+            notAvailableGroceryList.push(`${qtyToBuy}${unitLabel(data.unit)} ${name}`);
+        } 
+    });
+
+    return [availableGroceryList, notAvailableGroceryList];
+};
 
 const HomePage = () => {
 
@@ -29,26 +84,42 @@ const HomePage = () => {
 
     const [mealHistory, setmealHistory] = useState<Recipe[][]>(loadMealHistory);
     const [recipeList] = useState<Recipe[]>(loadRecipes);
-    const [weekly, setWeekly] = useState<number[]>(() => {
-        // The generated week is stored by recipe name, so it survives page changes and recipe list edits
+    const [initialWeek] = useState<{ weekly: number[]; portions: number[] }>(() => {
+        // The generated week is stored by recipe name (with its portions), so it survives page changes and recipe list edits
         try {
             const saved: unknown = JSON.parse(localStorage.getItem(WEEK_KEY) ?? "null");
             if (Array.isArray(saved)) {
-                const indexes = saved
-                    .map(name => recipeList.findIndex(recipe => recipe.recipeName === name))
-                    .filter(index => index !== -1);
-                if (indexes.length > 0) return indexes;
+                const entries = saved
+                    .map((entry: unknown) => {
+                        const name = typeof entry === "string" ? entry : (entry as { name?: unknown })?.name;
+                        const savedPortions = Number((entry as { portions?: unknown })?.portions);
+                        return {
+                            index: recipeList.findIndex(recipe => recipe.recipeName === name),
+                            portions: Number.isInteger(savedPortions) && savedPortions >= MIN_PORTIONS && savedPortions <= MAX_PORTIONS ? savedPortions : DEFAULT_PORTIONS,
+                        };
+                    })
+                    .filter(entry => entry.index !== -1);
+                if (entries.length > 0) return { weekly: entries.map(entry => entry.index), portions: entries.map(entry => entry.portions) };
             }
         } catch { /* corrupted value: fall back to the default week */ }
-        return recipeList.slice(0, 2).map((_, index) => index);
+        const defaults = recipeList.slice(0, 2).map((_, index) => index);
+        return { weekly: defaults, portions: defaults.map(() => DEFAULT_PORTIONS) };
     });
+    const [weekly, setWeekly] = useState<number[]>(initialWeek.weekly);
+    // Number of servings cooked for each recipe of the week (same order as `weekly`)
+    const [portions, setPortions] = useState<number[]>(initialWeek.portions);
     const weeklyRecipes = weekly.map(index => recipeList[index]);
+    const portionsOf = (position: number): number => portions[position] ?? DEFAULT_PORTIONS;
+    const factorOf = (position: number): number => portionsOf(position) / DEFAULT_PORTIONS;
 
     useEffect(() => {
         try {
-            localStorage.setItem(WEEK_KEY, JSON.stringify(weekly.map(index => recipeList[index]?.recipeName)));
+            localStorage.setItem(WEEK_KEY, JSON.stringify(weekly.map((index, position) => ({
+                name: recipeList[index]?.recipeName,
+                portions: portions[position] ?? DEFAULT_PORTIONS,
+            }))));
         } catch { /* storage unavailable: the week is only kept in memory */ }
-    }, [weekly, recipeList]);
+    }, [weekly, portions, recipeList]);
     const [options, setOptions] = useState<GeneratorOptions>(loadGeneratorOptions);
 
     const [currentStock, setCurrentStock] = useState<Ingredient[]>(() => {
@@ -93,6 +164,7 @@ const HomePage = () => {
         }
 
         setWeekly(picked.map(recipe => recipeList.indexOf(recipe)));
+        setPortions(current => picked.map((_, position) => current[position] ?? DEFAULT_PORTIONS));
         if (picked.length < options.count) toast(t("gen.fewer", { count: picked.length }));
     };
 
@@ -102,62 +174,16 @@ const HomePage = () => {
         setWeekly(current => current.map((index, i) => (i === position ? recipeList.indexOf(replacement) : index)));
     };
 
+    const changePortions = (position: number, delta: number) => {
+        setPortions(current => current.map((value, i) => i === position ? Math.min(MAX_PORTIONS, Math.max(MIN_PORTIONS, value + delta)) : value));
+    };
+
     const handleOpenConfirmationModal = () => {setAskConfirmation(true)};
     const handleCloseConfirmationModal = () => {setAskConfirmation(false)};
     const handleOpenConfirmationModal5 = () => {setAskConfirmation5(true)};
     const handleCloseConfirmationModal5 = () => {setAskConfirmation5(false)};
     const handleOpenConfirmationModal6 = () => {setModalState6(true)};
     const handleCloseConfirmationModal6 = () => {setModalState6(false)};
-    const WeeklyGroceries = (recipeList: Recipe[], weekly: number[], currentStock: Ingredient[]): [string[], string[]] => {
-        const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
-
-        const addIngredients = (ingredients: RecipeIngredient[]) => {
-            for (const ingre of ingredients) {
-                const ing = currentStock.find(ele => ele.id == ingre.ingredientId);
-                if (!ing || !isStockTracked(ing)) continue;
-                const name = ing.name;
-
-                const numMatch = ingre.quantity;
-                const quantity = numMatch ? numMatch : 0;
-
-                const unitMatch = ing?.unit;
-                const unit = unitMatch ? unitMatch : "g";
-
-                const existing = mergedGroceryMap.get(name);
-                if (existing) {
-                    mergedGroceryMap.set(name, { quantity: existing.quantity + quantity, unit });
-                } else {
-                    mergedGroceryMap.set(name, { quantity, unit });
-                }
-            }
-        };
-
-        weekly.forEach(index => addIngredients(recipeList[index]?.ingredient || []));
-
-        const availableGroceryList: string[] = [];
-        const notAvailableGroceryList: string[] = [];
-
-        mergedGroceryMap.forEach((data, name) => {
-            const stockItem = currentStock.find(item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
-            const stockQty = stockItem?.quantity || 0; 
-
-            if (stockQty >= data.quantity && data.quantity > 0) {
-                availableGroceryList.push(t("home.grocery.inStock", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
-            } 
-            
-            else if (stockQty > 0 && data.quantity > stockQty) {
-                availableGroceryList.push(t("home.grocery.partial", { quantity: data.quantity, unit: unitLabel(data.unit), name, stock: stockQty })); 
-            };
-            
-            const qtyToBuy = Math.max(data.quantity - stockQty, 0); 
-            if (qtyToBuy > 0) {
-                notAvailableGroceryList.push(`${qtyToBuy}${unitLabel(data.unit)} ${name}`);
-            } 
-        });
-
-        return [availableGroceryList, notAvailableGroceryList];
-    };
-
     const stockDeduction = (groceryList: string[]) => {
         if (!groceryList || !currentStock) return;
 
@@ -186,31 +212,30 @@ const HomePage = () => {
         handleCloseConfirmationModal6();
     };
 
-    useEffect(() => {
-        const [available, notAvailable] = WeeklyGroceries(recipeList, weekly, currentStock);
-        setAvailableGroceryList(available);
-        setNotAvailableGroceryList(notAvailable);
-    }, [weekly, currentStock, recipeList]);
-
     const recipeMacroText = (recipe : Recipe | undefined) => {
         return recipe ? formatMacros(calcRecipeMacros(recipe.ingredient, currentStock)) : "";
     }
 
-    const recipeCostText = (recipe : Recipe | undefined) => {
+    // Price of what is cooked for this recipe (all its servings), then the price of one serving
+    const recipeCostText = (recipe : Recipe | undefined, position: number) => {
         if (!recipe) return "";
-        const total = calcRecipeCost(recipe.ingredient, currentStock);
-        return `${formatPrice(total)} (${formatPrice(total / DEFAULT_PORTIONS)} ${t("price.perServing")})`;
+        const perServing = calcRecipeCost(recipe.ingredient, currentStock) / DEFAULT_PORTIONS;
+        return `${formatPrice(perServing * portionsOf(position))} (${formatPrice(perServing)} ${t("price.perServing")})`;
     }
 
-    const weeklyCost = weeklyRecipes.reduce((total, recipe) => total + calcRecipeCost(recipe.ingredient, currentStock), 0);
+    const weeklyCost = weeklyRecipes.reduce((total, recipe, position) => total + calcRecipeCost(recipe.ingredient, currentStock) * factorOf(position), 0);
+    const totalPortions = weeklyRecipes.reduce((total, _recipe, position) => total + portionsOf(position), 0);
 
     const weeklyRecipesReady = weeklyRecipes.length > 0;
-    const weeklyIngredients = weeklyRecipes.flatMap(recipe => recipe.ingredient);
-    const dailyMacros = weeklyRecipesReady ? calcRecipeMacros(weeklyIngredients, currentStock, DEFAULT_PORTIONS) : null;
+    const weeklyIngredients = weeklyRecipes.flatMap((recipe, position) =>
+        recipe.ingredient.map(ingredient => ({ ...ingredient, quantity: ingredient.quantity * factorOf(position) }))
+    );
+    // Average meal = everything cooked this week divided by the number of servings
+    const mealMacros = weeklyRecipesReady ? calcRecipeMacros(weeklyIngredients, currentStock, totalPortions) : null;
     const weeklyMacros = weeklyRecipesReady ? calcRecipeMacros(weeklyIngredients, currentStock, 1) : null;
 
     const confirmedChoices = () => {
-        const newRecipes = [...weeklyRecipes];
+        const newRecipes = weeklyRecipes.map((recipe, position) => ({ ...recipe, portions: portionsOf(position) }));
         const updatedHistory = [...mealHistory, newRecipes];
         setmealHistory(updatedHistory);
         localStorage.setItem("mealHistoryList", JSON.stringify(updatedHistory))
@@ -218,9 +243,7 @@ const HomePage = () => {
         handleCloseConfirmationModal();
     };
 
-    const weeklyGroceries = WeeklyGroceries(recipeList, weekly, currentStock);
-    const [availableGroceryList, setAvailableGroceryList] = useState(weeklyGroceries[0]);
-    const [notAvailableGroceryList, setNotAvailableGroceryList] = useState(weeklyGroceries[1]);
+    const [availableGroceryList, notAvailableGroceryList] = buildGroceryLists(recipeList, weekly, portions, currentStock, t);
     
     const sendGroceryList = async (list: string[]) => {
         
@@ -240,11 +263,7 @@ const HomePage = () => {
     };
 
     const handleConfirmClick = async () => {
-        const [available, notAvailable] = WeeklyGroceries(recipeList, weekly, currentStock);
-        setAvailableGroceryList(available);
-        setNotAvailableGroceryList(notAvailable);
-
-        await sendGroceryList(notAvailable);
+        await sendGroceryList(notAvailableGroceryList);
         handleOpenConfirmationModal6(); 
     };
 
@@ -319,12 +338,20 @@ const HomePage = () => {
                                         {recipe.ingredient.map((element, index) => {
                                             const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
                                             return (
-                                                <li key={index}>{element.quantity}{ing ? unitLabel(ing.unit) : ""} {ing?.name}</li>
+                                                <li key={index}>{scaleQuantity(element.quantity, factorOf(position))}{ing ? unitLabel(ing.unit) : ""} {ing?.name}</li>
                                             )
                                         })}
                                     </ul>
                                     <h5>{recipeMacroText(recipe)}</h5>
-                                    <h5>{recipeCostText(recipe)}</h5>
+                                    <h5>{recipeCostText(recipe, position)}</h5>
+                                    <div className="portionsRow">
+                                        <span className="genLabel">{t("home.portions")}</span>
+                                        <div className="genStepper">
+                                            <MinusCircle aria-label="-" onClick={() => changePortions(position, -1)} />
+                                            <span className="genCount">{portionsOf(position)}</span>
+                                            <PlusCircle aria-label="+" onClick={() => changePortions(position, 1)} />
+                                        </div>
+                                    </div>
                                     <div className="replaceButton"><p onClick={() => replaceRecipe(position)}>{t("home.replace")}</p></div>
                                 </div>
                                 {position % 2 === 1 && image}
@@ -336,18 +363,18 @@ const HomePage = () => {
 
             <div className="NutritionSection">
                 <div className="sectionHeader"><p>{t("home.weeklyIntakes")}</p></div>
-                {dailyMacros && weeklyMacros ? (
+                {mealMacros && weeklyMacros ? (
                     <div className="macroCards">
                         <MacroSummary
                             title={t("home.perDay")}
-                            subtitle={t("home.perDaySub")}
-                            macros={dailyMacros}
-                            cost={weeklyCost / DEFAULT_PORTIONS}
+                            subtitle={t("home.perDaySub", { meals: totalPortions })}
+                            macros={mealMacros}
+                            cost={totalPortions > 0 ? weeklyCost / totalPortions : 0}
                             costLabel={t("home.perDayCost")}
                         />
                         <MacroSummary
                             title={t("home.week")}
-                            subtitle={t("home.weekSub", { days: DEFAULT_PORTIONS, meals: weeklyRecipes.length })}
+                            subtitle={t("home.weekSub", { meals: totalPortions, recipes: weeklyRecipes.length })}
                             macros={weeklyMacros}
                             cost={weeklyCost}
                             costLabel={t("home.weekCost")}

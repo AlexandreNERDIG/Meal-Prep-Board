@@ -360,3 +360,14 @@
 .deleteIconCard:hover {
     color: #ff5f5f;
 }
+
+/* Ingredient lists inside the modals */
+.modalContent ul {
+    margin: 0.25rem 0;
+    padding-left: 1.25rem;
+}
+
+.deleteModalContent ul {
+    margin: 0;
+    padding: 0;
+}

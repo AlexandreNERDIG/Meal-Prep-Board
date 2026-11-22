@@ -25,4 +25,9 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // Contexts and their hooks live in the same file on purpose: fast refresh just reloads the page for these
+    files: ['src/auth/**/*.{ts,tsx}', 'src/i18n/**/*.{ts,tsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 )

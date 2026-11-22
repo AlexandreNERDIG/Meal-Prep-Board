@@ -212,14 +212,15 @@ const RecipeList = () => {
                     </div>
                     <p><strong>{t("modal.prep")}</strong> {formatDuration(selectedRecipe.prepTime)}</p>
                     <p><strong>{t("modal.cook")}</strong> {formatDuration(selectedRecipe.cookTime)}</p>
-                    <p><strong>{t("modal.ingredients")}</strong> <br/><br/>
+                    <p><strong>{t("modal.ingredients")}</strong></p>
+                    <ul>
                         {selectedRecipe.ingredient.map((element, index) => {
                             const ing = currentStock.find(ingre => ingre.id == element.ingredientId)
                             return (
                                 <li key={index}>{ing?.name} {element.quantity} {ing ? unitLabel(ing.unit) : ""}</li>
                             )
                         })}
-                    </p>
+                    </ul>
                     <p><strong>{t("modal.instructions")}</strong> <br /><br />{selectedRecipe.instructions}</p>
                     <p><strong>{t("modal.macros")}</strong> <br /><br />{macroCalculator(selectedRecipe)}</p>
                     <p><strong>{t("modal.cost")}</strong> <br /><br />{costCalculator(selectedRecipe)}</p>

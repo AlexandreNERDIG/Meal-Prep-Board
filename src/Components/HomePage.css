@@ -601,3 +601,12 @@
 .pinChip svg:hover {
     transform: scale(1.2);
 }
+
+/* Same look as the generator's stepper (.genLabel / .genStepper / .genCount) */
+.portionsRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0.4rem 0 0.9rem;
+}
