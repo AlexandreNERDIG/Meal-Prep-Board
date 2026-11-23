@@ -25,24 +25,39 @@
     cursor: not-allowed;
 }
 
-.profileForm {
+.backupPanel .profileForm {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    margin-top: 1.25rem;
+    align-items: stretch;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 26rem;
+    margin: 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid #4a4a50;
+    text-align: left;
 }
 
-.profileForm label {
+.backupPanel .profileForm label {
     color: #ffffffcb;
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-.profileForm .settingsInput {
+.backupPanel .profileForm .settingsInput {
     margin: 0;
 }
 
-.profileForm .fileBtn {
+.backupPanel .profileForm button.fileBtn {
+    align-self: flex-start;
+    justify-content: center;
     margin-top: 0.25rem;
+    background: transparent;
+    font-family: inherit;
+}
+
+@media (max-width: 600px) {
+    .backupPanel .profileForm button.fileBtn {
+        align-self: stretch;
+    }
 }
