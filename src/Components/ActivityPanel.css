@@ -1,0 +1,9 @@
+.activityToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #ffffffcb;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}

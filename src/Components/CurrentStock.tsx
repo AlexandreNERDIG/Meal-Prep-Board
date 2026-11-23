@@ -10,6 +10,8 @@ import { priceUnitLabel, INGREDIENT_CATEGORIES, NO_IMAGE, formatMacros, category
 import { useT } from '../i18n/LanguageProvider';
 import { fileToResizedDataUrl } from "../lib/imageUpload";
 import { parseQuantityInput } from "../lib/quantity";
+import BarcodeLookup from "./BarcodeLookup";
+import type { FoodProduct } from "../lib/openFoodFacts";
 
 type IngredientForm = {
     name: string;
@@ -181,6 +183,19 @@ const CurrentStock = () => {
             [name] : isCheckbox ? (e.target as HTMLInputElement).checked : value
         }))
     }
+
+    const applyProduct = (product: FoodProduct) => {
+        setFormData((prev) => ({
+            ...prev,
+            name: product.name,
+            calories: String(product.calories),
+            carbs: String(product.carbs),
+            protein: String(product.protein),
+            fat: String(product.fat),
+            unit: product.unit,
+            category: product.category
+        }));
+    };
 
     const handleFormCategory = (category: Ingredient["category"]) => {
         setFormData((prev) => ({ ...prev, category }));
@@ -396,6 +411,7 @@ const CurrentStock = () => {
                         </div>
 
                         <div className="ingredientForm">
+                            {!editingId && <BarcodeLookup onFound={applyProduct} />}
                             <div className="formField">
                                 <label htmlFor="ingredientName">{t("stock.name")}</label>
                                 <input
@@ -499,6 +515,10 @@ const CurrentStock = () => {
                                     <label className="fileBtn">
                                         <Upload size={16}/> {t("image.choose")}
                                         <input type="file" accept="image/*" onChange={handleImagePath}/>
+                                    </label>
+                                    <label className="fileBtn">
+                                        <Aperture size={16}/> {t("image.takePhoto")}
+                                        <input type="file" accept="image/*" capture="environment" onChange={handleImagePath}/>
                                     </label>
                                     <span className="fileName">{imageName || t("common.noImage")}</span>
                                 </div>

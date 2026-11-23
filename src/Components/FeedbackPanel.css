@@ -1,0 +1,5 @@
+.feedbackText {
+    resize: vertical;
+    min-height: 6rem;
+    font-family: inherit;
+}

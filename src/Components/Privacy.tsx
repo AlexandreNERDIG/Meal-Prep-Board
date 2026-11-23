@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useT } from '../i18n/LanguageProvider';
 import './Privacy.css';
 
-const SECTIONS = ["data", "account", "hosting", "discord", "tracking", "offline", "rights"] as const;
+const SECTIONS = ["data", "account", "hosting", "discord", "barcode", "tracking", "offline", "rights"] as const;
 
 const Privacy = () => {
     const { t } = useT();

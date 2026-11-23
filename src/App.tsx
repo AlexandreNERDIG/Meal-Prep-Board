@@ -6,20 +6,22 @@ import NavBar from './Components/NavBar';
 import RecipeList from './Components/RecipeList';
 import CurrentStock from './Components/CurrentStock';
 import Settings from './Components/Settings';
-import { recipeInfo } from './Components/typeFile'
 import toast, { Toaster } from 'react-hot-toast';
 import { syncDefaultStock } from './lib/recipeUtils';
 import { LanguageProvider, useT } from './i18n/LanguageProvider';
 import { isLanguage, getLanguage } from './i18n/core';
 import { starterStock } from './i18n/starterIngredients';
+import { starterRecipes } from './lib/starterRecipes';
 import Privacy from './Components/Privacy';
 import Footer from './Components/Footer';
+import ShoppingList from './Components/ShoppingList';
 import Welcome from './Components/Welcome';
 import ScrollToTop from './Components/ScrollToTop';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import { AuthScreen, ResetPasswordScreen, Splash } from './auth/AuthScreen';
 import { isCloudConfigured, supabase } from './lib/supabase';
 import { initialSync, installTracking } from './lib/cloudSync';
+import { recordActivity } from './lib/activity';
 import type { CloudClient } from './lib/cloudSync';
 import './App.css';
 import './responsive.css';
@@ -27,7 +29,7 @@ import './responsive.css';
 // Starting Data
 const seedLocalStorage = () => {
     if (!localStorage.getItem("globalRecipeList")) {
-      localStorage.setItem("globalRecipeList", JSON.stringify(recipeInfo));
+      localStorage.setItem("globalRecipeList", JSON.stringify(starterRecipes(getLanguage())));
     }
 
     if (!localStorage.getItem("mealHistoryList")) {
@@ -53,6 +55,7 @@ const Shell = () => (
                 <Route path='/MealHistory' element={<MealHistory />} />
                 <Route path='/CurrentStock' element={<CurrentStock />} />
                 <Route path='/Settings' element={<Settings />} />
+                <Route path='/Shopping' element={<ShoppingList />} />
                 <Route path='/Privacy' element={<Privacy />} />
             </Routes>
             <Footer />
@@ -100,6 +103,7 @@ const Gate = () => {
                 const saved = localStorage.getItem("language");
                 if (isLanguage(saved) && saved !== languageRef.current) setLanguage(saved);
                 setPhase("ready");
+                void recordActivity();
             })
             .catch((error) => {
                 console.error("Synchronisation initiale impossible :", error);

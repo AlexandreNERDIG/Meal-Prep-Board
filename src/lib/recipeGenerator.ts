@@ -6,15 +6,20 @@ export type FavoritesMode = "any" | "prefer" | "only";   // peu importe / favori
 export type GeneratorOptions = {
     count: number;           // nombre de recettes à proposer
     favorites: FavoritesMode;
+    portions: number;        // servings per recipe when a week is generated
 };
 
 export const MIN_RECIPES = 1;
 export const MAX_RECIPES = 4;
+export const MIN_PORTIONS = 1;
+export const MAX_PORTIONS = 24;
+export const FALLBACK_PORTIONS = 5;
 export const GENERATOR_KEY = "generatorOptions";
 
 export const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
     count: 2,
     favorites: "prefer",
+    portions: FALLBACK_PORTIONS,
 };
 
 // Relit les options sauvegardées en vérifiant chaque champ (un vieux JSON ou une valeur bizarre ne doit pas casser la page)
@@ -23,9 +28,11 @@ export const sanitizeOptions = (raw: unknown): GeneratorOptions => {
     const o = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
 
     const count = Number(o.count);
+    const portions = Number(o.portions);
     return {
         count: Number.isInteger(count) ? Math.min(MAX_RECIPES, Math.max(MIN_RECIPES, count)) : d.count,
         favorites: o.favorites === "any" || o.favorites === "prefer" || o.favorites === "only" ? o.favorites : d.favorites,
+        portions: Number.isInteger(portions) ? Math.min(MAX_PORTIONS, Math.max(MIN_PORTIONS, portions)) : d.portions,
     };
 };
 

@@ -10,14 +10,11 @@ import MacroSummary from './MacroSummary';
 import { useT } from '../i18n/LanguageProvider';
 import { loadWebhook, isValidWebhook } from '../lib/discord';
 import {
-    loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES,
+    loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES, MIN_PORTIONS, MAX_PORTIONS,
     type GeneratorOptions, type FavoritesMode,
 } from '../lib/recipeGenerator';
 
 type Translate = ReturnType<typeof useT>["t"];
-
-const MIN_PORTIONS = 1;
-const MAX_PORTIONS = 24;
 
 const buildGroceryLists = (recipeList: Recipe[], weekly: number[], portions: number[], currentStock: Ingredient[], t: Translate): [string[], string[]] => {
     const mergedGroceryMap = new Map<string, { quantity: number; unit: string }>();
@@ -86,6 +83,7 @@ const HomePage = () => {
     const [recipeList] = useState<Recipe[]>(loadRecipes);
     const [initialWeek] = useState<{ weekly: number[]; portions: number[] }>(() => {
         // The generated week is stored by recipe name (with its portions), so it survives page changes and recipe list edits
+        const startPortions = loadGeneratorOptions().portions;
         try {
             const saved: unknown = JSON.parse(localStorage.getItem(WEEK_KEY) ?? "null");
             if (Array.isArray(saved)) {
@@ -95,7 +93,7 @@ const HomePage = () => {
                         const savedPortions = Number((entry as { portions?: unknown })?.portions);
                         return {
                             index: recipeList.findIndex(recipe => recipe.recipeName === name),
-                            portions: Number.isInteger(savedPortions) && savedPortions >= MIN_PORTIONS && savedPortions <= MAX_PORTIONS ? savedPortions : DEFAULT_PORTIONS,
+                            portions: Number.isInteger(savedPortions) && savedPortions >= MIN_PORTIONS && savedPortions <= MAX_PORTIONS ? savedPortions : startPortions,
                         };
                     })
                     .filter(entry => entry.index !== -1);
@@ -103,7 +101,7 @@ const HomePage = () => {
             }
         } catch { /* corrupted value: fall back to the default week */ }
         const defaults = recipeList.slice(0, 2).map((_, index) => index);
-        return { weekly: defaults, portions: defaults.map(() => DEFAULT_PORTIONS) };
+        return { weekly: defaults, portions: defaults.map(() => startPortions) };
     });
     const [weekly, setWeekly] = useState<number[]>(initialWeek.weekly);
     // Number of servings cooked for each recipe of the week (same order as `weekly`)
@@ -164,7 +162,7 @@ const HomePage = () => {
         }
 
         setWeekly(picked.map(recipe => recipeList.indexOf(recipe)));
-        setPortions(current => picked.map((_, position) => current[position] ?? DEFAULT_PORTIONS));
+        setPortions(picked.map(() => options.portions));
         if (picked.length < options.count) toast(t("gen.fewer", { count: picked.length }));
     };
 

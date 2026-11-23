@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, Clock, Package } from 'react-feather';
+import { Home, BookOpen, Clock, Package, ShoppingCart } from 'react-feather';
 import './NavBar.css';
 import NavAccount from './NavAccount';
 import { useT } from '../i18n/LanguageProvider';
@@ -18,6 +18,7 @@ const NavBar = () => {
                     <NavLink to={"/RecipeList"}><BookOpen className="navIcon"/>{t("page.recipes")}</NavLink>
                     <NavLink to={"/MealHistory"}><Clock className="navIcon"/>{t("page.history")}</NavLink>
                     <NavLink to={"/CurrentStock"}><Package className="navIcon"/>{t("page.stock")}</NavLink>
+                    <NavLink to={"/Shopping"}><ShoppingCart className="navIcon"/>{t("page.shopping")}</NavLink>
                 </div>
                 <NavAccount />
             </div>
