@@ -50,7 +50,7 @@ export const recipeInfo: Recipe[] = [
     cookTime: 180,
     instructions:
       "Faites revenir le bœuf dans l'huile, ajoutez 2 oignons (160g), 3 carottes (180g), et 2 gousses d'ail (10g). Saupoudrez de farine, versez le vin, le bouillon et laissez mijoter 2h30.",
-    image: "../img/boeuf-bourgignon.jpg",
+    image: "",
     status: "normal"
   },
   {
@@ -69,7 +69,7 @@ export const recipeInfo: Recipe[] = [
     cookTime: 90,
     instructions:
       "Faites revenir le poulet dans l'huile. Ajoutez 2 oignons (160g), 2 poivrons (240g), et 2 gousses d'ail (10g). Versez le bouillon et laissez mijoter 1h. Servez avec les pâtes cuites (250g).",
-    image: "../img/poulet-basquaise.jpg",
+    image: "",
     status: "normal"
   }
 ];

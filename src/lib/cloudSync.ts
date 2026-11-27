@@ -15,14 +15,14 @@ import { loadRecipes, loadMealHistory, STOCK_DEFAULTS_VERSION } from './recipeUt
 // Types
 // ---------------------------------------------------------------------------------------------------------------------
 
-export type CloudSettings = {
+type CloudSettings = {
     language: string | null;
     generatorOptions: unknown;
     welcomeSeen: boolean;
     discordWebhook: string | null;
 };
 
-export type LocalData = {
+type LocalData = {
     ingredients: Ingredient[];
     recipes: Recipe[];
     history: Recipe[][];
@@ -40,7 +40,7 @@ type RecipeRow = {
 };
 
 // Ce que renvoie la fonction SQL load_snapshot()
-export type Snapshot = {
+type Snapshot = {
     ingredients: IngredientRow[];
     recipes: RecipeRow[];
     history: Recipe[][];
@@ -48,7 +48,7 @@ export type Snapshot = {
 };
 
 // Ce que reçoit la fonction SQL apply_changes()
-export type ChangePayload = {
+type ChangePayload = {
     ingredients_delete?: string[];
     recipes_delete?: string[];
     ingredients_upsert?: IngredientRow[];
@@ -82,7 +82,7 @@ const KEY_LOCAL_COPY = "localCopyBeforeCloud";  // copie de sécurité des donn�
 const TRACKED_KEYS = new Set([KEY_RECIPES, KEY_STOCK, KEY_HISTORY, KEY_LANGUAGE, KEY_GENERATOR, KEY_WELCOME, KEY_WEBHOOK]);
 
 // Tout ce qu'il faut effacer quand quelqu'un se déconnecte (l'appareil peut être partagé)
-export const CLEAR_ON_SIGN_OUT = [
+const CLEAR_ON_SIGN_OUT = [
     KEY_RECIPES, KEY_STOCK, KEY_HISTORY, KEY_LANGUAGE, KEY_GENERATOR, KEY_WELCOME, KEY_WEBHOOK, KEY_DIRTY, KEY_LOCAL_COPY,
 ];
 
@@ -123,7 +123,7 @@ const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.str
 
 // Calcule ce qu'il faut envoyer pour passer de "before" (ce que la base contient) à "after" (ce que l'appareil contient).
 // Renvoie null s'il n'y a rien à envoyer.
-export const diffLocal = (before: LocalData | null, after: LocalData): ChangePayload | null => {
+const diffLocal = (before: LocalData | null, after: LocalData): ChangePayload | null => {
     const payload: ChangePayload = {};
 
     // Ingrédients
@@ -170,7 +170,7 @@ export const diffLocal = (before: LocalData | null, after: LocalData): ChangePay
 };
 
 // Convertit la réponse de la base dans le format de l'appli
-export const snapshotToLocal = (snap: Snapshot): LocalData => ({
+const snapshotToLocal = (snap: Snapshot): LocalData => ({
     ingredients: snap.ingredients.map((row): Ingredient => ({
         id: String(row.id),
         name: row.name,
@@ -197,7 +197,7 @@ export const snapshotToLocal = (snap: Snapshot): LocalData => ({
 });
 
 // Le compte contient-il déjà quelque chose ? (sinon : première connexion, on envoie les données de l'appareil)
-export const cloudHasData = (snap: Snapshot): boolean =>
+const cloudHasData = (snap: Snapshot): boolean =>
     snap.ingredients.length > 0 || snap.recipes.length > 0 || snap.history.length > 0 || snap.settings !== null;
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -209,7 +209,7 @@ const parseJson = <T>(raw: string | null, fallback: T): T => {
     try { return JSON.parse(raw) as T; } catch { return fallback; }
 };
 
-export const readLocal = (): LocalData => {
+const readLocal = (): LocalData => {
     const savedStock = localStorage.getItem(KEY_STOCK);
     const webhook = parseJson<unknown>(localStorage.getItem(KEY_WEBHOOK), "");
     return {
@@ -236,7 +236,7 @@ const setOrRemove = (key: string, value: string | null): void => {
     if (value === null) localStorage.removeItem(key); else localStorage.setItem(key, value);
 };
 
-export const writeLocal = (data: LocalData): void => {
+const writeLocal = (data: LocalData): void => {
     silently(() => {
         localStorage.setItem(KEY_RECIPES, JSON.stringify(data.recipes));
         localStorage.setItem(KEY_STOCK, JSON.stringify(data.ingredients));
@@ -322,7 +322,7 @@ export const installTracking = (): void => {
 };
 
 // Envoie tout de suite ce qui n'est pas encore parti. Ne lève jamais d'exception.
-export const flush = async (): Promise<void> => {
+const flush = async (): Promise<void> => {
     if (timer) { clearTimeout(timer); timer = null; }
     if (!client || !baseline) return;
 
@@ -417,9 +417,6 @@ export const initialSync = async (cloudClient: CloudClient, seed: () => void): P
     return "pulled";
 };
 
-// Y a-t-il des modifications de cet appareil que la base n'a pas encore reçues ?
-export const hasUnsentChanges = (): boolean => isDirty();
-
 // Appelé à la déconnexion : envoie ce qui reste, puis arrête et efface les données de l'appareil.
 // Si l'envoi échoue (hors-ligne) et que "force" est faux, ne supprime rien et renvoie false : l'appelant doit prévenir la personne.
 export const signOutCleanup = async (force: boolean = false): Promise<boolean> => {
@@ -431,10 +428,4 @@ export const signOutCleanup = async (force: boolean = false): Promise<boolean> =
     silently(() => { CLEAR_ON_SIGN_OUT.forEach(key => { try { localStorage.removeItem(key); } catch { /* idem */ } }); });
     setStatus("idle");
     return true;
-};
-
-// Pour les tests
-export const _resetForTests = (): void => {
-    if (timer) clearTimeout(timer);
-    timer = null; client = null; baseline = null; sending = null; changeCounter = 0; status = "idle";
 };

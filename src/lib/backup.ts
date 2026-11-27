@@ -7,8 +7,8 @@ import { translate } from '../i18n/core';
 // Le fichier contient "app" et "version" : l'import vérifie que c'est bien un fichier de MyPrepBoard.
 // L'identifiant "meal-prep-board" ne change pas : il garde lisibles les sauvegardes déjà exportées.
 
-export const BACKUP_APP = "meal-prep-board";
-export const BACKUP_VERSION = 1;
+const BACKUP_APP = "meal-prep-board";
+const BACKUP_VERSION = 1;
 
 export type BackupData = {
     recipes: Recipe[];
@@ -23,11 +23,11 @@ export type Backup = {
     data: BackupData;
 };
 
-export type ParseResult =
+type ParseResult =
     | { ok: true; data: BackupData }
     | { ok: false; error: string };
 
-export type MergeReport = { recipes: number; ingredients: number; weeks: number };
+type MergeReport = { recipes: number; ingredients: number; weeks: number };
 
 export const buildBackup = (data: BackupData, now: Date = new Date()): Backup => ({
     app: BACKUP_APP,

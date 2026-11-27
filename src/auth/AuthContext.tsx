@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import type { ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
 
-export type AuthStatus = "disabled" | "loading" | "signedOut" | "signedIn" | "recovery";
+type AuthStatus = "disabled" | "loading" | "signedOut" | "signedIn" | "recovery";
 
-export type AuthUser = { id: string; email: string; name: string };
+type AuthUser = { id: string; email: string; name: string };
 
-export type ProfileChanges = { name?: string; email?: string; password?: string };
+type ProfileChanges = { name?: string; email?: string; password?: string };
 
 export type AuthErrorKind = "credentials" | "notConfirmed" | "weakPassword" | "rateLimit" | "network" | "other";
 export type AuthResult = { ok: true; needsConfirmation?: boolean } | { ok: false; kind: AuthErrorKind; message: string; code: string };
@@ -27,7 +27,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 type RawError = { message?: string; code?: string; status?: number; name?: string };
 
-export const classifyAuthError = (error: RawError): AuthErrorKind => {
+const classifyAuthError = (error: RawError): AuthErrorKind => {
     const code = error.code ?? "";
     const message = (error.message ?? "").toLowerCase();
     if (code === "invalid_credentials" || message.includes("invalid login credentials")) return "credentials";

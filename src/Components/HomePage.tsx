@@ -4,9 +4,9 @@ import { X, Smartphone, MinusCircle, PlusCircle } from 'react-feather';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Recipe, Ingredient, recipeInfo, defaultList, RecipeIngredient } from './typeFile';
-import axios from 'axios';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, isStockTracked, loadRecipes, loadMealHistory, DEFAULT_PORTIONS, unitLabel, scaleQuantity } from '../lib/recipeUtils';
 import MacroSummary from './MacroSummary';
+import SafeImage from './SafeImage';
 import { useT } from '../i18n/LanguageProvider';
 import { loadWebhook, isValidWebhook } from '../lib/discord';
 import {
@@ -251,7 +251,12 @@ const HomePage = () => {
         };
       
         try {
-            await axios.post(discordWebHook, message);
+            const response = await fetch(discordWebHook, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(message)
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             console.log('✅ Liste envoyée sur Discord !');
         } catch (error) {
             console.error('❌ Erreur lors de l’envoi :', error);
@@ -336,7 +341,7 @@ const HomePage = () => {
            {recipeList.length > 0 && (
                 <div className="RecipeDisplay">
                     {weeklyRecipes.map((recipe, position) => {
-                        const image = <div className="recipeImage"><img src={recipe.image} alt={recipe.recipeName}/></div>;
+                        const image = <div className="recipeImage"><SafeImage src={recipe.image} alt={recipe.recipeName}/></div>;
                         return (
                             <div className="recipe" key={`${position}-${weekly[position]}`}>
                                 {position % 2 === 0 && image}

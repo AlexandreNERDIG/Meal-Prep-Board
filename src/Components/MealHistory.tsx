@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { toastUndo } from '../lib/undoToast';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
+import SafeImage from './SafeImage';
 import { calcRecipeMacros, cookedIngredients, formatMacros, formatDuration, findIngredient, isStockTracked, loadRecipes, loadMealHistory, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
 import type { TranslationKey } from '../i18n/translations';
@@ -144,7 +145,7 @@ const MealHistory = () => {
                     <div className="recipeContainner">
                         {weeklyMeal.map((recipe, recipeIndex) => (
                             <div className="recipeDisplay" key={recipeIndex}>
-                                <img src={recipe.image} alt={recipe.recipeName}/>
+                                <SafeImage src={recipe.image} alt={recipe.recipeName}/>
                                 <div className="textSubDiv">
                                     <h2>{recipe.recipeName}</h2>
                                     <Bookmark 

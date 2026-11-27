@@ -34,7 +34,7 @@ export const findIngredient = (stock: Ingredient[], ingredientId: string): Ingre
 };
 
 // Macros TOTALES d'une liste d'ingrédients
-export const sumMacros = (ingredients: Recipe["ingredient"], stock: Ingredient[]): Macros => {
+const sumMacros = (ingredients: Recipe["ingredient"], stock: Ingredient[]): Macros => {
     const total: Macros = { calories: 0, carbs: 0, protein: 0, fat: 0 };
 
     for (const ingre of ingredients) {
@@ -134,7 +134,7 @@ export const calorieSplit = (macros: Macros): { carbs: number; protein: number; 
 // ---- Durées : stockées en MINUTES (nombre), affichées en "20 min" / "1h30" ----
 
 // Convertit une durée en minutes. Accepte un nombre, ou un ancien texte ("20 min", "1h30", "3h", "45").
-export const toMinutes = (value: unknown): number => {
+const toMinutes = (value: unknown): number => {
     if (typeof value === "number") return Number.isFinite(value) ? Math.max(0, Math.round(value)) : 0;
     if (typeof value !== "string") return 0;
 

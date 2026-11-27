@@ -206,7 +206,6 @@ export const es: Record<TranslationKey, string> = {
     "auth.consentLink": "política de privacidad",
     "auth.checkEmail": "Revisa tu bandeja de entrada: se ha enviado un enlace de confirmación a **{email}**. Haz clic en él y vuelve para iniciar sesión.",
     "auth.resetSent": "Si existe una cuenta para **{email}**, se acaba de enviar un enlace para elegir una nueva contraseña.",
-    "auth.resetDone": "Contraseña actualizada",
     "auth.errEmail": "Este correo electrónico no parece válido.",
     "auth.errShort": "La contraseña debe tener al menos 8 caracteres.",
     "auth.errCredentials": "Correo o contraseña incorrectos.",

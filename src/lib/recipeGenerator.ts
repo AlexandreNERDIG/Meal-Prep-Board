@@ -17,10 +17,10 @@ export const MIN_RECIPES = 1;
 export const MAX_RECIPES = 4;
 export const MIN_PORTIONS = 1;
 export const MAX_PORTIONS = 24;
-export const FALLBACK_PORTIONS = 5;
-export const GENERATOR_KEY = "generatorOptions";
+const FALLBACK_PORTIONS = 5;
+const GENERATOR_KEY = "generatorOptions";
 
-export const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
+const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
     count: 2,
     favorites: "prefer",
     portions: FALLBACK_PORTIONS,
@@ -28,7 +28,7 @@ export const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
 };
 
 // Relit les options sauvegardées en vérifiant chaque champ (un vieux JSON ou une valeur bizarre ne doit pas casser la page)
-export const sanitizeOptions = (raw: unknown): GeneratorOptions => {
+const sanitizeOptions = (raw: unknown): GeneratorOptions => {
     const d = DEFAULT_GENERATOR_OPTIONS;
     const o = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
 
@@ -56,7 +56,7 @@ export const saveGeneratorOptions = (options: GeneratorOptions) => {
 };
 
 // Recettes qui respectent le critère strict ("favoris uniquement")
-export const filterCandidates = (recipes: Recipe[], options: GeneratorOptions): Recipe[] =>
+const filterCandidates = (recipes: Recipe[], options: GeneratorOptions): Recipe[] =>
     options.favorites === "only" ? recipes.filter(recipe => recipe.status === "favorite") : recipes;
 
 // Mélange (Fisher-Yates)
@@ -70,7 +70,7 @@ const shuffle = <T,>(items: T[], random: () => number): T[] => {
 };
 
 // Les recettes triées de la meilleure à la moins bonne : favoris (si "favoris d'abord"), variété (rien cuisiné ces 3 dernières semaines) et stock disponible
-export const rankRecipes = (
+const rankRecipes = (
     candidates: Recipe[],
     options: GeneratorOptions,
     stock: Ingredient[],

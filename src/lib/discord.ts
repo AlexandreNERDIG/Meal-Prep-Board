@@ -1,7 +1,7 @@
 // Le lien (webhook) du salon Discord où part la liste de courses.
 // Il est stocké dans le localStorage sous forme de texte JSON ("..."), comme avant : les données existantes restent valables.
 
-export const WEBHOOK_KEY = "discordWebhook";
+const WEBHOOK_KEY = "discordWebhook";
 
 const WEBHOOK_PATTERN = /^https:\/\/discord\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+$/;
 

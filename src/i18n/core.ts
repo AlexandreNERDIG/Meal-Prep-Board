@@ -10,7 +10,7 @@ export const LANGUAGE_OPTIONS = [
 ] as const;
 
 export type Language = typeof LANGUAGE_OPTIONS[number]["code"];
-export const LANGUAGES: Language[] = LANGUAGE_OPTIONS.map(option => option.code);
+const LANGUAGES: Language[] = LANGUAGE_OPTIONS.map(option => option.code);
 export const localeOf = (language: Language): string => LANGUAGE_OPTIONS.find(option => option.code === language)?.locale ?? "en-US";
 
 const STORAGE_KEY = "language";
@@ -18,7 +18,7 @@ const dictionaries: Record<Language, Record<TranslationKey, string>> = { fr, en,
 
 export const isLanguage = (value: unknown): value is Language => LANGUAGES.some(code => code === value);
 
-export const detectLanguage = (): Language => {
+const detectLanguage = (): Language => {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (isLanguage(saved)) return saved;

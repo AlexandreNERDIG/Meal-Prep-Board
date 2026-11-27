@@ -4,6 +4,7 @@ import { Trash, Trash2, X, Download, Edit2, Aperture, Search, ArrowUp, ArrowDown
 import './RecipeList.css';
 import RecipeFormModal from './RecipeFormModal';
 import { Recipe, Ingredient, defaultList } from './typeFile';
+import SafeImage from './SafeImage';
 import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, loadRecipes, DEFAULT_PORTIONS, RECIPE_SORT_KEYS, sortRecipes, recipeMatchesSearch, unitLabel } from '../lib/recipeUtils';
 import { useT } from '../i18n/LanguageProvider';
 import type { RecipeSortKey, SortDirection } from '../lib/recipeUtils';
@@ -161,7 +162,7 @@ const RecipeList = () => {
                             <Edit2 className="cornerIcon editIconCard" size={18} aria-label={t("recipes.edit")} onClick={() => setFormState({ editName: element.recipeName })}></Edit2>
                             <Trash className="cornerIcon deleteIconCard" size={18} aria-label={t("recipes.delete")} onClick={() => setRecipeToDelete(element)}></Trash>
                         </div>
-                        <img src={element.image} alt={element.recipeName}/>
+                        <SafeImage src={element.image} alt={element.recipeName}/>
                         <div className="subDivText">
                             <h3>{formatDuration(element.prepTime)}</h3>
                             <h2>{element.recipeName}</h2>
