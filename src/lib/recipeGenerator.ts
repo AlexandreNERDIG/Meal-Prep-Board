@@ -1,4 +1,7 @@
 import type { Recipe, Ingredient } from '../Components/typeFile';
+import { calcRecipeMacros } from './recipeUtils';
+import { goalScore, isGoal } from './goalScore';
+import type { Goal } from './goalScore';
 
 // Critères du générateur de recettes de la page d'accueil
 export type FavoritesMode = "any" | "prefer" | "only";   // peu importe / favoris d'abord / favoris uniquement
@@ -7,6 +10,7 @@ export type GeneratorOptions = {
     count: number;           // nombre de recettes à proposer
     favorites: FavoritesMode;
     portions: number;        // servings per recipe when a week is generated
+    goal: Goal;
 };
 
 export const MIN_RECIPES = 1;
@@ -20,6 +24,7 @@ export const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
     count: 2,
     favorites: "prefer",
     portions: FALLBACK_PORTIONS,
+    goal: "any",
 };
 
 // Relit les options sauvegardées en vérifiant chaque champ (un vieux JSON ou une valeur bizarre ne doit pas casser la page)
@@ -33,6 +38,7 @@ export const sanitizeOptions = (raw: unknown): GeneratorOptions => {
         count: Number.isInteger(count) ? Math.min(MAX_RECIPES, Math.max(MIN_RECIPES, count)) : d.count,
         favorites: o.favorites === "any" || o.favorites === "prefer" || o.favorites === "only" ? o.favorites : d.favorites,
         portions: Number.isInteger(portions) ? Math.min(MAX_PORTIONS, Math.max(MIN_PORTIONS, portions)) : d.portions,
+        goal: isGoal(o.goal) ? o.goal : d.goal,
     };
 };
 
@@ -81,6 +87,8 @@ export const rankRecipes = (
         if (options.favorites === "prefer" && recipe.status === "favorite") score += 2;
 
         score += recentNames.has(recipe.recipeName) ? -2 : 1;
+
+        score += goalScore(calcRecipeMacros(recipe.ingredient, stock), options.goal);
 
         for (const ing of recipe.ingredient) {
             const stockItem = stock.find(ele => String(ele.id) === String(ing.ingredientId));

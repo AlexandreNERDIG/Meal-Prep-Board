@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
-import { X, Upload, Image as ImageIcon } from 'react-feather';
+import { X, Upload, Image as ImageIcon, MinusCircle, PlusCircle } from 'react-feather';
 import toast from 'react-hot-toast';
 import './NewMeal.css';
 import { Recipe, Ingredient, RecipeIngredient, defaultList } from './typeFile';
-import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS, NO_IMAGE, categoryLabel, unitLabel } from '../lib/recipeUtils';
+import { calcRecipeMacros, calcRecipeCost, formatMacros, formatPrice, formatDuration, findIngredient, normalizeRecipe, loadRecipes, INGREDIENT_CATEGORIES, DEFAULT_PORTIONS, NO_IMAGE, categoryLabel, unitLabel, scaleQuantity } from '../lib/recipeUtils';
+import { MAX_PORTIONS, MIN_PORTIONS } from '../lib/recipeGenerator';
 import { useT } from '../i18n/LanguageProvider';
 import { fileToResizedDataUrl } from "../lib/imageUpload";
 
@@ -54,6 +55,7 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
     const [formData, setFormData] = useState<Recipe>(recipeToEdit ?? emptyRecipe);
     const [rows, setRows] = useState<IngredientRow[]>(recipeToEdit ? toRows(recipeToEdit) : [emptyRow]);
     const [pendingImport, setPendingImport] = useState<PendingImport | null>(null);
+    const [servings, setServings] = useState<number>(DEFAULT_PORTIONS);
 
     const [recipeList, setRecipeList] = useState<Recipe[]>(loadRecipes);
 
@@ -104,12 +106,13 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
     }
 
     const previewIngredients = validIngredients();
-    const previewMacros = formatMacros(calcRecipeMacros(previewIngredients, currentStock));
+    const previewMacros = formatMacros(calcRecipeMacros(previewIngredients, currentStock, servings));
     const previewCost = calcRecipeCost(previewIngredients, currentStock);
 
     const resetForm = () => {
         setFormData(emptyRecipe);
         setRows([emptyRow]);
+        setServings(DEFAULT_PORTIONS);
     }
 
     const ajouterRecette = () => {
@@ -134,7 +137,9 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
             const newRecipe : Recipe = {
                 ...formData,
                 recipeName: formData.recipeName.trim(),
-                ingredient: ingredients
+                ingredient: servings === DEFAULT_PORTIONS
+                    ? ingredients
+                    : ingredients.map(item => ({ ...item, quantity: scaleQuantity(item.quantity, DEFAULT_PORTIONS / servings) }))
             };
 
             if (editingName) {
@@ -286,6 +291,14 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
                       placeholder={t("new.namePlaceholder")}
                     />
 
+                    <label>{t("new.servings")} </label>
+                    <div className="genStepper servingsStepper">
+                        <MinusCircle aria-label="-" onClick={() => setServings(value => Math.max(MIN_PORTIONS, value - 1))} />
+                        <span className="genCount">{servings}</span>
+                        <PlusCircle aria-label="+" onClick={() => setServings(value => Math.min(MAX_PORTIONS, value + 1))} />
+                    </div>
+                    <p className="servingsHint">{t("new.servingsHint")}</p>
+
                     <label>{t("new.ingredients")} </label>
                     {rows.map((row, index) => {
                         const selectedIngredient = findIngredient(currentStock, row.ingredientId);
@@ -331,11 +344,11 @@ const RecipeFormModal = ({ editName: requestedEditName, onClose, onChange }: Pro
                         <button onClick={ajouterIngredient} className='Btn'>{t("new.addIngredient")}</button>
                     </div>
 
-                    <label>{t("new.macrosLabel", { n: DEFAULT_PORTIONS })} </label>
+                    <label>{t("new.macrosLabel")} </label>
                     <p className="previewValue">{previewMacros}</p>
 
                     <label>{t("new.costLabel")} </label>
-                    <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / DEFAULT_PORTIONS)} ${t("price.perServing")})`}</p>
+                    <p className="previewValue">{`${formatPrice(previewCost)} (${formatPrice(previewCost / servings)} ${t("price.perServing")})`}</p>
 
                     <label>{t("new.prepLabel")} </label>
                     <div className="timeRow">

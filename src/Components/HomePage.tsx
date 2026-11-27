@@ -13,6 +13,7 @@ import {
     loadGeneratorOptions, saveGeneratorOptions, pickRecipes, pickReplacement, MIN_RECIPES, MAX_RECIPES, MIN_PORTIONS, MAX_PORTIONS,
     type GeneratorOptions, type FavoritesMode,
 } from '../lib/recipeGenerator';
+import { GOALS } from '../lib/goalScore';
 
 type Translate = ReturnType<typeof useT>["t"];
 
@@ -295,6 +296,15 @@ const HomePage = () => {
                     <div className="genSegment" role="radiogroup" aria-label={t("gen.favorites")}>
                         {(["any", "prefer", "only"] as FavoritesMode[]).map(value => (
                             <button key={value} role="radio" aria-checked={options.favorites === value} className={options.favorites === value ? "active" : ""} onClick={() => updateOptions({ favorites: value })}>{t(`gen.fav.${value}`)}</button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="genGroup goalGroup">
+                    <span className="genLabel">{t("gen.goal")}</span>
+                    <div className="genSegment" role="radiogroup" aria-label={t("gen.goal")}>
+                        {GOALS.map(value => (
+                            <button key={value} role="radio" aria-checked={options.goal === value} className={options.goal === value ? "active" : ""} onClick={() => updateOptions({ goal: value })}>{t(`gen.goal.${value}`)}</button>
                         ))}
                     </div>
                 </div>

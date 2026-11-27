@@ -194,6 +194,16 @@
 
 /* Macros et coût calculés en direct */
 
+.servingsStepper {
+    margin-bottom: 0.25rem;
+}
+
+.servingsHint {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
 .previewValue {
     color: #fff;
     font-size: 0.9rem;
